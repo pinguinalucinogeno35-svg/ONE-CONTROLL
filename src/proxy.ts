@@ -56,6 +56,10 @@ export async function proxy(request: NextRequest) {
     });
     // Não inserir código entre createServerClient e getClaims (renovação de sessão).
     const { data } = await supabase.auth.getClaims();
+    if (!data?.claims && !isPublic && path.startsWith("/api/")) {
+      // APIs nunca redirecionam: respondem 401 sem conteúdo sensível.
+      return NextResponse.json({ error: "Não autenticado" }, { status: 401, headers: { "Cache-Control": "no-store" } });
+    }
     if (!data?.claims && !isPublic) {
       const login = request.nextUrl.clone();
       login.pathname = "/login";

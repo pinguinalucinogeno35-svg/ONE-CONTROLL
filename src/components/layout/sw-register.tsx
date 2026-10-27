@@ -22,9 +22,11 @@ export function ServiceWorkerRegister() {
           });
         });
       }).catch(() => undefined);
+      // Recarrega apenas quando uma versão nova assume (não na primeira instalação).
+      const hadController = !!navigator.serviceWorker.controller;
       let reloaded = false;
       navigator.serviceWorker.addEventListener("controllerchange", () => {
-        if (!reloaded) { reloaded = true; window.location.reload(); }
+        if (hadController && !reloaded) { reloaded = true; window.location.reload(); }
       });
     }
     return () => {
