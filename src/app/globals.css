@@ -1,38 +1,201 @@
 @import "tailwindcss";
+@import "@fontsource-variable/inter/wght.css";
+@import "@fontsource-variable/space-grotesk/wght.css";
+@import "@fontsource/roboto-mono/400.css";
+@import "@fontsource/roboto-mono/500.css";
 
-/* Tokens de design ONE CONTROL (dark premium). Ajustáveis à identidade oficial. */
+/* =============================================================================
+ * ONE — Identidade Visual v1.0 (27.10.2026) aplicada ao ONE CONTROL.
+ * Primitivos: carvão #0B0B0F, marfim #F6F4EF, azul elétrico #0066FF, ardósia #6B7280.
+ * Semânticos por tema (pares próprios; o escuro não é inversão simples).
+ * Componentes consomem apenas os papéis abaixo — nunca HEX soltos.
+ * Contraste conferido (AA): ver docs/architecture/design-system.md.
+ * ========================================================================== */
+
+:root,
+[data-theme="light"] {
+  color-scheme: light;
+  --one-bg: #f6f4ef;            /* marfim */
+  --one-surface: #ffffff;
+  --one-elevated: #efece5;
+  --one-text: #0b0b0f;          /* carvão — 17,87:1 sobre marfim */
+  --one-muted: #535b66;         /* 6,25:1 sobre marfim */
+  --one-border: #dedad1;        /* separador decorativo */
+  --one-border-strong: #6b7280; /* limite essencial de campo — 4,4:1 */
+  --one-action: #0066ff;
+  --one-action-hover: #0052cc;
+  --one-on-action: #ffffff;     /* 4,83:1 */
+  --one-link: #0052cc;
+  --one-focus: #0066ff;
+  --one-info: #0052cc;    --one-info-bg: #edf3ff;
+  --one-success: #166534; --one-success-bg: #ecfdf3;
+  --one-warning: #92400e; --one-warning-bg: #fffbeb;
+  --one-danger: #b42318;  --one-danger-bg: #fef3f2;
+  --one-chart-1: #0066ff;
+  --one-chart-2: #d95926;
+  --one-chart-grid: #e5e2da;
+  --one-overlay: rgb(11 11 15 / 0.55);
+  --one-shadow: 0 12px 32px rgb(11 11 15 / 0.14);
+}
+
+/* Navegação lateral em carvão nos dois temas (estudo de aplicação, p. 17–18). */
+:root {
+  --one-sidebar: #0b0b0f;
+  --one-sidebar-text: #f6f4ef;
+  --one-sidebar-muted: #a3a9b4;
+  --one-sidebar-active: #1f222b;
+  --one-sidebar-accent: #80adff;
+  --one-sidebar-border: #262932;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    color-scheme: dark;
+    --one-bg: #0b0b0f;
+    --one-surface: #17191f;
+    --one-elevated: #20232b;
+    --one-text: #f6f4ef;
+    --one-muted: #a3a9b4;
+    --one-border: #2a2d36;
+    --one-border-strong: #70778a;
+    --one-action: #80adff;
+    --one-action-hover: #a6c5ff;
+    --one-on-action: #0b0b0f;
+    --one-link: #80adff;
+    --one-focus: #80adff;
+    --one-info: #80adff;    --one-info-bg: #142340;
+    --one-success: #6ce9a6; --one-success-bg: #0f2a1c;
+    --one-warning: #fdd26e; --one-warning-bg: #2e2310;
+    --one-danger: #fda29b;  --one-danger-bg: #3a1714;
+    --one-chart-1: #3987e5;
+    --one-chart-2: #d95926;
+    --one-chart-grid: #2a2d36;
+    --one-overlay: rgb(0 0 0 / 0.6);
+    --one-shadow: 0 12px 32px rgb(0 0 0 / 0.45);
+  }
+}
+
+[data-theme="dark"] {
+  color-scheme: dark;
+  --one-bg: #0b0b0f;
+  --one-surface: #17191f;
+  --one-elevated: #20232b;
+  --one-text: #f6f4ef;
+  --one-muted: #a3a9b4;
+  --one-border: #2a2d36;
+  --one-border-strong: #70778a;
+  --one-action: #80adff;
+  --one-action-hover: #a6c5ff;
+  --one-on-action: #0b0b0f;
+  --one-link: #80adff;
+  --one-focus: #80adff;
+  --one-info: #80adff;    --one-info-bg: #142340;
+  --one-success: #6ce9a6; --one-success-bg: #0f2a1c;
+  --one-warning: #fdd26e; --one-warning-bg: #2e2310;
+  --one-danger: #fda29b;  --one-danger-bg: #3a1714;
+  --one-chart-1: #3987e5;
+  --one-chart-2: #d95926;
+  --one-chart-grid: #2a2d36;
+  --one-overlay: rgb(0 0 0 / 0.6);
+  --one-shadow: 0 12px 32px rgb(0 0 0 / 0.45);
+}
+
+/* Papéis expostos como utilitários Tailwind (bg-surface, text-muted, …). */
+@theme inline {
+  --color-bg: var(--one-bg);
+  --color-surface: var(--one-surface);
+  --color-elevated: var(--one-elevated);
+  --color-fg: var(--one-text);
+  --color-muted: var(--one-muted);
+  --color-border: var(--one-border);
+  --color-border-strong: var(--one-border-strong);
+  --color-primary: var(--one-action);
+  --color-primary-hover: var(--one-action-hover);
+  --color-on-primary: var(--one-on-action);
+  --color-link: var(--one-link);
+  --color-info: var(--one-info);
+  --color-info-bg: var(--one-info-bg);
+  --color-success: var(--one-success);
+  --color-success-bg: var(--one-success-bg);
+  --color-warning: var(--one-warning);
+  --color-warning-bg: var(--one-warning-bg);
+  --color-danger: var(--one-danger);
+  --color-danger-bg: var(--one-danger-bg);
+  --color-overlay: var(--one-overlay);
+  --color-sidebar: var(--one-sidebar);
+  --color-sidebar-fg: var(--one-sidebar-text);
+  --color-sidebar-muted: var(--one-sidebar-muted);
+  --color-sidebar-active: var(--one-sidebar-active);
+  --color-sidebar-accent: var(--one-sidebar-accent);
+  --color-sidebar-border: var(--one-sidebar-border);
+}
+
 @theme {
-  --color-bg: #080b12;
-  --color-surface: #101723;
-  --color-elevated: #172131;
-  --color-primary: #2563eb;
-  --color-primary-hover: #1d4ed8;
-  --color-fg: #f8fafc;
-  --color-muted: #94a3b8;
-  --color-border: #263244;
-  --color-success: #22c55e;
-  --color-warning: #f59e0b;
-  --color-danger: #ef4444;
-  --font-sans: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-  --radius-card: 0.875rem;
+  /* Tipografia: Space Grotesk (títulos), Inter (leitura e operação), Roboto Mono (dados). */
+  --font-sans: "Inter Variable", "Inter", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-display: "Space Grotesk Variable", "Space Grotesk", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "Roboto Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+
+  /* Raios: 4 detalhe · 8 controle · 12 cartão · 16 diálogo */
+  --radius-detail: 4px;
+  --radius-control: 8px;
+  --radius-card: 12px;
+  --radius-dialog: 16px;
+
+  /* Grid: conteúdo máx. 1280 px; sidebar 240 px */
+  --container-content: 1280px;
+
+  /* Motion */
+  --ease-one: cubic-bezier(0.2, 0, 0, 1);
 }
 
 :root {
-  color-scheme: dark;
+  --one-duration-fast: 120ms;
+  --one-duration-normal: 180ms;
+  --one-duration-slow: 260ms;
+  /* Camadas: base 0 · fixo 10 · menu 20 · sobreposição 30 · diálogo 40 · aviso 50 */
+  --one-z-fixed: 10;
+  --one-z-menu: 20;
+  --one-z-overlay: 30;
+  --one-z-dialog: 40;
+  --one-z-toast: 50;
 }
 
 html,
 body {
-  background: var(--color-bg);
-  color: var(--color-fg);
+  background: var(--one-bg);
+  color: var(--one-text);
   font-family: var(--font-sans);
+  font-size: 16px;
+  line-height: 24px;
   -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
 }
 
-/* Foco sempre visível (WCAG 2.2 — 2.4.7 / 2.4.11). */
+h1,
+h2,
+h3,
+.font-display {
+  font-family: var(--font-display);
+}
+
+/* Foco visível de 3 px com afastamento de 3 px (manual, p. 20). */
 :focus-visible {
-  outline: 2px solid #60a5fa;
-  outline-offset: 2px;
+  outline: 3px solid var(--one-focus);
+  outline-offset: 3px;
+}
+
+/* Rótulo editorial: "SEÇÃO / CONTEXTO" em Roboto Mono. */
+.eyebrow {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  line-height: 16px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.tabular {
+  font-variant-numeric: tabular-nums;
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -44,12 +207,4 @@ body {
     transition-duration: 0.01ms !important;
     scroll-behavior: auto !important;
   }
-}
-
-.tabular {
-  font-variant-numeric: tabular-nums;
-}
-
-input[type="date"]::-webkit-calendar-picker-indicator {
-  filter: invert(0.8);
 }

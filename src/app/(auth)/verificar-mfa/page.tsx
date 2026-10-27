@@ -16,7 +16,7 @@ export default async function MfaPage({ searchParams }: { searchParams: Promise<
   if (ctx.aal === "aal2" || (!isAdmin && !ctx.mfaEnrolled)) redirect(next);
   return (
     <>
-      <h1 className="mb-1 text-lg font-semibold">Verificação em duas etapas</h1>
+      <h1 className="mb-2 font-display text-2xl font-bold tracking-[-0.01em]">Verificação em duas etapas</h1>
       <p className="mb-4 text-sm text-muted">Olá, {ctx.profile.full_name.split(" ")[0]}. Confirme sua identidade para continuar.</p>
       <MfaForm next={next} mustEnroll={isAdmin} />
       <form action={signOut} className="mt-4 text-center">

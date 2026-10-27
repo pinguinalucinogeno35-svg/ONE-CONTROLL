@@ -20,7 +20,7 @@ export default async function EditContractPage({ params }: { params: Promise<{ i
   ]);
   return (
     <>
-      <PageHeader title={`Editar ${k.contract_number}`} description="Alterações geram nova versão do contrato." />
+      <PageHeader eyebrow="Comercial / Edição" title={`Editar ${k.contract_number}`} description="Alterações geram nova versão do contrato." />
       <ContractForm {...form} contractId={id} defaults={{
         client_id: k.client_id, project_id: k.project_id ?? "", seller_id: k.seller_id,
         implementation_amount: String(k.implementation_amount), monthly_amount: String(k.monthly_amount),

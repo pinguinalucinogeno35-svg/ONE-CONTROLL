@@ -12,7 +12,7 @@ de 13 semanas), com auditoria e controle de acesso em três camadas
 | Camada | Tecnologia |
 |---|---|
 | Aplicação | Next.js 16 (App Router, Server Actions, Route Handlers, `proxy.ts`), React 19, TypeScript strict |
-| UI | Tailwind CSS 4, componentes acessíveis próprios (padrão shadcn/ui), Lucide, Recharts |
+| UI | Tailwind CSS 4 com tokens da Identidade Visual ONE v1.0 (temas claro/escuro), Space Grotesk + Inter + Roboto Mono, componentes acessíveis próprios, Lucide, Recharts |
 | Formulários/validação | React Hook Form + Zod (cliente) e Zod novamente no servidor |
 | Banco/Auth/Arquivos | Supabase: PostgreSQL 16, Auth (MFA TOTP), Storage privado, RLS |
 | Hospedagem | Vercel (app + Cron) |
@@ -67,6 +67,7 @@ com as variáveis `E2E_*` — veja `.env.example`. Relatório da última execuç
 
 ## Documentação
 
+- Design system: [Identidade Visual ONE v1.0 aplicada](docs/architecture/design-system.md) · catálogo local em `/design-system`
 - Arquitetura: [overview](docs/architecture/overview.md) · [módulos](docs/architecture/modules.md) · [fluxo de dados](docs/architecture/data-flow.md) · [decisões (ADRs)](docs/architecture/decisions.md)
 - Banco: [schema](docs/database/schema.md) · [relacionamentos (ER)](docs/database/relationships.md) · [migrations](docs/database/migrations.md) · [regras financeiras](docs/database/financial-rules.md)
 - Segurança: [permissões](docs/security/permissions.md) · [RLS](docs/security/rls-policies.md) · [ameaças](docs/security/threat-model.md) · [checklist](docs/security/security-checklist.md) · [LGPD](docs/security/lgpd.md)

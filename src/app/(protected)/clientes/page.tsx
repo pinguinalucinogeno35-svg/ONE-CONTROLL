@@ -27,7 +27,7 @@ export default async function ClientsPage({ searchParams }: { searchParams: Prom
 
   return (
     <>
-      <PageHeader title="Clientes" description={isAdmin ? "Todos os clientes da organização" : "Sua carteira comercial"}
+      <PageHeader eyebrow="Comercial / Carteira" title="Clientes" description={isAdmin ? "Todos os clientes da organização" : "Sua carteira comercial"}
         actions={<>
           <LinkButton href="/clientes/links" variant="secondary">Links de cadastro</LinkButton>
           <LinkButton href="/clientes/importar" variant="secondary">Importar</LinkButton>

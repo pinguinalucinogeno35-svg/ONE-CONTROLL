@@ -34,7 +34,7 @@ export default async function ContractPage({ params }: { params: Promise<{ id: s
 
   return (
     <>
-      <PageHeader title={`Contrato ${k.contract_number}`} description={`${k.clients?.company_name ?? ""} · vendedor: ${k.seller?.full_name ?? "—"} · versão ${k.version}`}
+      <PageHeader eyebrow="Comercial / Contrato" title={`Contrato ${k.contract_number}`} description={`${k.clients?.company_name ?? ""} · vendedor: ${k.seller?.full_name ?? "—"} · versão ${k.version}`}
         actions={<>
           <Badge tone={label(CONTRACT_STATUS, k.status)[1]}>{label(CONTRACT_STATUS, k.status)[0]}</Badge>
           {editable && <LinkButton variant="secondary" href={`/contratos/${k.id}/editar`}>Editar</LinkButton>}

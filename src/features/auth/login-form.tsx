@@ -17,7 +17,7 @@ export function LoginForm({ next }: { next?: string }) {
         <Input name="password" type="password" autoComplete="current-password" required />
       </Field>
       <Button type="submit" disabled={pending} aria-busy={pending}>{pending ? "Entrando..." : "Entrar"}</Button>
-      <a href="/recuperar-acesso" className="text-center text-sm text-muted underline-offset-4 hover:text-fg hover:underline">Esqueci minha senha</a>
+      <a href="/recuperar-acesso" className="text-center text-sm font-medium text-link underline-offset-4 hover:underline">Esqueci minha senha</a>
     </form>
   );
 }

@@ -21,7 +21,7 @@ export default async function NotificationsPage() {
   };
   return (
     <>
-      <PageHeader title="Notificações" actions={<ActionButton action={markAllReadAction} label="Marcar todas como lidas" />} />
+      <PageHeader eyebrow="Conta / Notificações" title="Notificações" actions={<ActionButton action={markAllReadAction} label="Marcar todas como lidas" />} />
       {(data ?? []).length === 0 ? <EmptyState title="Nenhuma notificação" /> : (
         <ul className="flex flex-col gap-2">
           {data!.map((n) => {

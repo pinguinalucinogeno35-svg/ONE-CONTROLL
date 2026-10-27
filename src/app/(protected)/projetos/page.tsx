@@ -16,7 +16,7 @@ export default async function ProjectsPage({ searchParams }: { searchParams: Pro
   const today = todayISO();
   return (
     <>
-      <PageHeader title="Projetos" description={todos ? "Todos os projetos" : "Projetos em aberto"}
+      <PageHeader eyebrow="Operação / Projetos" title="Projetos" description={todos ? "Todos os projetos" : "Projetos em aberto"}
         actions={<>
           <LinkButton variant="secondary" href={todos ? "/projetos" : "/projetos?todos=1"}>{todos ? "Somente em aberto" : "Incluir entregues/cancelados"}</LinkButton>
           {ctx.profile.role === "admin" && <LinkButton href="/projetos/novo">Novo projeto</LinkButton>}

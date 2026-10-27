@@ -14,7 +14,7 @@ export default async function ImportPage() {
   ]);
   return (
     <>
-      <PageHeader title="Importar clientes" description="Alternativa ao Google Forms. Pré-visualize, revise os erros e confirme. O mesmo arquivo não é importado duas vezes." />
+      <PageHeader eyebrow="Comercial / Importação" title="Importar clientes" description="Alternativa ao Google Forms. Pré-visualize, revise os erros e confirme. O mesmo arquivo não é importado duas vezes." />
       <Card className="mb-6"><ImportForm sellers={sellers ?? undefined} /></Card>
       <Card>
         <CardTitle className="mb-3">Importações recentes</CardTitle>

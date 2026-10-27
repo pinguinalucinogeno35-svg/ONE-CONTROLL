@@ -47,8 +47,8 @@ export function PolicyForm({ policy }: { policy?: CommissionPolicy }) {
         <SelectField name="trigger_rule" label="Fato gerador" placeholder="Pendente de decisão" defaultValue={policy?.trigger_rule ?? ""} options={Object.entries(TRIGGER_RULE).map(([value, label]) => ({ value, label }))} />
         <TextField name="recurring_limit_months" label="Limite de meses de recorrência" type="number" min={1} max={120} defaultValue={policy?.recurring_limit_months ?? ""} hint="Vazio = sem limite" />
         <TextField name="effective_from" label="Vigência a partir de" type="date" defaultValue={policy?.effective_from ?? todayISO()} />
-        <label className="flex min-h-11 items-center gap-2 text-sm"><input type="checkbox" name="requires_approval" defaultChecked={policy?.requires_approval ?? true} className="size-4 accent-[#2563eb]" />Exige aprovação administrativa para pagamento</label>
-        <label className="flex min-h-11 items-center gap-2 text-sm"><input type="checkbox" name="refunds_reverse" defaultChecked={policy?.refunds_reverse ?? true} className="size-4 accent-[#2563eb]" />Estorno/reembolso reverte comissão</label>
+        <label className="flex min-h-11 items-center gap-2 text-sm"><input type="checkbox" name="requires_approval" defaultChecked={policy?.requires_approval ?? true} className="size-4 accent-[var(--one-action)]" />Exige aprovação administrativa para pagamento</label>
+        <label className="flex min-h-11 items-center gap-2 text-sm"><input type="checkbox" name="refunds_reverse" defaultChecked={policy?.refunds_reverse ?? true} className="size-4 accent-[var(--one-action)]" />Estorno/reembolso reverte comissão</label>
         <TextAreaField name="notes" label="Observações" className="sm:col-span-3" defaultValue={policy?.notes ?? ""} />
       </div>
       <p className="text-xs text-muted">Descontos reduzem a base naturalmente: a comissão incide sobre o valor efetivamente recebido. Comissões já aprovadas nunca são recalculadas por novas políticas.</p>

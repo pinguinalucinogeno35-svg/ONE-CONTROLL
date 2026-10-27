@@ -11,7 +11,7 @@ export default async function NewPasswordPage() {
   if (!data?.claims) redirect("/recuperar-acesso");
   return (
     <>
-      <h1 className="mb-1 text-lg font-semibold">Definir senha</h1>
+      <h1 className="mb-2 font-display text-2xl font-bold tracking-[-0.01em]">Definir senha</h1>
       <p className="mb-4 text-sm text-muted">Crie uma senha forte e exclusiva para o ONE CONTROL.</p>
       <NewPasswordForm />
     </>

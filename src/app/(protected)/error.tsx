@@ -8,7 +8,7 @@ export default function ProtectedError({ error, reset }: { error: Error & { dige
         {typeof navigator !== "undefined" && !navigator.onLine ? "Você está sem conexão. Nenhuma operação foi registrada." : "Não foi possível carregar esta tela."}
         {error.digest && <span className="block text-xs">Referência: {error.digest}</span>}
       </p>
-      <button onClick={reset} className="mt-4 rounded-lg bg-primary px-4 py-2 text-sm font-medium text-white">Tentar novamente</button>
+      <button onClick={reset} className="mt-4 min-h-11 rounded-[var(--radius-control)] bg-primary px-5 font-semibold text-on-primary">Tentar novamente</button>
     </div>
   );
 }

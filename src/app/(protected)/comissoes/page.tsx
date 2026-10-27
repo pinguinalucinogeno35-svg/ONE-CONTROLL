@@ -37,7 +37,7 @@ export default async function CommissionsPage() {
 
   return (
     <>
-      <PageHeader title="Comissões" description={isAdmin ? "Apuração, aprovação e pagamento de comissões dos vendedores" : "Suas comissões"}
+      <PageHeader eyebrow="Comercial / Comissões" title="Comissões" description={isAdmin ? "Apuração, aprovação e pagamento de comissões dos vendedores" : "Suas comissões"}
         actions={isAdmin ? <Link href="/configuracoes#politicas" className="text-sm text-primary underline">Políticas de comissão</Link> : undefined} />
       {policy && (policy.status !== "active" || !policy.base_rule) ? (
         <div className="mb-4"><Alert tone="warning" title="Política de comissão pendente de decisão comercial">
@@ -62,7 +62,7 @@ export default async function CommissionsPage() {
             return (
               <li key={r.id} className="rounded-lg border border-border p-3">
                 <p className="mb-2 text-sm"><strong>{r.profiles?.full_name}</strong> · {r.contracts?.contract_number} · total {formatDecimalBRL(r.commission_amount)} · saldo <strong>{formatDecimalBRL(balance)}</strong></p>
-                {accounts.length ? <PayCommissionForm entitlementId={r.id} sellerId={r.seller_id} balance={balance} accounts={accounts} /> : <p className="text-xs text-amber-300">Cadastre uma conta financeira.</p>}
+                {accounts.length ? <PayCommissionForm entitlementId={r.id} sellerId={r.seller_id} balance={balance} accounts={accounts} /> : <p className="text-xs text-warning">Cadastre uma conta financeira.</p>}
               </li>
             );
           })}</ul>

@@ -1,7 +1,7 @@
 import { createServerClient } from "@supabase/ssr";
 import { NextResponse, type NextRequest } from "next/server";
 
-const PUBLIC_PATHS = ["/login", "/recuperar-acesso", "/auth/confirm", "/offline", "/api/integrations", "/api/internal"];
+const PUBLIC_PATHS = ["/login", "/recuperar-acesso", "/auth/confirm", "/offline", "/design-system", "/api/integrations", "/api/internal"];
 
 function buildCsp(nonce: string, isDev: boolean): string {
   const supabase = process.env.NEXT_PUBLIC_SUPABASE_URL ?? "";

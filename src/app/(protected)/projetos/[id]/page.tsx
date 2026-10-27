@@ -26,7 +26,7 @@ export default async function ProjectPage({ params }: { params: Promise<{ id: st
   const m = (members.data ?? []).map((x) => ({ id: x.id, name: x.full_name }));
   return (
     <>
-      <PageHeader title={p.name} description={`Cliente: ${p.clients?.company_name ?? "—"} · entrega ${formatDate(p.due_date)}`}
+      <PageHeader eyebrow="Operação / Projeto" title={p.name} description={`Cliente: ${p.clients?.company_name ?? "—"} · entrega ${formatDate(p.due_date)}`}
         actions={<Badge tone={label(PROJECT_STATUS, p.status)[1]}>{label(PROJECT_STATUS, p.status)[0]}</Badge>} />
       <div className="grid gap-4 lg:grid-cols-3">
         <Card className="lg:col-span-2">

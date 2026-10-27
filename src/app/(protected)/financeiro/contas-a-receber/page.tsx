@@ -35,7 +35,7 @@ export default async function ReceivablesPage({ searchParams }: { searchParams: 
 
   return (
     <>
-      <PageHeader title="Contas a receber" description="Saldo em aberto derivado dos recebimentos confirmados. Recebimentos parciais mantêm o saldo pendente."
+      <PageHeader eyebrow="Financeiro / Receber" title="Contas a receber" description="Saldo em aberto derivado dos recebimentos confirmados. Recebimentos parciais mantêm o saldo pendente."
         actions={<ActionButton action={generateReceivablesAction} label="Gerar mensalidades (30 dias)" variant="secondary" />} />
       <nav aria-label="Filtro" className="mb-4 flex flex-wrap gap-2">
         {tabs.map(([k, l]) => <Link key={k} href={`/financeiro/contas-a-receber${k ? `?status=${k}` : ""}`} aria-current={(sp.status ?? "") === k ? "true" : undefined} className="rounded-full border border-border px-3 py-1.5 text-xs aria-[current=true]:border-primary aria-[current=true]:bg-primary/15">{l}</Link>)}

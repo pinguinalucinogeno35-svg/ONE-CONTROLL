@@ -112,7 +112,7 @@ export function ContractForm({ clients, services, sellers, projects, policy, isA
           <div className="grid gap-2 sm:grid-cols-3">
             {(Object.keys(SALE_ORIGIN) as Origin[]).map((o) => (
               <label key={o} className="flex min-h-11 items-center gap-2 rounded-lg border border-border px-3 text-sm has-[:checked]:border-primary has-[:checked]:bg-primary/10">
-                <input type="radio" value={o} {...register("sale_origin")} className="accent-[#2563eb]" />{SALE_ORIGIN[o]}
+                <input type="radio" value={o} {...register("sale_origin")} className="accent-[var(--one-action)]" />{SALE_ORIGIN[o]}
               </label>
             ))}
           </div>

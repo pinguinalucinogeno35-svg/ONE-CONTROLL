@@ -20,7 +20,7 @@ export default async function AuditPage({ searchParams }: { searchParams: Promis
   const preview = (v: unknown) => (v ? JSON.stringify(v).slice(0, 220) : "—");
   return (
     <>
-      <PageHeader title="Auditoria" description="Registros imutáveis de operações críticas. Não podem ser editados ou excluídos pela interface." />
+      <PageHeader eyebrow="Sistema / Auditoria" title="Auditoria" description="Registros imutáveis de operações críticas. Não podem ser editados ou excluídos pela interface." />
       <form className="mb-4 flex flex-col gap-2 sm:flex-row">
         <label className="sr-only" htmlFor="acao">Ação</label><Input id="acao" name="acao" defaultValue={acao} placeholder="Ação (ex.: receipt_confirmed)" />
         <label className="sr-only" htmlFor="entidade">Entidade</label><Input id="entidade" name="entidade" defaultValue={entidade} placeholder="Entidade (ex.: contracts)" />

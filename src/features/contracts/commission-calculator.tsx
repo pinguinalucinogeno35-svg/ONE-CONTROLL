@@ -19,7 +19,7 @@ export function rateFor(policy: Pick<CommissionPolicy, "direct_rate_bps" | "refe
 export function CommissionCalculator({ policy, origin, implementation, monthly }: {
   policy: CommissionPolicy | null; origin: Origin; implementation: Cents | null; monthly: Cents | null;
 }) {
-  if (!policy) return <p className="text-sm text-amber-300">Nenhuma política de comissão cadastrada. A administração deve configurá-la.</p>;
+  if (!policy) return <p className="text-sm text-warning">Nenhuma política de comissão cadastrada. A administração deve configurá-la.</p>;
   const rate = rateFor(policy, origin);
   const provisional = policy.status !== "active" || !policy.base_rule;
   const impl = implementation ?? 0;

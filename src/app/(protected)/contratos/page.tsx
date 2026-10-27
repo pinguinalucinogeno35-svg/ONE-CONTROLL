@@ -19,7 +19,7 @@ export default async function ContractsPage({ searchParams }: { searchParams: Pr
   const { data, count } = await q.returns<Row[]>();
   return (
     <>
-      <PageHeader title="Contratos" actions={<LinkButton href="/contratos/novo">Novo contrato</LinkButton>} />
+      <PageHeader eyebrow="Comercial / Contratos" title="Contratos" actions={<LinkButton href="/contratos/novo">Novo contrato</LinkButton>} />
       <form className="mb-4 flex gap-2">
         <label htmlFor="status" className="sr-only">Status</label>
         <Select id="status" name="status" defaultValue={sp.status ?? ""} className="sm:w-64"><option value="">Todos os status</option>{Object.entries(CONTRACT_STATUS).map(([k, [l]]) => <option key={k} value={k}>{l}</option>)}</Select>

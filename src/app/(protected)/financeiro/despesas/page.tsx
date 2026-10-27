@@ -11,7 +11,7 @@ export default async function ExpensesAdminPage() {
   const categories = await getCategories(ctx, "expense");
   return (
     <>
-      <PageHeader title="Despesas operacionais" description="Solicitação → aprovação → pagamento. Aprovar não altera o caixa; somente a confirmação do pagamento." />
+      <PageHeader eyebrow="Financeiro / Despesas" title="Despesas operacionais" description="Solicitação → aprovação → pagamento. Aprovar não altera o caixa; somente a confirmação do pagamento." />
       <PayablesBoard ctx={ctx} kind="expense" />
       <Card className="mt-6"><PayablesIntro kind="expense" /><RegisterPayableForm kind="expense" categories={categories} /></Card>
     </>

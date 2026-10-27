@@ -14,7 +14,7 @@ export default async function ReportsPage({ searchParams }: { searchParams: Prom
   const qs = (fmt: string) => new URLSearchParams({ periodo: "custom", de: period.from, ate: period.to, formato: fmt }).toString();
   return (
     <>
-      <PageHeader title="Relatórios" description={ctx.profile.role === "admin" ? "Exportações completas da organização" : "Exportações limitadas à sua carteira"} />
+      <PageHeader eyebrow="Gestão / Relatórios" title="Relatórios" description={ctx.profile.role === "admin" ? "Exportações completas da organização" : "Exportações limitadas à sua carteira"} />
       <PeriodFilter basePath="/relatorios" current={period.key} from={period.from} to={period.to} />
       <ul className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
         {list.map(([key, d]) => (

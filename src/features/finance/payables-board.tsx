@@ -71,7 +71,7 @@ export async function PayablesBoard({ ctx, kind, projectId }: { ctx: ActiveConte
               <li key={r.id}><Card className="flex flex-col gap-3">
                 {header(r)}
                 <p className="text-sm text-muted">Pago: {formatBRL(paid.get(r.id) ?? 0)} · saldo: <strong className="text-fg">{formatDecimalBRL(balance)}</strong></p>
-                {accounts.length ? <PayForm payableId={r.id} balance={balance} accounts={accounts} /> : <p className="text-xs text-amber-300">Cadastre uma conta financeira para registrar pagamentos.</p>}
+                {accounts.length ? <PayForm payableId={r.id} balance={balance} accounts={accounts} /> : <p className="text-xs text-warning">Cadastre uma conta financeira para registrar pagamentos.</p>}
                 {(paid.get(r.id) ?? 0) === 0 && <details><summary className="cursor-pointer text-xs text-muted">Cancelar lançamento</summary><div className="mt-2"><ReasonForm kind="cancel_payable" id={r.id} label="Cancelar" /></div></details>}
               </Card></li>
             );

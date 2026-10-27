@@ -18,7 +18,7 @@ export default async function MyExpensesPage() {
   ]);
   return (
     <>
-      <PageHeader title="Minhas despesas" description="Solicite reembolsos e anexe comprovantes. A administração aprova e confirma o pagamento." />
+      <PageHeader eyebrow="Financeiro / Reembolsos" title="Minhas despesas" description="Solicite reembolsos e anexe comprovantes. A administração aprova e confirma o pagamento." />
       <Card className="mb-6"><CardTitle className="mb-4">Nova solicitação</CardTitle><RequestExpenseForm categories={categories} clients={(clients.data ?? []).map((c) => ({ id: c.id, name: c.company_name }))} /></Card>
       {(mine.data ?? []).length === 0 ? <EmptyState title="Nenhuma solicitação ainda" /> : (
         <ul className="flex flex-col gap-3">

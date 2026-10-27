@@ -13,7 +13,7 @@ export function ApproveCommissionsForm({ items }: { items: { id: string; label: 
         <legend className="sr-only">Comissões aguardando aprovação</legend>
         {items.map((i) => (
           <label key={i.id} className="flex min-h-11 items-center justify-between gap-3 rounded-lg border border-border px-3 text-sm">
-            <span className="flex items-center gap-2"><input type="checkbox" name="ids[]" value={i.id} className="size-4 accent-[#2563eb]" />{i.label}</span>
+            <span className="flex items-center gap-2"><input type="checkbox" name="ids[]" value={i.id} className="size-4 accent-[var(--one-action)]" />{i.label}</span>
             <span className="tabular font-medium">{formatDecimalBRL(i.amount)}</span>
           </label>
         ))}

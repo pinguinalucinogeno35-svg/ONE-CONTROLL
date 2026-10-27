@@ -14,7 +14,7 @@ Execução em 27/10/2026, ambiente de desenvolvimento em nuvem (Node 22.22, Post
 | SQL — Google Forms e importação | `supabase/tests/40_forms_imports.sql` | ✅ 22 asserções |
 | Concorrência real (sessões paralelas) | `scripts/db-concurrency-test.sh` | ✅ 6 confirmações de R$ 300 sobre R$ 1.000 → 3 aceitas (R$ 900), 3 recusadas; 5 com a mesma chave → 1 |
 | Build de produção | `npm run build` | ✅ |
-| E2E públicos (desktop, tablet, mobile) | `npm run test:e2e` | ✅ 33/33 |
+| E2E públicos + identidade visual (desktop, tablet, mobile) | `npm run test:e2e` | ✅ 48/48 |
 | E2E autenticados | `tests/e2e/authenticated.spec.ts` | ⏭️ 9 ignorados — exigem projeto Supabase de homologação (`E2E_*`) |
 | Dependências | `npm audit` | ✅ 0 vulnerabilidades |
 

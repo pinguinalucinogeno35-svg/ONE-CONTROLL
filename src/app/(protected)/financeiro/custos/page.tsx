@@ -17,7 +17,7 @@ export default async function CostsPage({ searchParams }: { searchParams: Promis
   ]);
   return (
     <>
-      <PageHeader title="Custos diretos" description="Custos ligados à prestação dos serviços (exclusivo da administração). Aparecem separados das despesas nos relatórios." />
+      <PageHeader eyebrow="Financeiro / Custos" title="Custos diretos" description="Custos ligados à prestação dos serviços (exclusivo da administração). Aparecem separados das despesas nos relatórios." />
       <Card className="mb-6"><PayablesIntro kind="direct_cost" />
         <RegisterPayableForm kind="direct_cost" categories={categories} defaultProject={projectId}
           projects={projectId ? undefined : (projects.data ?? []).map((p) => ({ id: p.id, name: p.name }))}

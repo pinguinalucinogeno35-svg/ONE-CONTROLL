@@ -13,7 +13,7 @@ export default async function FinancePage() {
   const total = rows.reduce((s, r) => s + fromDecimalString(r.balance), 0);
   return (
     <>
-      <PageHeader title="Contas e saldos" description="Saldo de caixa = saldo inicial + movimentos confirmados. Valores contratados ou previstos não entram aqui." />
+      <PageHeader eyebrow="Financeiro / Caixa" title="Contas e saldos" description="Saldo de caixa = saldo inicial + movimentos confirmados. Valores contratados ou previstos não entram aqui." />
       <div className="mb-6 grid grid-cols-2 gap-3 lg:grid-cols-4"><Stat label="Saldo consolidado" value={formatBRL(total)} /></div>
       <DataTable<Bal> caption="Contas financeiras" rows={rows} rowKey={(r) => r.cash_account_id} columns={[
         { key: "n", header: "Conta", cell: (r) => <span className="font-medium">{r.name}{!r.active && " (inativa)"}</span> },

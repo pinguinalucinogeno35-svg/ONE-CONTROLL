@@ -35,16 +35,16 @@ export function ImportForm({ sellers }: { sellers?: { id: string; full_name: str
           <div>
             <p className="mb-1 font-medium">Mapeamento de colunas</p>
             <ul className="grid gap-1 sm:grid-cols-2">
-              {Object.entries(preview.mapping).map(([col, f]) => <li key={col} className="text-muted">“{col}” → <span className={f ? "text-fg" : "text-amber-300"}>{f ? FIELD_LABEL[f] : "ignorada"}</span></li>)}
+              {Object.entries(preview.mapping).map(([col, f]) => <li key={col} className="text-muted">“{col}” → <span className={f ? "text-fg" : "text-warning"}>{f ? FIELD_LABEL[f] : "ignorada"}</span></li>)}
             </ul>
           </div>
           {preview.invalid.length > 0 && (
-            <details open><summary className="cursor-pointer font-medium text-amber-300">Linhas com erro ({preview.invalid.length})</summary>
+            <details open><summary className="cursor-pointer font-medium text-warning">Linhas com erro ({preview.invalid.length})</summary>
               <ul className="mt-2 max-h-48 overflow-auto text-xs text-muted">{preview.invalid.slice(0, 100).map((e) => <li key={e.row}>Linha {e.row}: {e.errors.join("; ")}</li>)}</ul>
             </details>
           )}
           {preview.committed && preview.committed.errors.length > 0 && (
-            <details open><summary className="cursor-pointer font-medium text-amber-300">Rejeitadas pelo banco ({preview.committed.errors.length})</summary>
+            <details open><summary className="cursor-pointer font-medium text-warning">Rejeitadas pelo banco ({preview.committed.errors.length})</summary>
               <ul className="mt-2 max-h-48 overflow-auto text-xs text-muted">{preview.committed.errors.map((e) => <li key={e.row}>Item {e.row}: {e.error}</li>)}</ul>
             </details>
           )}

@@ -13,7 +13,7 @@ export default async function NewContractPage({ searchParams }: { searchParams: 
   const preselected = data.clients.some((c) => c.id === cliente) ? cliente : undefined;
   return (
     <>
-      <PageHeader title="Novo contrato" description="Cadastro comercial: valores, datas, origem da venda e simulação de comissão." />
+      <PageHeader eyebrow="Comercial / Novo contrato" title="Novo contrato" description="Cadastro comercial: valores, datas, origem da venda e simulação de comissão." />
       <ContractForm {...data} defaults={{ client_id: preselected ?? "", start_date: todayISO() }} />
     </>
   );

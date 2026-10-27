@@ -20,7 +20,7 @@ export default async function CashFlowPage({ searchParams }: { searchParams: Pro
   const estimate = weeks.reduce((s, w) => s + fromDecimalString(w.commercial_estimate_in), 0);
   return (
     <>
-      <PageHeader title="Fluxo de caixa — 13 semanas" description="Projeção baseada em cobranças e contas concretas. Estimativas comerciais e valores vencidos são mostrados à parte e não entram no saldo projetado." />
+      <PageHeader eyebrow="Financeiro / Projeção" title="Fluxo de caixa — 13 semanas" description="Projeção baseada em cobranças e contas concretas. Estimativas comerciais e valores vencidos são mostrados à parte e não entram no saldo projetado." />
       <form className="mb-4 flex gap-2">
         <label htmlFor="conta" className="sr-only">Conta</label>
         <Select id="conta" name="conta" defaultValue={account ?? ""} className="sm:w-72"><option value="">Todas as contas (consolidado)</option>{(accounts ?? []).map((a) => <option key={a.id} value={a.id}>{a.name}</option>)}</Select>

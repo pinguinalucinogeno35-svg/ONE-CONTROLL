@@ -16,7 +16,7 @@ export default async function UsersPage() {
   ]);
   return (
     <>
-      <PageHeader title="Vendedores e usuários" description="Acesso somente por convite. Papéis e status só mudam por rotinas administrativas auditadas." />
+      <PageHeader eyebrow="Equipe / Acessos" title="Vendedores e usuários" description="Acesso somente por convite. Papéis e status só mudam por rotinas administrativas auditadas." />
       <Card className="mb-6"><CardTitle className="mb-4">Convidar colaborador</CardTitle><InviteForm /></Card>
       {(invites.data ?? []).length > 0 && (
         <Card className="mb-6"><CardTitle className="mb-3">Convites pendentes</CardTitle>

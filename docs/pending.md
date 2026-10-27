@@ -1,6 +1,7 @@
 # Status e pendências
 
 ## Implementado e testado
+- Identidade Visual ONE v1.0: tokens claro/escuro, tipografia, componentes, shell, gráficos e ícones (testes `tests/e2e/identity.spec.ts`; catálogo em `/design-system`).
 - Banco completo (13 migrations): schema, constraints, índices, RLS, grants por coluna, rotinas transacionais, auditoria.
 - Regras financeiras: recebimentos/pagamentos parciais, idempotência, concorrência, estornos, mensalidades, fluxo de 13 semanas.
 - Comissões: taxas 12,5/20/25 não cumulativas, congelamento na aprovação, apuração por recebimento, aprovação/pagamento parcial, reversão.
@@ -27,7 +28,8 @@
 - Bonificação para indicadores externos (não implementada; a indicação é apenas registrada).
 - Recebimento acima do devido (crédito/adiantamento) — hoje bloqueado.
 - Prazos de retenção LGPD (sugestões em `docs/security/lgpd.md`).
-- Identidade visual oficial (tokens de cor e logotipo provisórios).
+- **Arquivo mestre do logo ONE** (o manual v1.0 registra como pendente): substituir `BrandMark` e os ícones do PWA.
+- Pares de cor do tema escuro para estados foram derivados (o manual não traz HEX para eles): validar com o responsável pela marca.
 
 ## Planejado para versão futura
 - Notificações push e e-mail (arquitetura pronta: tabela `notifications` + `dedupe_key`).

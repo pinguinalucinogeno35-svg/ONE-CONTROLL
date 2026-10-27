@@ -14,7 +14,7 @@ export function NewClientForm({ services, sellers }: { services: { id: string; n
         <div className="grid gap-2 sm:grid-cols-3">
           {services.map((s) => (
             <label key={s.id} className="flex min-h-11 items-center gap-2 rounded-lg border border-border px-3 text-sm">
-              <input type="checkbox" name="service_ids[]" value={s.id} className="size-4 accent-[#2563eb]" />{s.name}
+              <input type="checkbox" name="service_ids[]" value={s.id} className="size-4 accent-[var(--one-action)]" />{s.name}
             </label>
           ))}
         </div>

@@ -22,7 +22,7 @@ export default async function SettingsPage() {
   const kindLabel: Record<string, string> = { expense: "Despesa", direct_cost: "Custo direto", revenue: "Receita" };
   return (
     <>
-      <PageHeader title="Configurações" description="Catálogos, políticas financeiras e integrações. Segredos nunca são armazenados aqui." />
+      <PageHeader eyebrow="Sistema / Configurações" title="Configurações" description="Catálogos, políticas financeiras e integrações. Segredos nunca são armazenados aqui." />
       <div className="flex flex-col gap-6">
         <Card id="politicas">
           <CardTitle className="mb-1">Políticas de comissão</CardTitle>

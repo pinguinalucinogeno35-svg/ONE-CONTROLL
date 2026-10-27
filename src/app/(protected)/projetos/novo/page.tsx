@@ -13,7 +13,7 @@ export default async function NewProjectPage({ searchParams }: { searchParams: P
   ]);
   return (
     <>
-      <PageHeader title="Novo projeto" />
+      <PageHeader eyebrow="Operação / Projetos" title="Novo projeto" />
       <Card><NewProjectForm defaultClient={cliente} clients={(clients.data ?? []).map((c) => ({ id: c.id, name: c.company_name }))} members={(members.data ?? []).map((m) => ({ id: m.id, name: m.full_name }))} /></Card>
     </>
   );

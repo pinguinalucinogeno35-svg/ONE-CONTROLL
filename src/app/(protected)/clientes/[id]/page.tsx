@@ -32,7 +32,7 @@ export default async function ClientDetailPage({ params }: { params: Promise<{ i
 
   return (
     <>
-      <PageHeader title={client.company_name} description={`${client.contact_name} · responsável: ${client.seller?.full_name ?? "—"}${client.original_seller_id !== client.seller_id ? ` (original: ${client.original?.full_name ?? "—"})` : ""}`}
+      <PageHeader eyebrow="Comercial / Cliente" title={client.company_name} description={`${client.contact_name} · responsável: ${client.seller?.full_name ?? "—"}${client.original_seller_id !== client.seller_id ? ` (original: ${client.original?.full_name ?? "—"})` : ""}`}
         actions={<><Badge tone={statusTone}>{statusLabel}</Badge><LinkButton href={`/contratos/novo?cliente=${client.id}`}>Novo contrato</LinkButton></>} />
       {client.status === "pending_completion" && <div className="mb-4"><Alert tone="warning" title="Cadastro pendente de complementação">Confira os dados recebidos e registre o contrato com valores, datas e origem da venda.</Alert></div>}
       {client.possible_duplicate_of && <div className="mb-4"><Alert tone="warning">Possível duplicidade com outro cadastro (mesmo e-mail, WhatsApp ou CNPJ). {isAdmin && <Link className="underline" href={`/clientes/${client.possible_duplicate_of}`}>Ver cadastro relacionado</Link>}</Alert></div>}

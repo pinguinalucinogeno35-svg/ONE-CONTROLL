@@ -56,7 +56,7 @@ test.describe("PWA", () => {
     const res = await request.get("/manifest.webmanifest");
     expect(res.ok()).toBe(true);
     const m = await res.json();
-    expect(m).toMatchObject({ display: "standalone", short_name: "ONE CONTROL", theme_color: "#080B12", start_url: "/dashboard" });
+    expect(m).toMatchObject({ display: "standalone", short_name: "ONE CONTROL", theme_color: "#0B0B0F", start_url: "/dashboard" });
     const sizes = m.icons.map((i: { sizes: string; purpose: string }) => `${i.sizes}:${i.purpose}`);
     expect(sizes).toEqual(expect.arrayContaining(["192x192:any", "512x512:any", "192x192:maskable", "512x512:maskable"]));
     for (const icon of m.icons) expect((await request.get(icon.src)).ok()).toBe(true);

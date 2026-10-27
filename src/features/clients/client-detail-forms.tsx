@@ -31,7 +31,7 @@ export function InterestsForm({ clientId, services, selected }: { clientId: stri
         <legend className="sr-only">Serviços de interesse</legend>
         {services.map((s) => (
           <label key={s.id} className="flex min-h-11 items-center gap-2 rounded-lg border border-border px-3 text-sm">
-            <input type="checkbox" name="service_ids[]" value={s.id} defaultChecked={selected.includes(s.id)} className="size-4 accent-[#2563eb]" />{s.name}
+            <input type="checkbox" name="service_ids[]" value={s.id} defaultChecked={selected.includes(s.id)} className="size-4 accent-[var(--one-action)]" />{s.name}
           </label>
         ))}
       </fieldset>

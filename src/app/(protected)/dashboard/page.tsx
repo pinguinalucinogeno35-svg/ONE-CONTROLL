@@ -3,7 +3,7 @@ import { requireActiveUser, type ActiveContext } from "@/server/auth/session";
 import { resolvePeriod, todayISO, addDaysISO, formatDate } from "@/lib/dates";
 import { formatDecimalBRL, fromDecimalString } from "@/lib/money";
 import type { AdminSummary, CashFlowWeek, MonthlySeries, SellerSummary } from "@/types/db";
-import { Alert, Badge, Card, CardTitle, EmptyState, PageHeader, Stat } from "@/components/ui";
+import { Alert, Badge, Card, CardTitle, EmptyState, LinkButton, PageHeader, Stat } from "@/components/ui";
 import { PeriodFilter } from "@/components/layout/period-filter";
 import { CategoryBarChart, InOutChart, ProjectionChart } from "@/components/charts";
 import { PAYABLE_STATUS, label } from "@/lib/labels";
@@ -49,7 +49,7 @@ async function AdminDashboard({ ctx, period }: { ctx: ActiveContext; period: Per
 
   return (
     <>
-      <PageHeader title="Dashboard administrativo" description={`Período: ${formatDate(period.from)} a ${formatDate(period.to)}`} />
+      <PageHeader eyebrow="Visão geral / Administração" title="Dashboard administrativo" description={`Período: ${formatDate(period.from)} a ${formatDate(period.to)}`} />
       <PeriodFilter basePath="/dashboard" current={period.key} from={period.from} to={period.to} />
 
       <section aria-labelledby="caixa" className="mb-6">
@@ -143,7 +143,7 @@ async function SellerDashboard({ ctx, period }: { ctx: ActiveContext; period: Pe
   const s = data as SellerSummary;
   return (
     <>
-      <PageHeader title={`Olá, ${ctx.profile.full_name.split(" ")[0]}`} description="Seu desempenho comercial" actions={<Link href="/clientes/novo" className="inline-flex min-h-11 items-center rounded-lg bg-primary px-4 text-sm font-medium text-white">Novo cliente</Link>} />
+      <PageHeader eyebrow="Visão geral / Comercial" title={`Olá, ${ctx.profile.full_name.split(" ")[0]}`} description="Seu desempenho comercial" actions={<LinkButton href="/clientes/novo">Novo cliente</LinkButton>} />
       <PeriodFilter basePath="/dashboard" current={period.key} from={period.from} to={period.to} />
       <div className="grid grid-cols-2 gap-3 lg:grid-cols-4">
         <Stat label="Clientes na carteira" value={s.total_clientes} hint={`${s.clientes_pendentes} pendente(s) de complementação`} />

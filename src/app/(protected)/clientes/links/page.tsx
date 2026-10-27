@@ -17,7 +17,7 @@ export default async function LeadLinksPage() {
     .order("created_at", { ascending: false }).limit(100).returns<Row[]>();
   return (
     <>
-      <PageHeader title="Links de cadastro (Google Forms)" description="Gere um link exclusivo e envie ao cliente. A resposta entra automaticamente na sua carteira, pendente de complementação." />
+      <PageHeader eyebrow="Comercial / Captação" title="Links de cadastro (Google Forms)" description="Gere um link exclusivo e envie ao cliente. A resposta entra automaticamente na sua carteira, pendente de complementação." />
       <Card className="mb-6"><CardTitle className="mb-4">Gerar novo link</CardTitle><LeadLinkForm /></Card>
       <DataTable<Row> caption="Links gerados" rows={data ?? []} rowKey={(r) => r.id} columns={[
         { key: "label", header: "Identificação", cell: (r) => r.label ?? "—" },

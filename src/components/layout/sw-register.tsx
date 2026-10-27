@@ -38,14 +38,14 @@ export function ServiceWorkerRegister() {
   return (
     <>
       {offline && (
-        <div role="status" className="fixed inset-x-0 top-0 z-50 bg-warning px-4 py-2 text-center text-sm font-medium text-black">
+        <div role="status" className="fixed inset-x-0 top-0 z-50 bg-warning-bg px-4 py-2 text-center text-sm font-semibold text-warning">
           Sem conexão. Consultas e lançamentos financeiros exigem internet — nada será salvo offline.
         </div>
       )}
       {waiting && (
-        <div role="status" className="fixed bottom-20 left-1/2 z-50 flex -translate-x-1/2 items-center gap-3 rounded-lg border border-border bg-elevated px-4 py-3 text-sm shadow-lg md:bottom-6">
+        <div role="status" className="fixed bottom-20 left-1/2 z-50 flex -translate-x-1/2 items-center gap-3 rounded-[var(--radius-card)] border border-border bg-surface px-4 py-3 text-sm shadow-[var(--one-shadow)] md:bottom-6">
           Nova versão disponível.
-          <button className="rounded-md bg-primary px-3 py-1.5 font-medium text-white" onClick={() => waiting.postMessage({ type: "SKIP_WAITING" })}>
+          <button className="rounded-[var(--radius-control)] bg-primary px-3 py-1.5 font-semibold text-on-primary" onClick={() => waiting.postMessage({ type: "SKIP_WAITING" })}>
             Atualizar
           </button>
         </div>

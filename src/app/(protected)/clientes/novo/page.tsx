@@ -14,7 +14,7 @@ export default async function NewClientPage() {
   ]);
   return (
     <>
-      <PageHeader title="Novo cliente" description="Prefere que o cliente preencha? Gere um link de formulário em Clientes → Links de cadastro." />
+      <PageHeader eyebrow="Comercial / Clientes" title="Novo cliente" description="Prefere que o cliente preencha? Gere um link de formulário em Clientes → Links de cadastro." />
       <Card><NewClientForm services={services ?? []} sellers={sellersRes.data ?? undefined} /></Card>
     </>
   );

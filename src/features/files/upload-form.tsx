@@ -33,7 +33,7 @@ export function UploadForm({ resource, resourceId }: { resource: string; resourc
       <label className="sr-only" htmlFor={`file-${resourceId}`}>Arquivo</label>
       <input ref={ref} id={`file-${resourceId}`} type="file" accept=".pdf,.png,.jpg,.jpeg,.webp,.docx,.xlsx,.csv" className="text-sm text-muted file:mr-3 file:rounded-lg file:border-0 file:bg-elevated file:px-3 file:py-2 file:text-fg" />
       <Button type="submit" size="sm" variant="secondary" disabled={busy}>{busy ? "Enviando…" : "Enviar"}</Button>
-      {msg && <span role={msg.tone === "err" ? "alert" : "status"} className={msg.tone === "err" ? "text-xs text-danger" : "text-xs text-green-300"}>{msg.text}</span>}
+      {msg && <span role={msg.tone === "err" ? "alert" : "status"} className={msg.tone === "err" ? "text-xs text-danger" : "text-xs text-success"}>{msg.text}</span>}
     </form>
   );
 }

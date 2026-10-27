@@ -7,7 +7,7 @@ export default async function LoginPage({ searchParams }: { searchParams: Promis
   const { next, erro } = await searchParams;
   return (
     <>
-      <h1 className="mb-4 text-lg font-semibold">Entrar</h1>
+      <h1 className="mb-6 font-display text-2xl font-bold tracking-[-0.01em]">Entrar</h1>
       {erro === "inativo" && (
         <div className="mb-4"><Alert tone="warning">Sua conta está inativa ou ainda não foi liberada. Procure um administrador.</Alert></div>
       )}

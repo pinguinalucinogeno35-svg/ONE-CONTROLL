@@ -16,10 +16,13 @@
 | 12 | Registros financeiros confirmados são imutáveis; correções por estorno + `financial_adjustments` | Auditoria | Triggers bloqueiam UPDATE/DELETE |
 | 13 | Storage sem policies para `authenticated`; upload/download pelo servidor | A autorização do arquivo segue a do registro, não o nome da pasta | URLs assinadas de 60 s |
 | 14 | Next.js 16 `proxy.ts` (substitui `middleware.ts`) com CSP por nonce | Recomendação atual do Next.js | Páginas protegidas são dinâmicas (`no-store`) |
-| 15 | Componentes de UI próprios no padrão shadcn/ui (sem CLI) | Menos dependências, controle de acessibilidade | `src/components/ui` |
+| 15 | Componentes de UI próprios no padrão shadcn/ui (sem CLI), seguindo a Identidade Visual ONE v1.0 | Menos dependências, controle de acessibilidade, fidelidade ao manual | `src/components/ui`; ver `docs/architecture/design-system.md` |
 | 16 | Rate limit em memória para login/exports/webhook | Simplicidade no MVP; Supabase Auth tem limites próprios | Trocar por Redis/Upstash se houver múltiplas instâncias com tráfego alto |
 | 17 | npm 11 (`packageManager`) | npm 10.9 falha ao resolver peers do Vitest 5 | CI usa `npx npm@11.21.0 ci` |
 | 18 | Next 16.4.3 (patch de segurança recente) | `npm audit`: RCE/DoS em 16.0–16.4.0 | Exceção à regra de "versões com 2 semanas" justificada por segurança |
 | 19 | Override `uuid@11.1.1` para o exceljs | Advisory GHSA-w5hq-g745-h8pq | exceljs usa apenas `v4()`, compatível |
 | 20 | Sem fila offline | Evita duplicidade/conflito financeiro | PWA informa quando a operação exige conexão |
 | 21 | Rentabilidade por projeto = margem de contribuição em caixa | Critério explícito, sem tributos/rateios | Rotulado como tal no relatório |
+| 22 | Tokens semânticos com tema claro e escuro (pares próprios), preferência por cookie lido no servidor | Manual v1.0 p. 17–18 e 28; CSP sem script inline | Tema do sistema por padrão; alternância na sidebar |
+| 23 | Fontes via Fontsource (self-hosted) | Sem dependência de terceiros em runtime; `font-src 'self'` | Pacotes `@fontsource*` no lockfile |
+| 24 | Marca como texto identificador até o master do logo | Manual proíbe redesenhar ou criar símbolo alternativo | `BrandMark` e ícones substituíveis |

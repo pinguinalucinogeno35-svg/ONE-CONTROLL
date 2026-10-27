@@ -26,7 +26,7 @@ export default async function RevenuePage({ searchParams }: { searchParams: Prom
   const s = summary.data as AdminSummary | null;
   return (
     <>
-      <PageHeader title="Receitas recebidas" description={`Recebimentos confirmados de ${formatDate(period.from)} a ${formatDate(period.to)}`} />
+      <PageHeader eyebrow="Financeiro / Receitas" title="Receitas recebidas" description={`Recebimentos confirmados de ${formatDate(period.from)} a ${formatDate(period.to)}`} />
       <PeriodFilter basePath="/financeiro/receitas" current={period.key} from={period.from} to={period.to} />
       {s && <div className="mb-6 grid grid-cols-2 gap-3 lg:grid-cols-4">
         <Stat label="Recebido (líquido de estornos)" value={formatDecimalBRL(s.total_recebido)} tone="success" />
