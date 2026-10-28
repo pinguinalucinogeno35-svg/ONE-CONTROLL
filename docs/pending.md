@@ -33,8 +33,11 @@
   cadastrar o MFA no primeiro acesso.
 - Migration 0016 aplicada e conferida (16 migrations; estrutura idêntica à testada). Simulação no banco real:
   admin sem MFA vê só o próprio perfil; com MFA vê os 3 perfis, 12 serviços e 3 grupos.
-- Pendente: MFA de cada administrador; configuração do Auth (signup off, MFA, SMTP,
-  Site URL, templates).
+- Auth configurado pela ONE em 28/10/2026 (informado, sem print): cadastro público desligado, MFA TOTP ativo,
+  senha mínima 12 com minúsculas/maiúsculas/números. O relatório de segurança ainda acusa a proteção contra
+  senhas vazadas desligada (recurso de plano pago) — ativar ao migrar de plano.
+- Pendente: MFA de cada administrador no primeiro acesso; SMTP próprio, Site URL, Redirect URLs e templates
+  de e-mail (dependem do domínio na Vercel).
 
 ## Dependente de credencial ou serviço externo (requer autorização da ONE)
 - Configurar Auth do Supabase (signup off, MFA, SMTP, templates) e criar os perfis dos administradores.
