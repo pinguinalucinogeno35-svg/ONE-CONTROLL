@@ -6,7 +6,7 @@ import { formatDateTime } from "@/lib/dates";
 
 export const metadata = { title: "Notificações" };
 
-const LINKS: Record<string, string> = { clients: "/clientes/", contracts: "/contratos/", projects: "/projetos/", payables: "/despesas", commission_entitlements: "/comissoes", commission_payouts: "/comissoes", receivables: "/clientes" };
+const LINKS: Record<string, string> = { tasks: "/tarefas/", clients: "/clientes/", contracts: "/contratos/", projects: "/projetos/", payables: "/despesas", commission_entitlements: "/comissoes", commission_payouts: "/comissoes", receivables: "/clientes" };
 
 export default async function NotificationsPage() {
   const ctx = await requireActiveUser();

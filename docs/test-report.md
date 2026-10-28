@@ -6,16 +6,17 @@ Execução em 27/10/2026, ambiente de desenvolvimento em nuvem (Node 22.22, Post
 |---|---|---|
 | Lint (ESLint + regras Next/React) | `npm run lint` | ✅ sem erros/avisos |
 | Tipos (TypeScript strict) | `npm run typecheck` | ✅ |
-| Unitários (Vitest) | `npm test` | ✅ 36/36 |
+| Unitários (Vitest) | `npm test` | ✅ 40/40 |
 | SQL — migrations 0001–0013 + seed | `scripts/db-test.sh` | ✅ aplicadas em banco limpo |
 | SQL — RLS/autorização | `supabase/tests/10_rls_authorization.sql` | ✅ 38 asserções |
 | SQL — contratos e comissões | `supabase/tests/20_contracts_commissions.sql` | ✅ 47 asserções |
 | SQL — financeiro | `supabase/tests/30_finance.sql` | ✅ 37 asserções |
 | SQL — Google Forms e importação | `supabase/tests/40_forms_imports.sql` | ✅ 22 asserções |
+| SQL — Tarefas, grupos e notificações | `supabase/tests/50_tasks.sql` | ✅ 29 asserções |
 | Concorrência real (sessões paralelas) | `scripts/db-concurrency-test.sh` | ✅ 6 confirmações de R$ 300 sobre R$ 1.000 → 3 aceitas (R$ 900), 3 recusadas; 5 com a mesma chave → 1 |
 | Build de produção | `npm run build` | ✅ |
 | E2E públicos + identidade visual (desktop, tablet, mobile) | `npm run test:e2e` | ✅ 48/48 |
-| E2E autenticados | `tests/e2e/authenticated.spec.ts` | ⏭️ 9 ignorados — exigem projeto Supabase de homologação (`E2E_*`) |
+| E2E autenticados | `tests/e2e/authenticated.spec.ts` | ⏭️ 12 ignorados — exigem projeto Supabase de homologação (`E2E_*`) |
 | Dependências | `npm audit` | ✅ 0 vulnerabilidades |
 
 ## Cobertura dos critérios de aceitação

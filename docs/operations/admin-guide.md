@@ -32,3 +32,6 @@ a taxa congelada e comissões já aprovadas não são recalculadas.
 
 ## Auditoria
 Auditoria → filtros por ação/entidade. Registros são imutáveis.
+
+## Tarefas
+Tarefas → Grupos: crie os grupos (ex.: AUDIOVISUAL) e marque "Vendedores podem criar e designar tarefas neste grupo" onde fizer sentido. Grupos sem essa marcação aceitam apenas tarefas criadas pela administração. Você vê todas as tarefas na aba "Todas".

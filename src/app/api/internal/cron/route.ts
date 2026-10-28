@@ -14,11 +14,13 @@ export async function GET(request: NextRequest) {
   if (!secret || given.length !== expected.length || !timingSafeEqual(Buffer.from(given), Buffer.from(expected))) {
     return NextResponse.json({ error: "unauthorized" }, { status: 401 });
   }
-  const { data, error } = await createAdminClient().rpc("run_daily_jobs");
+  const admin = createAdminClient();
+  const [jobs, tasks] = await Promise.all([admin.rpc("run_daily_jobs"), admin.rpc("run_task_reminders")]);
+  const error = jobs.error ?? tasks.error;
   if (error) {
     log("error", "daily_jobs_failed", { code: error.code, message: error.message });
     return NextResponse.json({ ok: false }, { status: 500 });
   }
-  log("info", "daily_jobs_done", { result: data });
-  return NextResponse.json({ ok: true, result: data });
+  log("info", "daily_jobs_done", { result: jobs.data, tasks: tasks.data });
+  return NextResponse.json({ ok: true, result: jobs.data, tasks: tasks.data });
 }

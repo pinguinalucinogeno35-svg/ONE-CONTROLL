@@ -73,6 +73,20 @@ test.describe("vendedor", () => {
     await expect(page.getByText("R$ 500,00")).toBeVisible();
   });
 
+  test("Tarefas: vendedor designa para administrador em grupo liberado", async ({ page }) => {
+    await login(page, env.E2E_SELLER_A_EMAIL!, env.E2E_SELLER_A_PASSWORD!);
+    await page.goto("/tarefas/nova");
+    const title = `E2E tarefa ${Date.now()}`;
+    await page.getByLabel("Tarefa").fill(title);
+    await page.getByLabel("Grupo").selectOption({ index: 1 });
+    await page.getByLabel("Responsável").selectOption({ label: process.env.E2E_ADMIN_NAME ?? "" }).catch(async () => {
+      await page.getByLabel("Responsável").selectOption({ index: 1 });
+    });
+    await page.getByRole("button", { name: "Criar e notificar responsável" }).click();
+    await expect(page.getByRole("heading", { name: title })).toBeVisible();
+    await expect(page.getByText("criou a tarefa")).toBeVisible();
+  });
+
   test("Cenário D (parte vendedor): solicitar despesa", async ({ page }) => {
     await login(page, env.E2E_SELLER_A_EMAIL!, env.E2E_SELLER_A_PASSWORD!);
     await page.goto("/despesas");

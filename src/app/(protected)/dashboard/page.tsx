@@ -7,6 +7,7 @@ import { Alert, Badge, Card, CardTitle, EmptyState, LinkButton, PageHeader, Stat
 import { PeriodFilter } from "@/components/layout/period-filter";
 import { CategoryBarChart, InOutChart, ProjectionChart } from "@/components/charts";
 import { PAYABLE_STATUS, label } from "@/lib/labels";
+import { MyTasks } from "@/features/tasks/my-tasks";
 
 export const metadata = { title: "Dashboard" };
 
@@ -51,6 +52,7 @@ async function AdminDashboard({ ctx, period }: { ctx: ActiveContext; period: Per
     <>
       <PageHeader eyebrow="Visão geral / Administração" title="Dashboard administrativo" description={`Período: ${formatDate(period.from)} a ${formatDate(period.to)}`} />
       <PeriodFilter basePath="/dashboard" current={period.key} from={period.from} to={period.to} />
+      <MyTasks ctx={ctx} />
 
       <section aria-labelledby="caixa" className="mb-6">
         <h2 id="caixa" className="mb-3 text-sm font-semibold text-muted">Caixa e recebíveis</h2>
@@ -145,6 +147,7 @@ async function SellerDashboard({ ctx, period }: { ctx: ActiveContext; period: Pe
     <>
       <PageHeader eyebrow="Visão geral / Comercial" title={`Olá, ${ctx.profile.full_name.split(" ")[0]}`} description="Seu desempenho comercial" actions={<LinkButton href="/clientes/novo">Novo cliente</LinkButton>} />
       <PeriodFilter basePath="/dashboard" current={period.key} from={period.from} to={period.to} />
+      <MyTasks ctx={ctx} />
       <div className="grid grid-cols-2 gap-3 lg:grid-cols-4">
         <Stat label="Clientes na carteira" value={s.total_clientes} hint={`${s.clientes_pendentes} pendente(s) de complementação`} />
         <Stat label="Novos clientes" value={s.novos_clientes} />

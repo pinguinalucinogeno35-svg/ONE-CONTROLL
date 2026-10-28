@@ -18,6 +18,9 @@ export const PROJECT_STATUS: LabelMap = {
 export const TASK_STATUS: LabelMap = {
   todo: ["A fazer", "neutral"], in_progress: ["Em andamento", "info"], blocked: ["Bloqueada", "danger"], done: ["Concluída", "success"], cancelled: ["Cancelada", "neutral"],
 };
+export const TASK_PRIORITY: LabelMap = {
+  low: ["Baixa", "neutral"], medium: ["Média", "info"], high: ["Alta", "warning"], urgent: ["Urgente", "danger"],
+};
 export const RECEIVABLE_STATUS: LabelMap = {
   scheduled: ["Agendada", "neutral"], open: ["Em aberto", "info"], partially_paid: ["Parcialmente paga", "warning"],
   paid: ["Paga", "success"], overdue: ["Vencida", "danger"], cancelled: ["Cancelada", "neutral"],

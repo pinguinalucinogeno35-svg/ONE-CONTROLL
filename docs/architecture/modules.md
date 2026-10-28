@@ -8,6 +8,7 @@
 | Captação | `/clientes/links`, `/api/integrations/google-forms` | `create_lead_capture_link`, `revoke_lead_capture_link`, `ingest_form_submission` | Vendedor/admin; integração (service role) |
 | Importação | `/clientes/importar` | `import_clients_batch` | Vendedor (própria carteira), admin |
 | Contratos | `/contratos`, `/contratos/novo`, `/contratos/[id]`, `/editar` | `create_contract`, `update_contract_draft`, `submit_contract`, `approve_contract`, `reject_contract`, `amend_contract`, `cancel_contract`, `calculate_commission_estimate` | Vendedor (cria/edita rascunho), admin (aprova/aditivo/cancela) |
+| Tarefas | `/tarefas`, `/tarefas/nova`, `/tarefas/[id]`, `/tarefas/grupos` | `save_task_group`, `people_directory`, `create_task`, `update_task`, `set_task_status`, `comment_task`, `run_task_reminders` | Todos (vendedor: grupos liberados; edita só o que criou), admin gerencia grupos — ver `docs/architecture/tasks.md` |
 | Projetos | `/projetos`, `/projetos/novo`, `/projetos/[id]` | (tabelas com RLS) | Admin (gerencia), vendedor (consulta carteira; atualiza tarefas atribuídas) |
 | Contas a receber | `/financeiro/contas-a-receber`, `/financeiro/receitas` | `create_receivable`, `cancel_receivable`, `generate_due_receivables`, `confirm_receipt`, `reverse_receipt` | Admin |
 | Despesas/custos | `/despesas`, `/financeiro/despesas`, `/financeiro/custos` | `request_expense`, `register_payable`, `approve_expense`, `reject_expense`, `cancel_payable`, `confirm_outgoing_payment`, `reverse_outgoing_payment` | Vendedor (solicita), admin (aprova/paga/custos) |

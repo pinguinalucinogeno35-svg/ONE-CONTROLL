@@ -9,6 +9,7 @@
 - Superfície pública do app: login, redirecionamentos, cabeçalhos de segurança, CSP, PWA (manifest, ícones, SW, offline), layout mobile.
 
 ## Implementado, mas não testado de ponta a ponta
+- Telas de Tarefas (`/tarefas`): regras e notificações testadas no banco; telas compiladas e conferidas no catálogo, sem Supabase real.
 - Todas as telas autenticadas (dashboards, clientes, contratos, projetos, financeiro, comissões, usuários, relatórios, configurações, auditoria) e Server Actions — compilam, passam em lint/tipos e chamam rotinas testadas no banco, mas não foram executadas contra um Supabase real.
 - Upload/download de documentos (Storage), convites por e-mail, MFA TOTP, exportações XLSX/CSV autenticadas.
 - Gráficos (Recharts) com dados reais.
@@ -32,6 +33,7 @@
 - Pares de cor do tema escuro para estados foram derivados (o manual não traz HEX para eles): validar com o responsável pela marca.
 
 ## Planejado para versão futura
+- Tarefas: anexos, subtarefas e notificação push/e-mail da designação.
 - Notificações push e e-mail (arquitetura pronta: tabela `notifications` + `dedupe_key`).
 - Rate limit distribuído (Redis/Upstash) e verificação antivírus de uploads.
 - Gerenciamento de tarefas mais completo, comentários em projetos.

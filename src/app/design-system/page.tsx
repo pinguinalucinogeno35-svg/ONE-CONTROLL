@@ -3,6 +3,7 @@ import { Alert, Badge, Button, Card, CardTitle, DataTable, EmptyState, Field, In
 import { AppShell } from "@/components/layout/app-shell";
 import { InOutChart, ProjectionChart } from "@/components/charts";
 import { navigationFor } from "@/lib/permissions";
+import { TaskCard } from "@/features/tasks/task-card";
 
 export const metadata = { title: "Design system" };
 export const dynamic = "force-dynamic";
@@ -60,6 +61,18 @@ export default async function DesignSystemPage({ searchParams }: { searchParams:
           { key: "s", header: "Situação", cell: (r) => <Badge tone={r.st[1]}>{r.st[0]}</Badge> },
         ]} />
       </div>
+      <section className="mt-6" aria-labelledby="ds-tasks">
+        <h2 id="ds-tasks" className="eyebrow mb-3 flex items-center gap-2 text-muted"><span aria-hidden className="h-0.5 w-6 bg-primary" />AUDIOVISUAL · 2</h2>
+        <div className="flex flex-col gap-3">
+          {[
+            { id: "00000000-0000-4000-8000-000000000001", title: "Editar vídeo institucional", status: "in_progress", priority: "high", due_date: "2026-11-03", assigned_to: "me", created_by: "a" },
+            { id: "00000000-0000-4000-8000-000000000002", title: "Captar fotos do evento", status: "blocked", priority: "medium", due_date: "2026-10-20", assigned_to: "b", created_by: "me", blocked_reason: "Aguardando aprovação do roteiro" },
+          ].map((t) => (
+            <TaskCard key={t.id} meId="me" people={new Map([["me", { id: "me", full_name: "Pessoa ilustrativa", role: "admin" as const, active: true }], ["a", { id: "a", full_name: "Vendedora ilustrativa", role: "seller" as const, active: true }], ["b", { id: "b", full_name: "Editor ilustrativo", role: "seller" as const, active: true }]])}
+              task={{ description: null, group_id: "g", blocked_reason: null, created_at: "2026-10-27", completed_at: null, ...t }} />
+          ))}
+        </div>
+      </section>
       <div className="mt-6"><EmptyState title="Nenhum projeto por aqui." description="Crie o primeiro projeto para organizar o trabalho." action={<Button>Criar projeto</Button>} /></div>
     </AppShell>
   );

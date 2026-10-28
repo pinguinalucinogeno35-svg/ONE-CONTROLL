@@ -15,6 +15,9 @@ export const CAPABILITIES = {
   "contracts.amend": ["admin"],
   "projects.read": ["admin", "seller"],
   "projects.manage": ["admin"],
+  "tasks.use": ["admin", "seller"],
+  "tasks.groups": ["admin"],
+  "tasks.read_all": ["admin"],
   "finance.cash": ["admin"],
   "finance.receivables": ["admin"],
   "finance.confirm_receipt": ["admin"],
@@ -46,6 +49,7 @@ export const NAVIGATION: NavItem[] = [
   { href: "/dashboard", label: "Dashboard", icon: "layout-dashboard", capability: "clients.read_own" },
   { href: "/clientes", label: "Clientes", icon: "users", capability: "clients.read_own" },
   { href: "/contratos", label: "Contratos", icon: "file-text", capability: "contracts.create" },
+  { href: "/tarefas", label: "Tarefas", icon: "list-checks", capability: "tasks.use" },
   { href: "/projetos", label: "Projetos", icon: "folder-kanban", capability: "projects.read" },
   {
     href: "/financeiro", label: "Financeiro", icon: "landmark", capability: "finance.cash",

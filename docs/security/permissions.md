@@ -17,6 +17,10 @@ rotinas com `require_admin()`/`require_active_user()`).
 | Aprovar/aditivo/cancelar contrato | Sim | Não | `require_admin()` |
 | Ver projetos | Todos | Da carteira | `projects_select` |
 | Gerenciar projetos/tarefas | Sim | Só atualizar tarefa atribuída | `tasks_update` |
+| Grupos de tarefas | Cria/edita/libera | Não | `save_task_group` (`require_admin`) |
+| Criar e designar tarefa | Qualquer grupo | Só grupos liberados; para admins ou vendedores | `create_task` |
+| Ver tarefas | Todas | Criadas ou recebidas | `tasks_select` |
+| Editar/reatribuir/cancelar tarefa | Todas | Só as que criou | `update_task`, `set_task_status` |
 | Contas, caixa, movimentos, recebimentos | Sim | Não | RLS admin-only |
 | Ver cobranças | Todas | Dos próprios clientes (status) | `receivables_select` |
 | Confirmar recebimento/pagamento | Sim | Não | `require_admin()` |

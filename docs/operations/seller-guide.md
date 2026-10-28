@@ -24,3 +24,6 @@ Minhas despesas → Nova solicitação + comprovante. A administração aprova e
 
 ## O que você vê
 Somente seus clientes, contratos, projetos, cobranças dos seus clientes e suas comissões.
+
+## Tarefas
+Tarefas → Nova tarefa: escolha o grupo (apenas os liberados pela administração), o responsável (administradores ou colegas), prioridade e prazo. A pessoa recebe uma notificação com o seu nome e os detalhes. Nas tarefas que você recebe, use Iniciar/Concluir, informe bloqueios com o motivo e comente. Só quem criou a tarefa (ou um administrador) pode editá-la, reatribuí-la ou cancelá-la.

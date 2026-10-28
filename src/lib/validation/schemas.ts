@@ -173,3 +173,25 @@ export const importRowSchema = z.object({
   }),
   business_description: optionalText(2000),
 });
+
+const optUuid = uuid.optional().or(z.literal("").transform(() => undefined));
+export const taskPriority = z.enum(["low", "medium", "high", "urgent"]);
+export const taskStatus = z.enum(["todo", "in_progress", "blocked", "done", "cancelled"]);
+
+export const taskSchema = z.object({
+  title: z.string().trim().min(3, "Descreva a tarefa (mín. 3 caracteres)").max(160),
+  description: optionalText(4000),
+  group_id: uuid,
+  assigned_to: uuid,
+  priority: taskPriority.default("medium"),
+  due_date: optionalDate,
+});
+
+export const taskUpdateSchema = taskSchema.partial().extend({ group_id: optUuid, assigned_to: optUuid });
+
+export const taskGroupSchema = z.object({
+  name: z.string().trim().min(2, "Informe o nome do grupo").max(60),
+  description: optionalText(500),
+  sellers_can_assign: z.literal("on").optional().transform((v) => v === "on"),
+  active: z.literal("on").optional().transform((v) => v === "on"),
+});

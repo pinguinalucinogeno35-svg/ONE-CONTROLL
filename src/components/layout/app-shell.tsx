@@ -68,7 +68,8 @@ export function AppShell({ nav, user, unread, theme, themeSwitcher, children }: 
     return () => window.removeEventListener("keydown", onKey);
   }, [open]);
 
-  const bottom = nav.filter((n) => ["/dashboard", "/clientes", "/contratos", "/comissoes"].includes(n.href));
+  const bottom = ["/dashboard", "/tarefas", "/clientes", "/contratos", "/comissoes"]
+    .map((href) => nav.find((n) => n.href === href)).filter((n): n is NavItem => !!n);
 
   const sidebar = (
     <div className="flex h-full flex-col bg-sidebar">
@@ -117,7 +118,7 @@ export function AppShell({ nav, user, unread, theme, themeSwitcher, children }: 
         <main id="conteudo" className="mx-auto w-full max-w-[var(--container-content)] flex-1 scroll-mt-20 px-5 pb-28 pt-8 sm:px-6 md:pb-12 lg:px-8">{children}</main>
       </div>
 
-      <nav aria-label="Atalhos" className="fixed inset-x-0 bottom-0 z-[var(--one-z-fixed)] grid grid-cols-4 border-t border-border bg-surface pb-[env(safe-area-inset-bottom)] md:hidden">
+      <nav aria-label="Atalhos" className="fixed inset-x-0 bottom-0 z-[var(--one-z-fixed)] grid grid-cols-5 border-t border-border bg-surface pb-[env(safe-area-inset-bottom)] md:hidden">
         {bottom.map((item) => {
           const Icon = NAV_ICONS[item.icon];
           const isActive = pathname === item.href || pathname.startsWith(`${item.href}/`);
