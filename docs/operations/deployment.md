@@ -9,6 +9,8 @@
 3. Templates de e-mail (Invite e Reset Password): link
    `{{ .SiteURL }}/auth/confirm?token_hash={{ .TokenHash }}&type=invite` (ou `type=recovery&next=/redefinir-senha`).
 4. Aplique as migrations (`supabase link` + `supabase db push`) — ver `docs/database/migrations.md`.
+   Sem CLI: SQL Editor com `scripts/sql-editor-bundle.sh` (uma migration por vez, < 80 KB; confira se a
+   primeira linha começa com `--` e a última é `commit;`). Depois rode `supabase/checks/verify_production.sql`.
 5. Rode o Security Advisor.
 
 ## 2. Três administradores iniciais

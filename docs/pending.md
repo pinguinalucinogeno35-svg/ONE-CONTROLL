@@ -17,8 +17,21 @@
 - Upload/download de documentos (Storage), convites por e-mail, MFA TOTP, exportações XLSX/CSV autenticadas.
 - Gráficos (Recharts) com dados reais.
 
+## Banco definitivo (Supabase) — aplicado em 28/10/2026
+- Projeto "One controll definitivo" (região São Paulo). Migrations 1–8 pelo conector; 9–15 pelo SQL Editor
+  (`scripts/sql-editor-bundle.sh`), cada uma com o mesmo hash MD5 do arquivo do repositório.
+- Conferido contra o banco de teste local (mesmas 15 migrations, 185 asserções SQL aprovadas): funções, colunas,
+  constraints, índices, políticas, RLS (39/39), permissões de tabela/coluna/função e triggers idênticos.
+- Sem dados fictícios: organização ONE, 12 serviços, 18 categorias, política de comissão em rascunho, 3 grupos de tarefa.
+- Extra do Supabase (não é nosso): `public.rls_auto_enable` (RLS automático em tabelas novas) — inofensivo.
+- Relatório de segurança: SECURITY DEFINER executável por `authenticated` é intencional (ADR 1; cada rotina valida
+  papel/conta ativa); `idempotency_keys` sem policy é intencional (acesso só pelas rotinas).
+  Pendente: ativar "Leaked password protection" no Auth (pode exigir plano pago).
+- Pendente: perfis dos 3 administradores (`private.bootstrap_admin`), MFA de cada um, configuração do Auth
+  (signup off, MFA, SMTP, Site URL, templates).
+
 ## Dependente de credencial ou serviço externo (requer autorização da ONE)
-- Criar projetos Supabase (dev/homologação/produção), aplicar migrations, configurar Auth (signup off, MFA, SMTP, templates).
+- Configurar Auth do Supabase (signup off, MFA, SMTP, templates) e criar os perfis dos administradores.
 - Projeto na Vercel, domínio, variáveis de ambiente, Cron, par de chaves VAPID (push).
 - Google Form real + Apps Script + segredo HMAC.
 - Criação dos 3 administradores (`private.bootstrap_admin`).
