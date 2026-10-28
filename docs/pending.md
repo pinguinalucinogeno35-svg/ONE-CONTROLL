@@ -31,7 +31,9 @@
   mantidos por decisão da ONE (28/10/2026), cientes de que a recuperação de senha iria para um domínio de
   terceiros; mitigação: MFA obrigatório, exigido também no banco (migration 0016). Cada administrador deve
   cadastrar o MFA no primeiro acesso.
-- Pendente: aplicar a migration 0016; MFA de cada administrador; configuração do Auth (signup off, MFA, SMTP,
+- Migration 0016 aplicada e conferida (16 migrations; estrutura idêntica à testada). Simulação no banco real:
+  admin sem MFA vê só o próprio perfil; com MFA vê os 3 perfis, 12 serviços e 3 grupos.
+- Pendente: MFA de cada administrador; configuração do Auth (signup off, MFA, SMTP,
   Site URL, templates).
 
 ## Dependente de credencial ou serviço externo (requer autorização da ONE)
