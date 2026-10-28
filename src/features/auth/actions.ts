@@ -51,9 +51,11 @@ export async function requestPasswordReset(_prev: ActionResult | null, formData:
   if (!rateLimit(`reset:${ip}`, 5, 60 * 60_000).allowed) return generic;
   const supabase = await createClient();
   const base = serverEnv().APP_URL ?? "";
-  await supabase.auth.resetPasswordForEmail(parsed.data.toLowerCase(), {
+  const { error } = await supabase.auth.resetPasswordForEmail(parsed.data.toLowerCase(), {
     redirectTo: `${base}/auth/confirm?next=/redefinir-senha`,
   });
+  // Resposta sempre genérica (não revela se o e-mail existe); o motivo fica só no log.
+  if (error) log("warn", "password_reset_failed", { code: error.code, ip });
   return generic;
 }
 

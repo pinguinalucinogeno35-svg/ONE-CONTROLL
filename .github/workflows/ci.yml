@@ -22,6 +22,10 @@ jobs:
       - run: npm run typecheck
       - run: npm test
       - run: npm run build
+        env:
+          # Valores fictícios só para o pacote do navegador nos testes E2E (nenhum serviço real).
+          NEXT_PUBLIC_SUPABASE_URL: https://e2e-placeholder.supabase.co
+          NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY: sb_publishable_e2e_placeholder_key_000000
       - run: npx playwright install --with-deps chromium
       - run: npm run test:e2e
 

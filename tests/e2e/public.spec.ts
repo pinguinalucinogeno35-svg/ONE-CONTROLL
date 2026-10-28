@@ -96,3 +96,17 @@ test("layout mobile do login sem rolagem horizontal", async ({ page }) => {
   const box = await page.getByRole("button", { name: "Entrar" }).boundingBox();
   expect(box!.height).toBeGreaterThanOrEqual(44); // área de toque adequada
 });
+
+test.describe("links de e-mail no formato padrão do Supabase", () => {
+  test("link expirado leva à recuperação com aviso e sem tokens na URL", async ({ page }) => {
+    await page.goto("/login#error=access_denied&error_code=otp_expired&error_description=Email+link+is+invalid");
+    await expect(page).toHaveURL(/\/recuperar-acesso\?erro=link$/);
+    await expect(page.getByText("O link expirou ou já foi usado")).toBeVisible();
+  });
+
+  test("sessão inválida no fragmento não fica na barra de endereço", async ({ page }) => {
+    await page.goto("/login#access_token=invalido&refresh_token=invalido&type=recovery");
+    await expect(page).toHaveURL(/\/recuperar-acesso\?erro=link$/, { timeout: 20_000 });
+    expect(page.url()).not.toContain("access_token");
+  });
+});

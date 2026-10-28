@@ -6,7 +6,8 @@
 1. Crie o projeto (região São Paulo, `sa-east-1`).
 2. Auth: desabilite signups; habilite MFA TOTP; senha mínima 12; Site URL = domínio do app;
    Redirect URLs = `https://<domínio>/auth/confirm`; configure SMTP próprio.
-3. Templates de e-mail (Invite e Reset Password): link
+3. Templates de e-mail (Invite e Reset Password) — recomendados; o app também aceita o link padrão do
+   Supabase (sessão no fragmento `#access_token`, tratada por `AuthLinkHandler`). Link recomendado:
    `{{ .SiteURL }}/auth/confirm?token_hash={{ .TokenHash }}&type=invite` (ou `type=recovery&next=/redefinir-senha`).
 4. Aplique as migrations (`supabase link` + `supabase db push`) — ver `docs/database/migrations.md`.
    Sem CLI: SQL Editor com `scripts/sql-editor-bundle.sh` (uma migration por vez, < 80 KB; confira se a
