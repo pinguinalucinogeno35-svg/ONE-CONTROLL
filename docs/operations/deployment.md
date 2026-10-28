@@ -23,7 +23,8 @@
 3. Cada administrador acessa, define senha e cadastra o autenticador (MFA obrigatório).
 
 ## 3. Vercel
-1. Importe o repositório; framework Next.js; Node 22; install command `npx -y npm@11.21.0 ci`.
+1. Importe o repositório; framework Next.js; Node 22. O comando de instalação (`npx -y npm@11.21.0 ci`)
+   já está em `vercel.json` — não é preciso configurá-lo no painel.
 2. Variáveis (Production e Preview separadas, valores de projetos Supabase distintos):
    `APP_ENV`, `APP_URL`, `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY`,
    `SUPABASE_SECRET_KEY`, `GOOGLE_FORMS_WEBHOOK_SECRET`, `CRON_SECRET` e, para notificações push,

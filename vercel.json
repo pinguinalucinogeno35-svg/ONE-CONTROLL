@@ -1,4 +1,6 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
+  "framework": "nextjs",
+  "installCommand": "npx -y npm@11.21.0 ci",
   "crons": [{ "path": "/api/internal/cron", "schedule": "17 9 * * *" }]
 }
