@@ -1,9 +1,10 @@
-import { NextResponse, type NextRequest } from "next/server";
+import { after, NextResponse, type NextRequest } from "next/server";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { serverEnv } from "@/lib/env";
 import { GOOGLE_FORMS_MAX_BODY, handleGoogleFormsDelivery } from "@/server/integrations/google-forms";
 import { rateLimit } from "@/lib/security/rate-limit";
 import { log } from "@/server/logger";
+import { dispatchPendingPush, isPushConfigured } from "@/server/push";
 
 export const dynamic = "force-dynamic";
 
@@ -19,6 +20,7 @@ export async function POST(request: NextRequest) {
       rawBody, secret, admin: createAdminClient(),
       timestamp: request.headers.get("x-one-timestamp"), signature: request.headers.get("x-one-signature"),
     });
+    if (out.status < 300 && isPushConfigured()) after(() => dispatchPendingPush());
     log(out.status >= 400 ? "warn" : "info", "google_forms_delivery", { status: out.status, result: out.body.status, reason: out.body.reason });
     return NextResponse.json(out.body, { status: out.status });
   } catch (e) {

@@ -3,29 +3,24 @@ import { Card, EmptyState, PageHeader } from "@/components/ui";
 import { ActionButton } from "@/components/ui/server-form";
 import { markAllReadAction } from "@/features/notifications/actions";
 import { formatDateTime } from "@/lib/dates";
+import { notificationHref } from "@/lib/notification-links";
+import { serverEnv } from "@/lib/env";
+import { isPushConfigured } from "@/server/push";
+import { PushToggle } from "@/features/notifications/push-toggle";
 
 export const metadata = { title: "Notificações" };
-
-const LINKS: Record<string, string> = { tasks: "/tarefas/", clients: "/clientes/", contracts: "/contratos/", projects: "/projetos/", payables: "/despesas", commission_entitlements: "/comissoes", commission_payouts: "/comissoes", receivables: "/clientes" };
 
 export default async function NotificationsPage() {
   const ctx = await requireActiveUser();
   const { data } = await ctx.supabase.from("notifications").select("id, title, message, entity_type, entity_id, read_at, created_at").order("created_at", { ascending: false }).limit(100);
-  const href = (t: string | null, id: string | null) => {
-    if (!t || !id) return null;
-    const base = LINKS[t];
-    if (!base) return null;
-    if (t === "payables" && ctx.profile.role === "admin") return "/financeiro/despesas";
-    if (t === "receivables") return ctx.profile.role === "admin" ? "/financeiro/contas-a-receber" : null;
-    return base.endsWith("/") ? `${base}${id}` : base;
-  };
   return (
     <>
       <PageHeader eyebrow="Conta / Notificações" title="Notificações" actions={<ActionButton action={markAllReadAction} label="Marcar todas como lidas" />} />
+      <PushToggle vapidPublicKey={isPushConfigured() ? serverEnv().NEXT_PUBLIC_VAPID_PUBLIC_KEY ?? null : null} />
       {(data ?? []).length === 0 ? <EmptyState title="Nenhuma notificação" /> : (
         <ul className="flex flex-col gap-2">
           {data!.map((n) => {
-            const link = href(n.entity_type, n.entity_id);
+            const link = notificationHref(n.entity_type, n.entity_id, ctx.profile.role);
             return (
               <li key={n.id}><Card className={n.read_at ? "opacity-70" : "border-primary/50"}>
                 <div className="flex flex-wrap justify-between gap-2">

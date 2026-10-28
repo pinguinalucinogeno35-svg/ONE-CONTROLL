@@ -195,3 +195,12 @@ export const taskGroupSchema = z.object({
   sellers_can_assign: z.literal("on").optional().transform((v) => v === "on"),
   active: z.literal("on").optional().transform((v) => v === "on"),
 });
+
+// Inscrição Web Push do dispositivo atual (formato de PushSubscription.toJSON()).
+const base64url = (min: number, max: number) => z.string().regex(new RegExp(`^[A-Za-z0-9_-]{${min},${max}}={0,2}$`), "Inscrição inválida");
+export const pushEndpointSchema = z.url().max(1000).refine((u) => u.startsWith("https://"), "Inscrição inválida");
+export const pushSubscriptionSchema = z.object({
+  endpoint: pushEndpointSchema,
+  keys: z.object({ p256dh: base64url(40, 200), auth: base64url(10, 60) }),
+  userAgent: z.string().max(300).optional(),
+});

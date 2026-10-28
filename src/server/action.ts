@@ -1,13 +1,16 @@
 import "server-only";
+import { after } from "next/server";
 import { z } from "zod";
 import { authorizeAction, type ActiveContext } from "@/server/auth/session";
 import { AppError, toSafeMessage, type ActionResult } from "@/server/errors";
 import { log } from "@/server/logger";
+import { dispatchPendingPush, isPushConfigured } from "@/server/push";
 
 /**
  * Envelope padrão das Server Actions:
  * autentica → verifica conta ativa/MFA → papel → valida payload (Zod) →
- * executa (rotina transacional no banco) → oculta erros internos.
+ * executa (rotina transacional no banco) → oculta erros internos →
+ * dispara push das notificações criadas (após a resposta).
  * Server Actions do Next.js já validam Origin vs Host (proteção CSRF).
  */
 export async function runAction<S extends z.ZodType, T>(
@@ -31,6 +34,8 @@ export async function runAction<S extends z.ZodType, T>(
       log("warn", "action_rejected", { action: opts.name, code: res.error.code, requestId: ctx.requestId, userId: ctx.userId });
       return { ok: false, error: toSafeMessage(res.error, ctx.requestId) };
     }
+    // Notificações geradas pela operação seguem por push após a resposta.
+    if (isPushConfigured()) after(() => dispatchPendingPush());
     return { ok: true, data: res.data, message: res.message };
   } catch (e) {
     if (e instanceof AppError) return { ok: false, error: e.message };

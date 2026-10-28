@@ -19,7 +19,8 @@
 - [ ] Backups/PITR conforme plano contratado (verificar — não presumir)
 
 ## Vercel
-- [ ] Variáveis por ambiente; `SUPABASE_SECRET_KEY`, `GOOGLE_FORMS_WEBHOOK_SECRET`, `CRON_SECRET` marcadas como sensíveis
+- [ ] Variáveis por ambiente; `SUPABASE_SECRET_KEY`, `GOOGLE_FORMS_WEBHOOK_SECRET`, `CRON_SECRET`, `VAPID_PRIVATE_KEY` marcadas como sensíveis
+- [ ] Par VAPID distinto por ambiente (homologação não envia push com a chave de produção)
 - [ ] Domínio com HTTPS; preview deployments protegidos (Vercel Authentication)
 - [ ] Cron ativo (`vercel.json`)
 

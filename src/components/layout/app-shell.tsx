@@ -2,12 +2,15 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Bell, LogOut, Menu, X } from "lucide-react";
 import type { NavItem } from "@/lib/permissions";
 import { NAV_ICONS } from "./icons";
 import { cn } from "@/lib/utils";
 import { signOut } from "@/features/auth/actions";
+import { deletePushSubscriptionAction } from "@/features/notifications/actions";
+import { unsubscribeDevice } from "@/features/notifications/push-client";
+import { PushSync } from "@/features/notifications/push-sync";
 import { BrandMark } from "./brand";
 
 type Props = {
@@ -68,6 +71,19 @@ export function AppShell({ nav, user, unread, theme, themeSwitcher, children }: 
     return () => window.removeEventListener("keydown", onKey);
   }, [open]);
 
+  // Ao sair, este aparelho deixa de receber push da conta (aparelho compartilhado).
+  const signingOut = useRef(false);
+  function handleSignOut(e: React.FormEvent<HTMLFormElement>) {
+    if (signingOut.current) return;
+    e.preventDefault();
+    signingOut.current = true;
+    const form = e.currentTarget;
+    unsubscribeDevice()
+      .then((endpoint) => (endpoint ? deletePushSubscriptionAction(endpoint) : null))
+      .catch(() => undefined)
+      .finally(() => form.requestSubmit());
+  }
+
   const bottom = ["/dashboard", "/tarefas", "/clientes", "/contratos", "/comissoes"]
     .map((href) => nav.find((n) => n.href === href)).filter((n): n is NavItem => !!n);
 
@@ -81,7 +97,7 @@ export function AppShell({ nav, user, unread, theme, themeSwitcher, children }: 
           <p className="truncate text-sm font-semibold text-sidebar-fg">{user.name}</p>
           <p className="eyebrow mt-0.5 text-sidebar-muted">{user.roleLabel}</p>
         </div>
-        <form action={signOut}>
+        <form action={signOut} onSubmit={handleSignOut}>
           <button className="flex min-h-10 w-full items-center gap-2 rounded-[var(--radius-control)] px-2 text-sm text-sidebar-muted hover:bg-sidebar-active hover:text-sidebar-fg">
             <LogOut aria-hidden strokeWidth={1.75} className="size-4" />Sair
           </button>
@@ -116,6 +132,7 @@ export function AppShell({ nav, user, unread, theme, themeSwitcher, children }: 
         </header>
         {/* Margens do grid: 20 px (≤ 639), 24 px (640–1023), 32 px (≥ 1024); conteúdo máx. 1280 px. */}
         <main id="conteudo" className="mx-auto w-full max-w-[var(--container-content)] flex-1 scroll-mt-20 px-5 pb-28 pt-8 sm:px-6 md:pb-12 lg:px-8">{children}</main>
+        <PushSync />
       </div>
 
       <nav aria-label="Atalhos" className="fixed inset-x-0 bottom-0 z-[var(--one-z-fixed)] grid grid-cols-5 border-t border-border bg-surface pb-[env(safe-area-inset-bottom)] md:hidden">

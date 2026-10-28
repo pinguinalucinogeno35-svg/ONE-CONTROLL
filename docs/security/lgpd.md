@@ -14,6 +14,7 @@
 | Minimização | Payload bruto do formulário não guarda token; expurgado em 90 dias (`purge_form_payloads`) |
 | Controle de acesso | Vendedor só vê a própria carteira |
 | Responsabilização | `audit_logs` imutável, consultas LGPD auditadas |
+| Sigilo em notificações push | Tela de bloqueio mostra só texto de tarefas; avisos financeiros/de clientes são genéricos; aparelho descadastrado ao sair |
 
 ## Direitos do titular
 - **Acesso/confirmação**: Configurações → "LGPD — consulta por titular" (e-mail/WhatsApp), auditado.

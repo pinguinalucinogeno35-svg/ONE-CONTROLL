@@ -9,6 +9,10 @@ const serverSchema = z.object({
   GOOGLE_FORMS_WEBHOOK_SECRET: z.string().min(32).optional(),
   CRON_SECRET: z.string().min(32).optional(),
   APP_URL: z.url().optional(),
+  // Web Push (VAPID). A chave pública vai ao navegador; a privada nunca.
+  NEXT_PUBLIC_VAPID_PUBLIC_KEY: z.string().regex(/^[A-Za-z0-9_-]{80,100}$/).optional(),
+  VAPID_PRIVATE_KEY: z.string().regex(/^[A-Za-z0-9_-]{40,50}$/).optional(),
+  VAPID_SUBJECT: z.string().regex(/^(mailto:|https:\/\/)/).optional(),
   APP_ENV: z.enum(["development", "staging", "production"]).default("development"),
 });
 

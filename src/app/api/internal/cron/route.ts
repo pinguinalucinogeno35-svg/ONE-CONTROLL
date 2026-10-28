@@ -3,6 +3,7 @@ import { timingSafeEqual } from "node:crypto";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { serverEnv } from "@/lib/env";
 import { log } from "@/server/logger";
+import { dispatchPendingPush } from "@/server/push";
 
 export const dynamic = "force-dynamic";
 
@@ -21,6 +22,7 @@ export async function GET(request: NextRequest) {
     log("error", "daily_jobs_failed", { code: error.code, message: error.message });
     return NextResponse.json({ ok: false }, { status: 500 });
   }
-  log("info", "daily_jobs_done", { result: jobs.data, tasks: tasks.data });
-  return NextResponse.json({ ok: true, result: jobs.data, tasks: tasks.data });
+  const push = await dispatchPendingPush(500);
+  log("info", "daily_jobs_done", { result: jobs.data, tasks: tasks.data, push });
+  return NextResponse.json({ ok: true, result: jobs.data, tasks: tasks.data, push });
 }

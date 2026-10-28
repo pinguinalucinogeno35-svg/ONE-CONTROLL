@@ -24,7 +24,9 @@
 1. Importe o repositório; framework Next.js; Node 22; install command `npx -y npm@11.21.0 ci`.
 2. Variáveis (Production e Preview separadas, valores de projetos Supabase distintos):
    `APP_ENV`, `APP_URL`, `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY`,
-   `SUPABASE_SECRET_KEY`, `GOOGLE_FORMS_WEBHOOK_SECRET`, `CRON_SECRET`.
+   `SUPABASE_SECRET_KEY`, `GOOGLE_FORMS_WEBHOOK_SECRET`, `CRON_SECRET` e, para notificações push,
+   `NEXT_PUBLIC_VAPID_PUBLIC_KEY`, `VAPID_PRIVATE_KEY`, `VAPID_SUBJECT` (par gerado com
+   `npx web-push generate-vapid-keys`, um por ambiente; a chave privada nunca vai ao navegador).
 3. `vercel.json` agenda `/api/internal/cron` às 06:17 (America/Bahia). Planos gratuitos limitam crons.
 4. Proteja previews (Vercel Authentication).
 
@@ -34,6 +36,8 @@
 - Decida a base de comissão e ative a política (ver `docs/operations/admin-guide.md`).
 - Configure o Google Forms (`docs/integrations/google-forms.md`).
 - Instale o PWA nos dispositivos (Chrome/Edge: "Instalar app"; iOS Safari: Compartilhar → "Adicionar à Tela de Início").
+- Cada colaborador ativa o push no próprio aparelho em **Notificações → Ativar notificações**
+  (iPhone/iPad: iOS 16.4+ e somente com o app instalado na tela de início).
 
 ## Atualização de dependências
 Mensalmente: `npm outdated`, atualizar patches/minors, `npm audit`, rodar toda a suíte.

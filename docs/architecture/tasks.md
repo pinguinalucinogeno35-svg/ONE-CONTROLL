@@ -5,6 +5,10 @@ qualquer colaborador ativo, com notificação personalizada. Independente das ta
 (`project_tasks`, checklist dentro de cada projeto).
 
 ## Regras de acesso
+Interpretação de "vendedores podem designar funções limitadas para os administradores" **confirmada
+pela ONE em 28/10/2026**: o vendedor designa tarefas (inclusive a administradores) somente nos grupos
+que um administrador liberou, e só edita/reatribui/cancela as tarefas que ele mesmo criou.
+
 | Ação | Administrador | Vendedor |
 |---|---|---|
 | Criar/editar/desativar grupos | Sim | Não |
@@ -26,7 +30,17 @@ Geradas na mesma transação da operação (`private.notify_task`), nunca para o
 - **Status** (concluída, bloqueada, cancelada…): avisa a outra ponta (quem criou / quem executa).
 - **Comentário**: avisa os participantes com o trecho do comentário.
 - **Lembretes diários** (`run_task_reminders`, chamado pelo cron): prazo hoje/amanhã e atrasadas, sem duplicar no mesmo dia.
-Notificações abrem a tarefa (`/tarefas/<id>`). Push/e-mail ficam para versão futura (mesma estrutura).
+Notificações abrem a tarefa (`/tarefas/<id>`).
+
+## Push no celular/computador (app fechado)
+Cada pessoa ativa em **Notificações → Ativar notificações**, por dispositivo. Toda notificação criada
+pelo banco é enviada por Web Push logo após a operação (e no cron diário, para os lembretes).
+- Tarefas mostram o texto personalizado; avisos financeiros/comerciais aparecem como texto genérico.
+- O clique abre a tela correspondente (sempre com login e RLS).
+- Ao **Sair**, o aparelho é descadastrado; colaborador desativado não recebe push.
+- iPhone/iPad: iOS 16.4+ e app instalado na tela de início.
+- Inscrições expiradas (404/410) ou com 5 falhas seguidas são removidas automaticamente.
+Migration `20261028000015_push_notifications.sql`; testes `supabase/tests/60_push.sql` e `tests/unit/push.test.ts`.
 
 ## Telas
 `/tarefas` (Para mim · Criadas por mim · Todas [admin], filtros por grupo e situação, agrupadas por grupo) ·

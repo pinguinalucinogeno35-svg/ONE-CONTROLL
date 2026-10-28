@@ -26,3 +26,6 @@
 | 22 | Tokens semânticos com tema claro e escuro (pares próprios), preferência por cookie lido no servidor | Manual v1.0 p. 17–18 e 28; CSP sem script inline | Tema do sistema por padrão; alternância na sidebar |
 | 23 | Fontes via Fontsource (self-hosted) | Sem dependência de terceiros em runtime; `font-src 'self'` | Pacotes `@fontsource*` no lockfile |
 | 24 | Marca como texto identificador até o master do logo | Manual proíbe redesenhar ou criar símbolo alternativo | `BrandMark` e ícones substituíveis |
+| 25 | Tarefas: vendedor designa apenas em grupos liberados (`sellers_can_assign`) e só edita/reatribui/cancela o que criou | Interpretação de "funções limitadas", **confirmada pela ONE em 28/10/2026** | Regras no banco (`50_tasks.sql`) |
+| 26 | Push via Web Push/VAPID (`web-push`) disparado pelo servidor após a operação (`after()`) e no cron; reserva atômica no banco (`claim_push_batch`, `SKIP LOCKED`) | Sem serviço pago de terceiros; sem duplicidade entre execuções paralelas | Sem chaves VAPID nada é reservado nem simulado; notificação não enviada em 24 h fica só na central |
+| 27 | Conteúdo do push filtrado no servidor: tarefas com texto personalizado; financeiro/comercial com aviso genérico | Tela de bloqueio é visível a terceiros (LGPD, sigilo financeiro) | Detalhes só dentro do app, após login |

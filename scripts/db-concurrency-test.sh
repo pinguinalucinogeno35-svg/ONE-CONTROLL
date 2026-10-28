@@ -27,4 +27,17 @@ wait
 SAME=$(run "select count(*) from public.receipts where idempotency_key = 'same-key-abcdef'")
 echo "Recebimentos com a mesma chave: $SAME"
 [ "$SAME" = "1" ] || { echo "FALHA: confirmação duplicada"; exit 1; }
-echo "OK: concorrência protegida (lock de linha + idempotência)"
+echo "Reservas de push paralelas (4 despachantes, 20 notificações, 1 dispositivo)..."
+run "update public.notifications set push_sent_at = now() where push_sent_at is null;" >/dev/null
+run "insert into public.push_subscriptions (organization_id, user_id, endpoint, p256dh, auth) values (tests.id('org'), tests.id('seller_a'), 'https://push.example.test/conc', repeat('A', 87), repeat('b', 22)) on conflict (endpoint) do nothing;" >/dev/null
+run "select private.notify(tests.id('org'), tests.id('seller_a'), 'system', 'Teste', 'Concorrência', null, null, 'push-conc-' || g) from generate_series(1, 20) g;" >/dev/null
+OUT="$(mktemp -d)"
+for i in 1 2 3 4; do
+  ( run "begin; select tests.as_service(); select count(*) from public.claim_push_batch(8); select pg_sleep(0.3); commit;" | grep -E "^[0-9]+$" > "$OUT/$i" ) &
+done
+wait
+CLAIMED=$(cat "$OUT"/* | awk '{s+=$1} END {print s}')
+rm -rf "$OUT"
+echo "Entregas reservadas: $CLAIMED (esperado 20, sem repetição)"
+[ "$CLAIMED" = "20" ] || { echo "FALHA: push duplicado ou perdido"; exit 1; }
+echo "OK: concorrência protegida (lock de linha + idempotência + SKIP LOCKED no push)"
