@@ -27,8 +27,12 @@
 - Relatório de segurança: SECURITY DEFINER executável por `authenticated` é intencional (ADR 1; cada rotina valida
   papel/conta ativa); `idempotency_keys` sem policy é intencional (acesso só pelas rotinas).
   Pendente: ativar "Leaked password protection" no Auth (pode exigir plano pago).
-- Pendente: perfis dos 3 administradores (`private.bootstrap_admin`), MFA de cada um, configuração do Auth
-  (signup off, MFA, SMTP, Site URL, templates).
+- Perfis dos 3 administradores criados com `private.bootstrap_admin` (auditados). E-mails em `@adm.com`
+  mantidos por decisão da ONE (28/10/2026), cientes de que a recuperação de senha iria para um domínio de
+  terceiros; mitigação: MFA obrigatório, exigido também no banco (migration 0016). Cada administrador deve
+  cadastrar o MFA no primeiro acesso.
+- Pendente: aplicar a migration 0016; MFA de cada administrador; configuração do Auth (signup off, MFA, SMTP,
+  Site URL, templates).
 
 ## Dependente de credencial ou serviço externo (requer autorização da ONE)
 - Configurar Auth do Supabase (signup off, MFA, SMTP, templates) e criar os perfis dos administradores.

@@ -4,6 +4,10 @@ Verificada em três camadas: **interface** (`lib/permissions.ts`, menus), **serv
 (`authorizeAction`, `requireAdmin`, escopo por RLS) e **banco** (RLS, grants por coluna,
 rotinas com `require_admin()`/`require_active_user()`).
 
+**MFA de administrador:** o papel de administrador só vale com sessão AAL2 (MFA confirmado). Em AAL1 o
+banco trata o administrador como sem acesso: nenhuma leitura por RLS (exceto o próprio perfil) e nenhuma
+rotina (`require_active_user` recusa). Vendedores não são afetados.
+
 | Operação | Admin | Vendedor | Garantia no banco |
 |---|---|---|---|
 | Ver clientes | Todos | Só `seller_id = auth.uid()` | `clients_select` |

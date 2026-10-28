@@ -8,10 +8,11 @@ grant select on tests.ids to authenticated, service_role, anon;
 
 create function tests.id(p_name text) returns uuid language sql stable as $$ select id from tests.ids where name = p_name $$;
 
-create function tests.as_user(p_name text) returns void language plpgsql as $$
+-- Sessão autenticada; por padrão AAL2 (MFA confirmado). Use p_aal => 'aal1' para simular sessão sem MFA.
+create function tests.as_user(p_name text, p_aal text default 'aal2') returns void language plpgsql as $$
 begin
   perform set_config('role', 'authenticated', true);
-  perform set_config('request.jwt.claims', json_build_object('sub', tests.id(p_name), 'role', 'authenticated')::text, true);
+  perform set_config('request.jwt.claims', json_build_object('sub', tests.id(p_name), 'role', 'authenticated', 'aal', p_aal)::text, true);
 end $$;
 
 create function tests.as_anon() returns void language plpgsql as $$
