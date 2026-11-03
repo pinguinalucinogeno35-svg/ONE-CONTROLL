@@ -7,7 +7,7 @@ import { resolvePeriod } from "@/lib/dates";
 export const metadata = { title: "Relatórios" };
 
 export default async function ReportsPage({ searchParams }: { searchParams: Promise<{ periodo?: string; de?: string; ate?: string }> }) {
-  const ctx = await requireActiveUser();
+  const ctx = await requireActiveUser({ commercial: true });
   const sp = await searchParams;
   const period = resolvePeriod(sp.periodo, sp.de, sp.ate);
   const list = Object.entries(REPORTS).filter(([, d]) => !d.adminOnly || ctx.profile.role === "admin");

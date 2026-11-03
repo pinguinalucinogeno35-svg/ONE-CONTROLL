@@ -8,7 +8,7 @@ export const metadata = { title: "Projetos" };
 type Row = { id: string; name: string; status: string; due_date: string | null; start_date: string | null; clients: { company_name: string } | null };
 
 export default async function ProjectsPage({ searchParams }: { searchParams: Promise<{ todos?: string }> }) {
-  const ctx = await requireActiveUser();
+  const ctx = await requireActiveUser({ commercial: true });
   const { todos } = await searchParams;
   let q = ctx.supabase.from("projects").select("id, name, status, due_date, start_date, clients(company_name)").order("due_date", { ascending: true, nullsFirst: false }).limit(200);
   if (!todos) q = q.not("status", "in", "(delivered,cancelled)");

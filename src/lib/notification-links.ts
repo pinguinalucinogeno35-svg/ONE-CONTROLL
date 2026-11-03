@@ -13,7 +13,7 @@ const LINKS: Record<string, string> = {
   receivables: "/clientes",
 };
 
-export function notificationHref(entityType: string | null, entityId: string | null, role: "admin" | "seller" | null): string | null {
+export function notificationHref(entityType: string | null, entityId: string | null, role: "admin" | "seller" | "production" | null): string | null {
   if (!entityType || !entityId) return null;
   const base = LINKS[entityType];
   if (!base) return null;

@@ -14,7 +14,7 @@ const schema = z.object({
 export type LeadLinkResult = { url: string | null; expires_at: string };
 
 export async function createLeadLinkAction(_prev: ActionResult<unknown> | null, fd: FormData) {
-  return runAction({ name: "create_lead_link", schema, input: formDataToObject(fd) }, async (ctx, data) => {
+  return runAction({ commercial: true, name: "create_lead_link", schema, input: formDataToObject(fd) }, async (ctx, data) => {
     const { data: rows, error } = await ctx.supabase.rpc("create_lead_capture_link", {
       p_label: data.label ?? null, p_valid_days: data.valid_days, p_max_uses: data.max_uses ?? null, p_seller_id: null,
     });
@@ -32,7 +32,7 @@ export async function createLeadLinkAction(_prev: ActionResult<unknown> | null, 
 }
 
 export async function revokeLeadLinkAction(linkId: string, _prev: ActionResult<unknown> | null, _fd: FormData) {
-  return runAction({ name: "revoke_lead_link", schema: z.any(), input: null }, async (ctx) => {
+  return runAction({ commercial: true, name: "revoke_lead_link", schema: z.any(), input: null }, async (ctx) => {
     const { error } = await ctx.supabase.rpc("revoke_lead_capture_link", { p_link_id: linkId });
     revalidatePath("/clientes/links");
     return { error };

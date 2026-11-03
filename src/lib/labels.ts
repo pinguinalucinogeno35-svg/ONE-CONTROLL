@@ -53,7 +53,7 @@ export const POLICY_STATUS: LabelMap = { draft: ["Rascunho", "warning"], active:
 export const PROFILE_STATUS: LabelMap = {
   invited: ["Convidado", "warning"], active: ["Ativo", "success"], suspended: ["Suspenso", "danger"], inactive: ["Inativo", "neutral"],
 };
-export const ROLE_LABEL: Record<string, string> = { admin: "Administrador", seller: "Vendedor" };
+export const ROLE_LABEL: Record<string, string> = { admin: "Administrador", seller: "Vendedor", production: "Produção" };
 
 export function label(map: LabelMap, key: string | null | undefined): [string, Tone] {
   return (key && map[key]) || [key ?? "—", "neutral"];

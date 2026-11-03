@@ -10,7 +10,7 @@ import { formatDate } from "@/lib/dates";
 export const metadata = { title: "Minhas despesas" };
 
 export default async function MyExpensesPage() {
-  const ctx = await requireActiveUser();
+  const ctx = await requireActiveUser({ commercial: true });
   const [categories, clients, mine] = await Promise.all([
     getCategories(ctx, "expense"),
     ctx.supabase.from("clients").select("id, company_name").neq("status", "archived").order("company_name").limit(500),

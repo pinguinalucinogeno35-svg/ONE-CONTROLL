@@ -7,7 +7,7 @@ import { getContractFormData } from "@/server/services/commercial";
 export const metadata = { title: "Editar contrato" };
 
 export default async function EditContractPage({ params }: { params: Promise<{ id: string }> }) {
-  const ctx = await requireActiveUser();
+  const ctx = await requireActiveUser({ commercial: true });
   const { id } = await params;
   if (!/^[0-9a-f-]{36}$/i.test(id)) notFound();
   const { data: k } = await ctx.supabase.from("contracts").select("*").eq("id", id).maybeSingle();

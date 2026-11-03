@@ -16,7 +16,7 @@ const schema = z.object({
 
 export async function importClientsAction(_prev: ActionResult<unknown> | null, fd: FormData) {
   const input = { file: fd.get("file"), mode: fd.get("mode"), seller_id: fd.get("seller_id") ?? undefined };
-  return runAction({ name: "import_clients", schema, input }, async (ctx, data) => {
+  return runAction({ commercial: true, name: "import_clients", schema, input }, async (ctx, data) => {
     let parsed: ParsedImport;
     try {
       parsed = await parseImport(data.file.name, Buffer.from(await data.file.arrayBuffer()));

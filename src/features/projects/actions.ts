@@ -18,7 +18,7 @@ const projectSchema = z.object({
 }).refine((v) => !v.start_date || !v.due_date || v.due_date >= v.start_date, { message: "Entrega antes do início", path: ["due_date"] });
 
 export async function createProjectAction(_prev: ActionResult<unknown> | null, fd: FormData) {
-  return runAction({ name: "create_project", admin: true, schema: projectSchema, input: formDataToObject(fd) }, async (ctx, data) => {
+  return runAction({ commercial: true, name: "create_project", admin: true, schema: projectSchema, input: formDataToObject(fd) }, async (ctx, data) => {
     const { data: row, error } = await ctx.supabase.from("projects")
       .insert({ ...data, organization_id: ctx.profile.organization_id, created_by: ctx.userId, status: "planning" }).select("id").single();
     revalidatePath("/projetos");
@@ -32,7 +32,7 @@ export async function updateProjectAction(projectId: string, _prev: ActionResult
     description: z.string().trim().max(4000).optional().transform((v) => v || null),
     start_date: optDate, due_date: optDate, manager_id: optUuid,
   });
-  return runAction({ name: "update_project", admin: true, schema, input: formDataToObject(fd) }, async (ctx, data) => {
+  return runAction({ commercial: true, name: "update_project", admin: true, schema, input: formDataToObject(fd) }, async (ctx, data) => {
     const { data: current } = await ctx.supabase.from("projects").select("delivered_at, status").eq("id", projectId).single();
     const delivered_at = data.status === "delivered" ? (current?.delivered_at ?? new Date().toISOString()) : null;
     const { error } = await ctx.supabase.from("projects").update({ ...data, delivered_at }).eq("id", projectId);
@@ -46,7 +46,7 @@ export async function createTaskAction(projectId: string, _prev: ActionResult<un
     title: z.string().trim().min(2).max(200), assigned_to: optUuid, due_date: optDate,
     priority: z.enum(["low", "medium", "high", "urgent"]).default("medium"),
   });
-  return runAction({ name: "create_task", admin: true, schema, input: formDataToObject(fd) }, async (ctx, data) => {
+  return runAction({ commercial: true, name: "create_task", admin: true, schema, input: formDataToObject(fd) }, async (ctx, data) => {
     const { error } = await ctx.supabase.from("project_tasks").insert({ ...data, project_id: projectId });
     revalidatePath(`/projetos/${projectId}`);
     return { error };
@@ -55,7 +55,7 @@ export async function createTaskAction(projectId: string, _prev: ActionResult<un
 
 export async function setTaskStatusAction(projectId: string, taskId: string, _prev: ActionResult<unknown> | null, fd: FormData) {
   const schema = z.object({ status: z.enum(["todo", "in_progress", "blocked", "done", "cancelled"]) });
-  return runAction({ name: "set_task_status", schema, input: formDataToObject(fd) }, async (ctx, data) => {
+  return runAction({ commercial: true, name: "set_task_status", schema, input: formDataToObject(fd) }, async (ctx, data) => {
     // RLS: admin ou responsável pela tarefa.
     const { data: rows, error } = await ctx.supabase.from("project_tasks")
       .update({ status: data.status, completed_at: data.status === "done" ? new Date().toISOString() : null }).eq("id", taskId).select("id");

@@ -3,7 +3,7 @@ import { cache } from "react";
 import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
-import type { Role } from "@/lib/permissions";
+import { isCommercialRole, type Role } from "@/lib/permissions";
 import { AppError } from "@/server/errors";
 
 export type Profile = {
@@ -58,13 +58,15 @@ function needsMfa(ctx: ActiveContext): boolean {
 }
 
 /** Guarda de páginas: redireciona quando não autorizado. */
-export async function requireActiveUser(opts: { admin?: boolean } = {}): Promise<ActiveContext> {
+export async function requireActiveUser(opts: { admin?: boolean; commercial?: boolean } = {}): Promise<ActiveContext> {
   const ctx = await getAuthContext();
   if (!ctx) redirect("/login");
   if (!ctx.profile) redirect("/login?erro=inativo");
   const active = ctx as ActiveContext;
   if (needsMfa(active)) redirect("/verificar-mfa");
   if (opts.admin && active.profile.role !== "admin") redirect("/dashboard?erro=acesso");
+  // Área comercial/financeira: o perfil de produção não acessa (o banco também recusa).
+  if (opts.commercial && !isCommercialRole(active.profile.role)) redirect("/dashboard?erro=acesso");
   return active;
 }
 
@@ -73,12 +75,13 @@ export async function requireAdmin(): Promise<ActiveContext> {
 }
 
 /** Guarda de Server Actions / Route Handlers: lança AppError (sem redirecionar). */
-export async function authorizeAction(opts: { admin?: boolean } = {}): Promise<ActiveContext> {
+export async function authorizeAction(opts: { admin?: boolean; commercial?: boolean } = {}): Promise<ActiveContext> {
   const ctx = await getAuthContext();
   if (!ctx) throw new AppError("Sessão expirada. Entre novamente.", 401);
   if (!ctx.profile) throw new AppError("Conta inativa ou sem acesso.", 403);
   const active = ctx as ActiveContext;
   if (needsMfa(active)) throw new AppError("Verificação em duas etapas necessária.", 403);
   if (opts.admin && active.profile.role !== "admin") throw new AppError("Operação exclusiva de administradores.", 403);
+  if (opts.commercial && !isCommercialRole(active.profile.role)) throw new AppError("Área comercial indisponível para este perfil.", 403);
   return active;
 }

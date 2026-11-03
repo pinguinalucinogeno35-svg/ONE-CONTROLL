@@ -1,7 +1,8 @@
 import "server-only";
+import type { Role } from "@/lib/permissions";
 import type { ActiveContext } from "@/server/auth/session";
 
-export type Person = { id: string; full_name: string; role: "admin" | "seller"; active: boolean };
+export type Person = { id: string; full_name: string; role: Role; active: boolean };
 export type TaskGroup = { id: string; name: string; description: string | null; sellers_can_assign: boolean; active: boolean };
 export type TaskRow = {
   id: string; title: string; description: string | null; status: string; priority: string; due_date: string | null;

@@ -10,7 +10,7 @@ const PAGE_SIZE = 25;
 type Row = { id: string; company_name: string; contact_name: string; email: string | null; whatsapp: string | null; status: string; created_at: string; possible_duplicate_of: string | null; profiles: { full_name: string } | null };
 
 export default async function ClientsPage({ searchParams }: { searchParams: Promise<{ q?: string; status?: string; page?: string }> }) {
-  const ctx = await requireActiveUser();
+  const ctx = await requireActiveUser({ commercial: true });
   const sp = await searchParams;
   const page = Math.max(1, Number(sp.page) || 1);
   const q = (sp.q ?? "").replace(/[,()*%\\]/g, " ").trim().slice(0, 80);

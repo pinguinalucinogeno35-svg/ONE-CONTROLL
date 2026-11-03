@@ -10,7 +10,7 @@ import { log } from "@/server/logger";
 
 export async function GET(request: NextRequest, { params }: { params: Promise<{ report: string }> }) {
   try {
-    const ctx = await authorizeAction();
+    const ctx = await authorizeAction({ commercial: true });
     const { report } = await params;
     const def = REPORTS[report];
     if (!def) return NextResponse.json({ error: "Relatório inexistente" }, { status: 404 });

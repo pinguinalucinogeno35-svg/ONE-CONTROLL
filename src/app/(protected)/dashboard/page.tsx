@@ -20,7 +20,9 @@ export default async function DashboardPage({ searchParams }: { searchParams: SP
   return (
     <>
       {sp.erro === "acesso" && <div className="mb-4"><Alert tone="warning">Você não tem permissão para acessar aquela área.</Alert></div>}
-      {ctx.profile.role === "admin" ? <AdminDashboard ctx={ctx} period={period} /> : <SellerDashboard ctx={ctx} period={period} />}
+      {ctx.profile.role === "admin" ? <AdminDashboard ctx={ctx} period={period} />
+        : ctx.profile.role === "production" ? <ProductionHome ctx={ctx} />
+        : <SellerDashboard ctx={ctx} period={period} />}
     </>
   );
 }
@@ -171,6 +173,16 @@ async function SellerDashboard({ ctx, period }: { ctx: ActiveContext; period: Pe
           </ul>
         )}
       </Card>
+    </>
+  );
+}
+
+/** Início do perfil de produção: só o que é dele (sem indicadores comerciais/financeiros). */
+function ProductionHome({ ctx }: { ctx: ActiveContext }) {
+  return (
+    <>
+      <PageHeader eyebrow="Início / Produção" title={`Olá, ${ctx.profile.full_name.split(" ")[0]}`} description="Seus trabalhos e prazos." />
+      <MyTasks ctx={ctx} />
     </>
   );
 }

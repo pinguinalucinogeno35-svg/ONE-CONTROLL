@@ -52,7 +52,7 @@ export async function setUserStatusAction(userId: string, _p: Prev, fd: FormData
 }
 
 export async function setUserRoleAction(userId: string, _p: Prev, fd: FormData) {
-  const schema = z.object({ role: z.enum(["admin", "seller"]), reason: reasonSchema });
+  const schema = z.object({ role: z.enum(["admin", "seller", "production"]), reason: reasonSchema });
   return runAction({ name: "set_user_role", admin: true, schema, input: formDataToObject(fd) }, async (ctx, d) => {
     const { error } = await ctx.supabase.rpc("admin_set_user_role", { p_user_id: userId, p_role: d.role, p_reason: d.reason });
     revalidatePath("/vendedores");

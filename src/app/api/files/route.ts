@@ -15,7 +15,7 @@ export async function POST(request: NextRequest) {
   const length = Number(request.headers.get("content-length") ?? 0);
   if (length > MAX_UPLOAD_BYTES + 64 * 1024) return NextResponse.json({ error: "Arquivo acima de 10 MB" }, { status: 413 });
   try {
-    const ctx = await authorizeAction();
+    const ctx = await authorizeAction({ commercial: true });
     const form = await request.formData();
     const file = form.get("file");
     const resource = String(form.get("resource") ?? "") as ResourceKey;

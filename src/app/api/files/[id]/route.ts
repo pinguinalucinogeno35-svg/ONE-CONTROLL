@@ -6,7 +6,7 @@ import { createAdminClient } from "@/lib/supabase/admin";
 /** Download: autoriza via RLS do anexo e redireciona para URL assinada de 60 s. */
 export async function GET(_request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   try {
-    const ctx = await authorizeAction();
+    const ctx = await authorizeAction({ commercial: true });
     const { id } = await params;
     if (!/^[0-9a-f-]{36}$/i.test(id)) return NextResponse.json({ error: "Inválido" }, { status: 400 });
     const { data: file } = await ctx.supabase.from("file_attachments").select("object_path, original_filename").eq("id", id).maybeSingle();

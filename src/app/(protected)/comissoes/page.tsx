@@ -13,7 +13,7 @@ type Row = { id: string; seller_id: string; sale_origin: string; base_amount: st
   contracts: { id: string; contract_number: string; clients: { company_name: string } | null } | null; profiles: { full_name: string } | null; commission_policies: { requires_approval: boolean } | null };
 
 export default async function CommissionsPage() {
-  const ctx = await requireActiveUser();
+  const ctx = await requireActiveUser({ commercial: true });
   const isAdmin = ctx.profile.role === "admin";
   // RLS: vendedor vê apenas as próprias comissões e pagamentos.
   const [list, payouts, policy, accounts] = await Promise.all([

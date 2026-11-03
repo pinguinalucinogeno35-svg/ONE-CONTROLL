@@ -134,7 +134,7 @@ export const reasonSchema = z.string().trim().min(3, "Informe o motivo").max(500
 export const inviteSchema = z.object({
   email: z.email({ message: "E-mail inválido" }).max(254),
   full_name: z.string().trim().min(2).max(120),
-  role: z.enum(["admin", "seller"]),
+  role: z.enum(["admin", "seller", "production"]),
 });
 
 /** Campos esperados do Google Forms (payload assinado do Apps Script). */

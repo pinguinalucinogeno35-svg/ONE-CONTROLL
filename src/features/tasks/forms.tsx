@@ -6,17 +6,18 @@ import { Field, Select } from "@/components/ui";
 import { blockTaskAction, commentTaskAction, createTaskAction, saveTaskGroupAction, updateTaskAction } from "./actions";
 import { todayISO } from "@/lib/dates";
 
-type Person = { id: string; full_name: string; role: "admin" | "seller" };
+type Person = { id: string; full_name: string; role: "admin" | "seller" | "production" };
 type Group = { id: string; name: string; sellers_can_assign: boolean; active?: boolean; description?: string | null };
 type TaskValues = { title?: string; description?: string | null; group_id?: string; assigned_to?: string; priority?: string; due_date?: string | null };
 
 const PRIORITIES = [{ value: "low", label: "Baixa" }, { value: "medium", label: "Média" }, { value: "high", label: "Alta" }, { value: "urgent", label: "Urgente" }];
 
-/** Responsável agrupado por papel: vendedores designam para administradores e entre si. */
+/** Responsável agrupado por papel: colaboradores designam para administradores e entre si. */
 function AssigneeField({ people, defaultValue, meId }: { people: Person[]; defaultValue?: string; meId: string }) {
   const { errors } = useFormErrors();
   const admins = people.filter((p) => p.role === "admin");
   const sellers = people.filter((p) => p.role === "seller");
+  const production = people.filter((p) => p.role === "production");
   const name = (p: Person) => (p.id === meId ? `${p.full_name} (eu)` : p.full_name);
   return (
     <Field id="f-assigned_to" label="Responsável" error={errors?.assigned_to} hint="A pessoa recebe uma notificação personalizada ao ser designada.">
@@ -24,6 +25,7 @@ function AssigneeField({ people, defaultValue, meId }: { people: Person[]; defau
         <option value="">Selecione</option>
         {admins.length > 0 && <optgroup label="Administradores">{admins.map((p) => <option key={p.id} value={p.id}>{name(p)}</option>)}</optgroup>}
         {sellers.length > 0 && <optgroup label="Vendedores">{sellers.map((p) => <option key={p.id} value={p.id}>{name(p)}</option>)}</optgroup>}
+        {production.length > 0 && <optgroup label="Produção">{production.map((p) => <option key={p.id} value={p.id}>{name(p)}</option>)}</optgroup>}
       </Select>
     </Field>
   );
@@ -35,7 +37,7 @@ function TaskFields({ groups, people, meId, values = {}, isAdmin }: { groups: Gr
       <TextField name="title" label="Tarefa" required defaultValue={values.title ?? ""} placeholder="Ex.: Editar vídeo institucional" className="sm:col-span-2" />
       <SelectField name="group_id" label="Grupo" placeholder="Selecione" defaultValue={values.group_id ?? ""}
         options={groups.map((g) => ({ value: g.id, label: g.name }))}
-        hint={isAdmin ? undefined : "Aparecem apenas os grupos liberados para vendedores."} />
+        hint={isAdmin ? undefined : "Aparecem apenas os grupos liberados para colaboradores."} />
       <AssigneeField people={people} defaultValue={values.assigned_to} meId={meId} />
       <SelectField name="priority" label="Prioridade" defaultValue={values.priority ?? "medium"} options={PRIORITIES} />
       <TextField name="due_date" label="Prazo" type="date" min={todayISO()} defaultValue={values.due_date ?? ""} />

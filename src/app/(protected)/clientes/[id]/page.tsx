@@ -11,7 +11,7 @@ import { Attachments } from "@/features/files/attachments";
 export const metadata = { title: "Cliente" };
 
 export default async function ClientDetailPage({ params }: { params: Promise<{ id: string }> }) {
-  const ctx = await requireActiveUser();
+  const ctx = await requireActiveUser({ commercial: true });
   const { id } = await params;
   if (!/^[0-9a-f-]{36}$/i.test(id)) notFound();
   const db = ctx.supabase;

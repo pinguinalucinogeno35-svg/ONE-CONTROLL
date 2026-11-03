@@ -6,7 +6,7 @@ import { formatDateTime } from "@/lib/dates";
 export const metadata = { title: "Importar clientes" };
 
 export default async function ImportPage() {
-  const ctx = await requireActiveUser();
+  const ctx = await requireActiveUser({ commercial: true });
   const isAdmin = ctx.profile.role === "admin";
   const [{ data: sellers }, { data: jobs }] = await Promise.all([
     isAdmin ? ctx.supabase.from("profiles").select("id, full_name").eq("status", "active").order("full_name") : Promise.resolve({ data: undefined }),

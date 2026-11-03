@@ -12,7 +12,7 @@ const TONE: Record<string, "success" | "neutral" | "danger" | "warning"> = { act
 const LABEL: Record<string, string> = { active: "Ativo", used: "Utilizado", revoked: "Revogado", expired: "Expirado" };
 
 export default async function LeadLinksPage() {
-  const ctx = await requireActiveUser();
+  const ctx = await requireActiveUser({ commercial: true });
   const { data } = await ctx.supabase.from("lead_capture_links").select("id, label, status, use_count, max_uses, expires_at, created_at, profiles(full_name)")
     .order("created_at", { ascending: false }).limit(100).returns<Row[]>();
   return (

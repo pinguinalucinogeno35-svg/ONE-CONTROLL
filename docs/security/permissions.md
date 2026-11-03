@@ -4,6 +4,11 @@ Verificada em três camadas: **interface** (`lib/permissions.ts`, menus), **serv
 (`authorizeAction`, `requireAdmin`, escopo por RLS) e **banco** (RLS, grants por coluna,
 rotinas com `require_admin()`/`require_active_user()`).
 
+**Papel Produção (`production`):** não acessa clientes da carteira, contratos, links, importação, despesas,
+comissões, configurações nem financeiro (bloqueio no banco por `require_commercial_user` e políticas, e no app
+por `commercial: true`). Recebe e executa tarefas; nunca pode ser responsável comercial (gatilhos). Quem tem
+carteira só muda para Produção depois de transferi-la.
+
 **MFA de administrador:** o papel de administrador só vale com sessão AAL2 (MFA confirmado). Em AAL1 o
 banco trata o administrador como sem acesso: nenhuma leitura por RLS (exceto o próprio perfil) e nenhuma
 rotina (`require_active_user` recusa). Vendedores não são afetados.

@@ -28,7 +28,7 @@ type ClaimedRow = {
   message: string;
   entity_type: string | null;
   entity_id: string | null;
-  recipient_role: "admin" | "seller" | null;
+  recipient_role: "admin" | "seller" | "production" | null;
 };
 
 export function buildPushPayload(row: Pick<ClaimedRow, "notification_id" | "type" | "title" | "message" | "entity_type" | "entity_id" | "recipient_role">): string {

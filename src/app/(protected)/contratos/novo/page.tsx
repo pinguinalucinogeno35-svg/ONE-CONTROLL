@@ -7,7 +7,7 @@ import { todayISO } from "@/lib/dates";
 export const metadata = { title: "Novo contrato" };
 
 export default async function NewContractPage({ searchParams }: { searchParams: Promise<{ cliente?: string }> }) {
-  const ctx = await requireActiveUser();
+  const ctx = await requireActiveUser({ commercial: true });
   const { cliente } = await searchParams;
   const data = await getContractFormData(ctx);
   const preselected = data.clients.some((c) => c.id === cliente) ? cliente : undefined;

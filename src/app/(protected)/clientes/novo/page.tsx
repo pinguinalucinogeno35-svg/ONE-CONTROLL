@@ -5,7 +5,7 @@ import { NewClientForm } from "@/features/clients/new-client-form";
 export const metadata = { title: "Novo cliente" };
 
 export default async function NewClientPage() {
-  const ctx = await requireActiveUser();
+  const ctx = await requireActiveUser({ commercial: true });
   const [{ data: services }, sellersRes] = await Promise.all([
     ctx.supabase.from("services").select("id, name").eq("active", true).order("name"),
     ctx.profile.role === "admin"

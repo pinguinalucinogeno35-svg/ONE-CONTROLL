@@ -57,12 +57,12 @@ begin
   delete from tests.ids;
   insert into public.organizations (id, legal_name, display_name, slug) values (v_org, 'Org Teste', 'Org Teste', 'org-teste-' || substr(v_org::text, 1, 8));
   insert into tests.ids values ('org', v_org);
-  foreach n in array array['admin_a', 'admin_b', 'admin_c', 'seller_a', 'seller_b', 'seller_off'] loop
+  foreach n in array array['admin_a', 'admin_b', 'admin_c', 'seller_a', 'seller_b', 'seller_off', 'prod_a'] loop
     v_id := gen_random_uuid();
     insert into auth.users (id, email) values (v_id, n || '.' || substr(v_id::text, 1, 8) || '@example.test');
     insert into public.profiles (id, organization_id, full_name, email, role, status)
     values (v_id, v_org, initcap(replace(n, '_', ' ')), n || '.' || substr(v_id::text, 1, 8) || '@example.test',
-            case when n like 'admin%' then 'admin' else 'seller' end::public.user_role,
+            case when n like 'admin%' then 'admin' when n like 'prod%' then 'production' else 'seller' end::public.user_role,
             case when n = 'seller_off' then 'inactive' else 'active' end::public.profile_status);
     insert into tests.ids values (n, v_id);
   end loop;

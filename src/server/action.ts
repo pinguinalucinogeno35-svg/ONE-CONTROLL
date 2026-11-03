@@ -14,12 +14,12 @@ import { dispatchPendingPush, isPushConfigured } from "@/server/push";
  * Server Actions do Next.js já validam Origin vs Host (proteção CSRF).
  */
 export async function runAction<S extends z.ZodType, T>(
-  opts: { admin?: boolean; schema: S; input: unknown; name: string },
+  opts: { admin?: boolean; commercial?: boolean; schema: S; input: unknown; name: string },
   fn: (ctx: ActiveContext, data: z.output<S>) => Promise<{ data?: T; error?: { code?: string; message?: string } | null; message?: string }>,
 ): Promise<ActionResult<T>> {
   let ctx: ActiveContext | undefined;
   try {
-    ctx = await authorizeAction({ admin: opts.admin });
+    ctx = await authorizeAction({ admin: opts.admin, commercial: opts.commercial });
     const parsed = opts.schema.safeParse(opts.input);
     if (!parsed.success) {
       const fieldErrors: Record<string, string[]> = {};

@@ -1,8 +1,14 @@
 // Matriz de permissões (camada de apresentação + servidor). A garantia final
 // está no PostgreSQL (RLS, grants e rotinas). Ver docs/security/permissions.md.
-export type Role = "admin" | "seller";
+export type Role = "admin" | "seller" | "production";
+
+/** Papéis da área comercial/financeira. "production" (setor de produção) não acessa essas áreas. */
+export const COMMERCIAL_ROLES: readonly Role[] = ["admin", "seller"];
+export const isCommercialRole = (role: Role | null | undefined) => !!role && COMMERCIAL_ROLES.includes(role);
 
 export const CAPABILITIES = {
+  "app.home": ["admin", "seller", "production"],
+  "notifications.read": ["admin", "seller", "production"],
   "clients.read_all": ["admin"],
   "clients.read_own": ["admin", "seller"],
   "clients.create": ["admin", "seller"],
@@ -15,7 +21,7 @@ export const CAPABILITIES = {
   "contracts.amend": ["admin"],
   "projects.read": ["admin", "seller"],
   "projects.manage": ["admin"],
-  "tasks.use": ["admin", "seller"],
+  "tasks.use": ["admin", "seller", "production"],
   "tasks.groups": ["admin"],
   "tasks.read_all": ["admin"],
   "finance.cash": ["admin"],
@@ -46,7 +52,7 @@ export function can(role: Role | null | undefined, capability: Capability): bool
 export type NavItem = { href: string; label: string; icon: string; capability: Capability; children?: NavItem[] };
 
 export const NAVIGATION: NavItem[] = [
-  { href: "/dashboard", label: "Dashboard", icon: "layout-dashboard", capability: "clients.read_own" },
+  { href: "/dashboard", label: "Dashboard", icon: "layout-dashboard", capability: "app.home" },
   { href: "/clientes", label: "Clientes", icon: "users", capability: "clients.read_own" },
   { href: "/contratos", label: "Contratos", icon: "file-text", capability: "contracts.create" },
   { href: "/tarefas", label: "Tarefas", icon: "list-checks", capability: "tasks.use" },
@@ -65,7 +71,7 @@ export const NAVIGATION: NavItem[] = [
   { href: "/comissoes", label: "Comissões", icon: "percent", capability: "commissions.read_own" },
   { href: "/vendedores", label: "Vendedores", icon: "user-cog", capability: "users.manage" },
   { href: "/relatorios", label: "Relatórios", icon: "bar-chart-3", capability: "reports.own" },
-  { href: "/notificacoes", label: "Notificações", icon: "bell", capability: "clients.read_own" },
+  { href: "/notificacoes", label: "Notificações", icon: "bell", capability: "notifications.read" },
   { href: "/configuracoes", label: "Configurações", icon: "settings", capability: "settings.manage" },
   { href: "/auditoria", label: "Auditoria", icon: "shield-check", capability: "audit.read" },
 ];

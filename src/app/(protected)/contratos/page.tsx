@@ -10,7 +10,7 @@ const PAGE_SIZE = 25;
 type Row = { id: string; contract_number: string; status: string; implementation_amount: string; monthly_amount: string; start_date: string; sale_origin: string; clients: { company_name: string } | null; profiles: { full_name: string } | null };
 
 export default async function ContractsPage({ searchParams }: { searchParams: Promise<{ status?: string; page?: string }> }) {
-  const ctx = await requireActiveUser();
+  const ctx = await requireActiveUser({ commercial: true });
   const sp = await searchParams;
   const page = Math.max(1, Number(sp.page) || 1);
   let q = ctx.supabase.from("contracts").select("id, contract_number, status, implementation_amount, monthly_amount, start_date, sale_origin, clients(company_name), profiles!contracts_seller_id_fkey(full_name)", { count: "exact" })
