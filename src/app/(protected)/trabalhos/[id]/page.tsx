@@ -2,7 +2,7 @@ import { notFound } from "next/navigation";
 import { requireActiveUser } from "@/server/auth/session";
 import { Alert, Badge, Card, CardTitle, PageHeader } from "@/components/ui";
 import { ActionButton } from "@/components/ui/server-form";
-import { BlockForm, CommentForm, ItemForm, LinkForm, StatusButton, StatusNoteForm, WorkForm } from "@/features/works/forms";
+import { BlockForm, CommentForm, CompleteButton, ItemForm, LinkForm, ResolveFeedbackButton, ReviewForm, StatusButton, StatusNoteForm, VersionForm, WorkForm } from "@/features/works/forms";
 import { confirmWorkBackupAction, removeWorkItemAction, removeWorkLinkAction, setWorkItemDoneAction } from "@/features/works/actions";
 import { getWork, getWorkContext, workState } from "@/server/services/works";
 import { CONTENT_SECTION, isOverdue, nextAction } from "@/lib/works";
@@ -12,13 +12,19 @@ import { uuid } from "@/lib/validation/schemas";
 
 export const metadata = { title: "Trabalho" };
 
+const LOCATION_HINT: Record<string, string> = { carousel: "Página 3", post: "Peça 1", design: "Peça 1", photo: "Foto 12", video_shoot: "Cena 2", video_edit: "01:23", web: "Página /contato" };
+const VERSION_STATUS: Record<string, [string, "info" | "warning" | "success" | "neutral"]> = {
+  submitted: ["Em revisão", "info"], changes_requested: ["Ajustes pedidos", "warning"], approved: ["Aprovada", "success"], superseded: ["Substituída", "neutral"],
+};
+
 const EVENT_LABEL: Record<string, string> = {
   created: "criou o trabalho", edited: "editou a ficha", due_changed: "mudou o prazo", assigned: "atribuiu um responsável",
   unassigned: "retirou um responsável", content_changed: "alterou o conteúdo", item_removed: "removeu um item", item_done: "concluiu o item",
   item_undone: "reabriu o item", link_added: "adicionou o link", link_removed: "removeu o link", backup_confirmed: "confirmou o backup de",
   blocked: "informou bloqueio", unblocked: "resolveu o bloqueio", comment: "comentou", status_ready: "marcou como pronto",
   status_draft: "voltou para preparação", status_in_production: "iniciou a produção", status_in_review: "enviou para revisão",
-  status_done: "aprovou a entrega", status_cancelled: "cancelou", changes_requested: "pediu ajustes", reopened: "reabriu o trabalho",
+  status_done: "concluiu o trabalho", status_cancelled: "cancelou", changes_requested: "pediu ajustes", reopened: "reabriu o trabalho",
+  version_submitted: "enviou uma versão", version_approved: "aprovou a versão", feedback_resolved: "resolveu o ajuste",
 };
 
 export default async function WorkPage({ params }: { params: Promise<{ id: string }> }) {
@@ -42,6 +48,10 @@ export default async function WorkPage({ params }: { params: Promise<{ id: strin
   const links = work.work_links.filter((l) => !l.removed_at);
   const events = [...work.work_events].sort((a, b) => b.created_at.localeCompare(a.created_at));
   const clientName = work.client_id ? clients.get(work.client_id) : undefined;
+  const versions = [...work.work_versions].sort((a, b) => b.number - a.number);
+  const latest = versions[0] ?? null;
+  const openFeedback = work.work_feedback.filter((f) => !f.resolved_at);
+  const versionNumber = new Map(work.work_versions.map((v) => [v.id, v.number]));
   const linkKinds = state.isAssignee && !isManager ? ["preview", "raw", "editable", "final", "material", "other"] : ["reference", "material", "raw", "preview", "editable", "final", "other"];
 
   return (
@@ -63,16 +73,27 @@ export default async function WorkPage({ params }: { params: Promise<{ id: strin
         <div className="mt-4 flex flex-wrap items-start gap-3">
           {open && !state.blocked && work.status === "draft" && canPrepare && state.hasAssignees && state.missingRequired === 0 && <StatusButton workId={work.id} status="ready" label="Marcar como pronto" />}
           {open && !state.blocked && work.status === "ready" && (state.isAssignee || isManager) && <StatusButton workId={work.id} status="in_production" label="Iniciar produção" />}
-          {open && !state.blocked && work.status === "in_production" && (state.isAssignee || isManager) && state.hasPreview && <StatusButton workId={work.id} status="in_review" label="Enviar para revisão" />}
-          {work.status === "in_review" && canReview && state.hasFinal && <StatusButton workId={work.id} status="done" label="Aprovar entrega" variant="success" confirm="Aprovar esta entrega? A aprovação fica registrada com seu nome." />}
+          {work.status === "in_review" && canReview && latest?.status === "approved" && state.hasFinal && !state.blocked && <CompleteButton workId={work.id} />}
         </div>
-        {work.status === "in_review" && canReview && (
-          <details className="mt-4"><summary className="cursor-pointer text-sm font-semibold text-link">Pedir ajustes</summary>
-            <div className="mt-3"><StatusNoteForm workId={work.id} status="in_production" label="Enviar pedido de ajustes" noteLabel="O que ajustar" placeholder="Ex.: página 3 — ajustar contraste do título" /></div>
-          </details>
+        {open && !state.blocked && work.status === "in_production" && (state.isAssignee || isManager) && (
+          <div className="mt-4">
+            {openFeedback.length > 0 && <p className="mb-3 text-sm text-warning">{openFeedback.length} ajuste(s) pedido(s) — veja “Versões e ajustes” e marque como resolvidos.</p>}
+            <VersionForm workId={work.id} nextNumber={(latest?.number ?? 0) + 1} />
+          </div>
         )}
-        {work.status === "in_production" && !state.hasPreview && state.isAssignee && <p className="mt-3 text-sm text-muted">Adicione a prévia em “Materiais e entregas” para liberar o envio para revisão.</p>}
-        {work.status === "in_review" && canReview && !state.hasFinal && <p className="mt-3 text-sm text-muted">Para aprovar, é preciso o link da <strong>entrega final</strong> em “Materiais e entregas”.</p>}
+        {work.status === "in_review" && canReview && latest?.status === "submitted" && !state.blocked && (
+          <div className="mt-4">
+            <p className="mb-3 text-sm">Revise a <a href={latest.url} target="_blank" rel="noopener noreferrer" className="text-link underline">versão {latest.number}{latest.label ? ` — ${latest.label}` : ""}</a>{latest.note ? ` · ${latest.note}` : ""}</p>
+            <ReviewForm workId={work.id} versionId={latest.id} number={latest.number} locationHint={LOCATION_HINT[work.category] ?? "Trecho"} />
+          </div>
+        )}
+        {work.status === "in_review" && latest?.status === "approved" && !state.hasFinal && (
+          <p className="mt-3 text-sm text-muted">Versão {latest.number} aprovada. Falta o link da <strong>entrega final</strong> em “Materiais e entregas” para concluir.</p>
+        )}
+        {work.status === "in_review" && latest?.status === "submitted" && (state.isAssignee || isManager) && !state.blocked && (
+          <details className="mt-4"><summary className="cursor-pointer text-sm font-semibold text-link">Enviar nova versão (substitui a versão {latest.number} em revisão)</summary>
+            <div className="mt-3"><VersionForm workId={work.id} nextNumber={latest.number + 1} /></div></details>
+        )}
         {work.status === "done" && work.completed_at && <p className="mt-2 text-sm text-muted">Concluído em {formatDateTime(work.completed_at)}.</p>}
         {open && state.role && <details className="mt-4"><summary className="cursor-pointer text-sm font-semibold text-link">{state.blocked ? "Resolver bloqueio" : "Informar bloqueio"}</summary><div className="mt-3"><BlockForm workId={work.id} blocked={state.blocked} /></div></details>}
       </Card>
@@ -115,6 +136,48 @@ export default async function WorkPage({ params }: { params: Promise<{ id: strin
               )}
               {open && canPrepare && <div className="mt-4"><ItemForm workId={work.id} kind={section.kind} itemLabel={section.itemLabel} bodyLabel={section.bodyLabel} /></div>}
               {section.kind === "slide" && <p className="mt-3 text-xs text-muted">Quem executa não altera a copy; mudanças feitas aqui durante a produção avisam os responsáveis.</p>}
+            </Card>
+          )}
+
+          {(versions.length > 0 || work.work_feedback.length > 0) && (
+            <Card>
+              <CardTitle className="mb-3">Versões e ajustes</CardTitle>
+              {openFeedback.length > 0 && (
+                <div className="mb-4">
+                  <p className="mb-2 text-sm font-semibold">Ajustes pendentes</p>
+                  <ul className="flex flex-col gap-2 text-sm">
+                    {openFeedback.map((f) => (
+                      <li key={f.id} className="flex flex-wrap items-start justify-between gap-2 rounded-[var(--radius-control)] bg-warning-bg p-3">
+                        <span><strong>{f.location ? `${f.location}: ` : ""}</strong>{f.body} <span className="text-xs text-muted">· v{versionNumber.get(f.version_id)} · {name(f.created_by)}</span></span>
+                        {open && (state.isAssignee || canPrepare) && <ResolveFeedbackButton workId={work.id} feedbackId={f.id} />}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              )}
+              <ol className="flex flex-col gap-3 text-sm">
+                {versions.map((v) => {
+                  const [vl, vt] = VERSION_STATUS[v.status] ?? [v.status, "neutral" as const];
+                  const fb = work.work_feedback.filter((f) => f.version_id === v.id);
+                  return (
+                    <li key={v.id} className="rounded-[var(--radius-control)] border border-border p-3">
+                      <div className="flex flex-wrap items-center justify-between gap-2">
+                        <a href={v.url} target="_blank" rel="noopener noreferrer" className="font-semibold text-link underline">Versão {v.number}{v.label ? ` — ${v.label}` : ""}</a>
+                        <Badge tone={vt}>{vl}</Badge>
+                      </div>
+                      <p className="text-xs text-muted">Enviada por {name(v.submitted_by)} em {formatDateTime(v.submitted_at)}
+                        {v.decided_at ? ` · revisada por ${name(v.decided_by)} em ${formatDateTime(v.decided_at)}` : ""}</p>
+                      {v.note && <p className="mt-1">O que mudou: {v.note}</p>}
+                      {v.decision_note && <p className="mt-1 text-muted">“{v.decision_note}”</p>}
+                      {fb.length > 0 && (
+                        <ul className="mt-2 list-disc pl-5">
+                          {fb.map((f) => <li key={f.id} className={f.resolved_at ? "text-muted line-through" : ""}>{f.location ? `${f.location}: ` : ""}{f.body}</li>)}
+                        </ul>
+                      )}
+                    </li>
+                  );
+                })}
+              </ol>
             </Card>
           )}
 

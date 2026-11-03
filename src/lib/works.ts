@@ -34,9 +34,12 @@ export function templateFor(category: WorkCategory): { kind: ItemKind; title: st
   }
 }
 
+export type VersionStatus = "submitted" | "changes_requested" | "approved" | "superseded";
+
 export type WorkState = {
   status: WorkStatus; blocked: boolean; missingRequired: number; hasAssignees: boolean;
-  hasPreview: boolean; hasFinal: boolean; isAssignee: boolean; role: WorkRole | null;
+  hasFinal: boolean; isAssignee: boolean; role: WorkRole | null;
+  latestVersion: { number: number; status: VersionStatus } | null; openFeedback: number;
 };
 
 /** Próxima ação de quem está vendo (uma ação principal por tela). */
@@ -52,13 +55,21 @@ export function nextAction(s: WorkState): { label: string; detail?: string; mine
       if (s.missingRequired > 0) return { label: "Aguardando material", detail: `${s.missingRequired} item(ns) obrigatório(s) pendente(s).`, mine: canPrepare || s.isAssignee };
       return { label: "Marcar como pronto", mine: canPrepare };
     case "ready": return { label: "Iniciar produção", mine: s.isAssignee };
-    case "in_production":
-      return s.hasPreview
-        ? { label: "Enviar para revisão", mine: s.isAssignee }
-        : { label: "Enviar prévia", detail: "Adicione o link da prévia para pedir revisão.", mine: s.isAssignee };
-    case "in_review":
+    case "in_production": {
+      const next = (s.latestVersion?.number ?? 0) + 1;
+      return { label: `Enviar versão ${next} para revisão`, mine: s.isAssignee,
+        detail: s.openFeedback > 0 ? `${s.openFeedback} ajuste(s) pedido(s) na versão anterior.` : undefined };
+    }
+    case "in_review": {
+      const v = s.latestVersion;
+      if (v?.status === "approved") {
+        if (s.isAssignee) return s.hasFinal ? { label: "Aguardando conclusão", mine: false } : { label: "Enviar entrega final", detail: `Versão ${v.number} aprovada.`, mine: true };
+        if (canReview) return s.hasFinal ? { label: "Concluir trabalho", mine: true } : { label: "Aguardando entrega final", detail: `Versão ${v.number} aprovada.`, mine: false };
+        return { label: "Aguardando entrega final", mine: false };
+      }
       if (!canReview) return { label: "Aguardando revisão", mine: false };
-      return s.hasFinal ? { label: "Revisar e aprovar", mine: true } : { label: "Revisar prévia", detail: "A aprovação exige o link da entrega final.", mine: true };
+      return { label: `Revisar versão ${v?.number ?? 1}`, mine: true };
+    }
   }
   return { label: "—", mine: false };
 }

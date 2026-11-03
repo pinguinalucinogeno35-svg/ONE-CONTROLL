@@ -7,7 +7,7 @@ Execução em 28/10/2026, ambiente de desenvolvimento em nuvem (Node 22.22, Post
 | Lint (ESLint + regras Next/React) | `npm run lint` | ✅ sem erros/avisos |
 | Tipos (TypeScript strict) | `npm run typecheck` | ✅ |
 | Unitários (Vitest) | `npm test` | ✅ 47/47 |
-| SQL — migrations 0001–0019 + seed | `scripts/db-test.sh` | ✅ aplicadas em banco limpo |
+| SQL — migrations 0001–0020 + seed | `scripts/db-test.sh` | ✅ aplicadas em banco limpo |
 | SQL — RLS/autorização | `supabase/tests/10_rls_authorization.sql` | ✅ 38 asserções |
 | SQL — contratos e comissões | `supabase/tests/20_contracts_commissions.sql` | ✅ 47 asserções |
 | SQL — financeiro | `supabase/tests/30_finance.sql` | ✅ 37 asserções |
@@ -18,6 +18,7 @@ Execução em 28/10/2026, ambiente de desenvolvimento em nuvem (Node 22.22, Post
 | SQL — Papel Produção sem acesso comercial | `supabase/tests/80_production_role.sql` | ✅ 24 asserções |
 | SQL — Perfil de trabalho, disponibilidade e ausências | `supabase/tests/90_team_profiles.sql` | ✅ 23 asserções |
 | SQL — Trabalhos (fluxo completo, acesso, prontidão, revisão, backup) | `supabase/tests/95_works.sql` | ✅ 39 asserções |
+| SQL — Versões, ajustes localizados e aprovação da versão exata | `supabase/tests/96_work_versions.sql` | ✅ 23 asserções |
 | Concorrência real (sessões paralelas) | `scripts/db-concurrency-test.sh` | ✅ 6 confirmações de R$ 300 sobre R$ 1.000 → 3 aceitas (R$ 900), 3 recusadas; 5 com a mesma chave → 1; 4 despachantes de push paralelos → 20 entregas reservadas, nenhuma repetida |
 | Build de produção | `npm run build` | ✅ |
 | E2E públicos + identidade visual + push no service worker (desktop, tablet, mobile) | `npm run test:e2e` | ✅ 54/54 (mensagem push real via protocolo do Chromium → notificação exibida; link externo descartado) |

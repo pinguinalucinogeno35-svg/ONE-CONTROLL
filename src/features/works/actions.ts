@@ -3,7 +3,7 @@
 import { revalidatePath } from "next/cache";
 import { z } from "zod";
 import { runAction, formDataToObject } from "@/server/action";
-import { uuid, workItemSchema, workLinkSchema, workSchema, workStatusSchema } from "@/lib/validation/schemas";
+import { uuid, workItemSchema, workLinkSchema, workReviewSchema, workSchema, workStatusSchema, workVersionSchema } from "@/lib/validation/schemas";
 import { templateFor, type WorkCategory } from "@/lib/works";
 import type { ActionResult } from "@/server/errors";
 
@@ -110,5 +110,38 @@ export async function commentWorkAction(workId: string, _p: Prev, fd: FormData) 
     const { error } = await ctx.supabase.rpc("comment_work", { p_work: uuid.parse(workId), p_text: d.text });
     refresh(workId);
     return { error, message: "Comentário enviado." };
+  });
+}
+
+export async function submitWorkVersionAction(workId: string, _p: Prev, fd: FormData) {
+  return runAction({ name: "submit_work_version", schema: workVersionSchema, input: formDataToObject(fd) }, async (ctx, d) => {
+    const { error } = await ctx.supabase.rpc("submit_work_version", { p_work: uuid.parse(workId), p: d });
+    refresh(workId);
+    return { error, message: "Versão enviada. Quem revisa foi avisado." };
+  });
+}
+
+export async function reviewWorkVersionAction(workId: string, versionId: string, _p: Prev, fd: FormData) {
+  return runAction({ name: "review_work_version", schema: workReviewSchema, input: formDataToObject(fd) }, async (ctx, d) => {
+    const feedback = d.feedback.filter((f) => f.body.length > 0);
+    const { error } = await ctx.supabase.rpc("review_work_version", { p_version: uuid.parse(versionId), p: { ...d, feedback } });
+    refresh(workId);
+    return { error, message: d.decision === "approve" ? "Versão aprovada." : "Ajustes enviados para quem executa." };
+  });
+}
+
+export async function completeWorkAction(workId: string, _p: Prev, _fd: FormData) {
+  return runAction({ name: "complete_work", schema: z.object({ id: uuid }), input: { id: workId } }, async (ctx, d) => {
+    const { error } = await ctx.supabase.rpc("complete_work", { p_work: d.id });
+    refresh(workId);
+    return { error };
+  });
+}
+
+export async function resolveWorkFeedbackAction(workId: string, feedbackId: string, _p: Prev, _fd: FormData) {
+  return runAction({ name: "resolve_work_feedback", schema: z.object({ id: uuid }), input: { id: feedbackId } }, async (ctx, d) => {
+    const { error } = await ctx.supabase.rpc("resolve_work_feedback", { p_feedback: d.id, p_note: null });
+    refresh(workId);
+    return { error };
   });
 }

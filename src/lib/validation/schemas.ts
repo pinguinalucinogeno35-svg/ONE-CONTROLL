@@ -274,3 +274,16 @@ export const workStatusSchema = z.object({
   status: z.enum(["draft", "ready", "in_production", "in_review", "done", "cancelled"]),
   note: optionalText(500),
 });
+export const workVersionSchema = z.object({
+  url: httpsUrl,
+  label: optionalText(140),
+  note: optionalText(1000),
+});
+const feedbackRows = z.string().default("[]").transform((s, ctx) => {
+  try { return JSON.parse(s) as unknown; } catch { ctx.addIssue({ code: "custom", message: "Ajustes inválidos" }); return z.NEVER; }
+}).pipe(z.array(z.object({ location: z.string().trim().max(80).optional(), body: z.string().trim().max(1000) })).max(30, "Máximo de 30 ajustes por versão"));
+export const workReviewSchema = z.object({
+  decision: z.enum(["approve", "changes"]),
+  note: optionalText(1000),
+  feedback: feedbackRows,
+});

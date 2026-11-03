@@ -1,7 +1,7 @@
 import "server-only";
 import type { ActiveContext } from "@/server/auth/session";
 import { getPeople, type Person } from "@/server/services/tasks";
-import type { ItemKind, WorkCategory, WorkRole, WorkStatus } from "@/lib/works";
+import type { ItemKind, VersionStatus, WorkCategory, WorkRole, WorkStatus } from "@/lib/works";
 
 export type WorkRow = {
   id: string; title: string; category: WorkCategory; status: WorkStatus; client_id: string | null;
@@ -11,15 +11,20 @@ export type WorkRow = {
   work_assignees: { user_id: string }[];
   work_items: { id: string; kind: ItemKind; required: boolean; done: boolean }[];
   work_links: { kind: string; removed_at: string | null }[];
+  work_versions: { number: number; status: VersionStatus }[];
+  work_feedback: { resolved_at: string | null }[];
 };
 
-export type WorkDetail = Omit<WorkRow, "work_items" | "work_links"> & {
+export type WorkDetail = Omit<WorkRow, "work_items" | "work_links" | "work_versions" | "work_feedback"> & {
+  work_versions: { id: string; number: number; label: string | null; url: string; note: string | null; status: VersionStatus; submitted_by: string; submitted_at: string; decided_by: string | null; decided_at: string | null; decision_note: string | null }[];
+  work_feedback: { id: string; version_id: string; location: string | null; body: string; created_by: string; created_at: string; resolved_at: string | null; resolved_by: string | null; resolved_note: string | null }[];
   work_items: { id: string; kind: ItemKind; position: number; title: string; body: string | null; required: boolean; done: boolean; done_by: string | null; done_at: string | null }[];
   work_links: { id: string; kind: string; label: string; url: string; note: string | null; created_by: string; created_at: string; backup_confirmed_at: string | null; removed_at: string | null }[];
   work_events: { id: string; actor_id: string | null; kind: string; body: string | null; data: Record<string, unknown> | null; created_at: string }[];
 };
 
-const LIST_COLUMNS = "id, title, category, status, client_id, objective, instructions, deliverable_format, due_original, due_current, estimated_hours, blocked_reason, reviewer_id, created_by, completed_at, created_at, work_assignees(user_id), work_items(id, kind, required, done), work_links(kind, removed_at)";
+const BASE_COLUMNS = "id, title, category, status, client_id, objective, instructions, deliverable_format, due_original, due_current, estimated_hours, blocked_reason, reviewer_id, created_by, completed_at, created_at, work_assignees(user_id)";
+const LIST_COLUMNS = `${BASE_COLUMNS}, work_items(id, kind, required, done), work_links(kind, removed_at), work_versions(number, status), work_feedback(resolved_at)`;
 
 export type WorkFilters = { scope: "mine" | "review" | "all"; status?: string; category?: string; client?: string; person?: string };
 
@@ -40,7 +45,7 @@ export async function listWorks(ctx: ActiveContext, f: WorkFilters): Promise<Wor
 
 export async function getWork(ctx: ActiveContext, id: string): Promise<WorkDetail | null> {
   const { data } = await ctx.supabase.from("works")
-    .select(`${LIST_COLUMNS.replace("work_items(id, kind, required, done), work_links(kind, removed_at)", "")} work_items(id, kind, position, title, body, required, done, done_by, done_at), work_links(id, kind, label, url, note, created_by, created_at, backup_confirmed_at, removed_at), work_events(id, actor_id, kind, body, data, created_at)`)
+    .select(`${BASE_COLUMNS}, work_items(id, kind, position, title, body, required, done, done_by, done_at), work_links(id, kind, label, url, note, created_by, created_at, backup_confirmed_at, removed_at), work_events(id, actor_id, kind, body, data, created_at), work_versions(id, number, label, url, note, status, submitted_by, submitted_at, decided_by, decided_at, decision_note), work_feedback(id, version_id, location, body, created_by, created_at, resolved_at, resolved_by, resolved_note)`)
     .eq("id", id).maybeSingle();
   return (data as unknown as WorkDetail) ?? null;
 }
@@ -64,13 +69,15 @@ export function roleIn(w: Pick<WorkRow, "created_by" | "reviewer_id" | "work_ass
 
 export function workState(w: WorkRow, ctx: ActiveContext) {
   const live = w.work_links.filter((l) => !l.removed_at);
+  const latest = [...w.work_versions].sort((a, b) => b.number - a.number)[0] ?? null;
   return {
     status: w.status,
     blocked: !!w.blocked_reason,
     missingRequired: w.work_items.filter((i) => i.required && !i.done).length,
     hasAssignees: w.work_assignees.length > 0,
-    hasPreview: live.some((l) => l.kind === "preview" || l.kind === "final"),
     hasFinal: live.some((l) => l.kind === "final"),
+    latestVersion: latest,
+    openFeedback: w.work_feedback.filter((f) => !f.resolved_at).length,
     isAssignee: w.work_assignees.some((a) => a.user_id === ctx.userId),
     role: roleIn(w, ctx),
   };

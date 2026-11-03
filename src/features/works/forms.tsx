@@ -1,11 +1,14 @@
 "use client";
 
-import { Field, Select } from "@/components/ui";
+import { useState } from "react";
+import { Plus } from "lucide-react";
+import { Button, Field, Input, Select } from "@/components/ui";
 import { ActionButton, SelectField, ServerForm, TextAreaField, TextField, useFormErrors } from "@/components/ui/server-form";
 import { WORK_CATEGORY, WORK_LINK_KIND } from "@/lib/labels";
 import type { ItemKind } from "@/lib/works";
 import {
-  addWorkLinkAction, commentWorkAction, createWorkAction, saveWorkItemAction, setWorkBlockedAction, setWorkStatusAction, updateWorkAction,
+  addWorkLinkAction, commentWorkAction, completeWorkAction, createWorkAction, resolveWorkFeedbackAction, reviewWorkVersionAction,
+  saveWorkItemAction, setWorkBlockedAction, setWorkStatusAction, submitWorkVersionAction, updateWorkAction,
 } from "./actions";
 
 type Person = { id: string; full_name: string; role: string; active: boolean };
@@ -151,4 +154,57 @@ export function PersonFilter({ people, value }: { people: Person[]; value?: stri
       {people.filter((p) => p.active).map((p) => <option key={p.id} value={p.id}>{p.full_name}</option>)}
     </Select></Field>
   );
+}
+
+export function VersionForm({ workId, nextNumber }: { workId: string; nextNumber: number }) {
+  return (
+    <ServerForm action={submitWorkVersionAction.bind(null, workId)} submitLabel={`Enviar versão ${nextNumber} para revisão`} resetOnSuccess>
+      <div className="grid gap-3 sm:grid-cols-2">
+        <TextField name="url" label="Link da prévia (https://)" required inputMode="url" placeholder="https://drive.google.com/…" className="sm:col-span-2" />
+        <TextField name="label" label="Nome (opcional)" placeholder="Ex.: proposta com fundo escuro" />
+        <TextField name="note" label="O que mudou (opcional)" placeholder="Ex.: contraste e foto da página 5" />
+      </div>
+    </ServerForm>
+  );
+}
+
+/** Revisão da versão: aprovar ou pedir ajustes apontando o local (página, foto, minutagem). */
+export function ReviewForm({ workId, versionId, number, locationHint }: { workId: string; versionId: string; number: number; locationHint: string }) {
+  const [rows, setRows] = useState<{ location: string; body: string }[]>([{ location: "", body: "" }]);
+  const update = (i: number, patch: Partial<{ location: string; body: string }>) => setRows((r) => r.map((x, j) => (j === i ? { ...x, ...patch } : x)));
+  return (
+    <div className="flex flex-col gap-4">
+      <ServerForm action={reviewWorkVersionAction.bind(null, workId, versionId)} submitLabel={`Aprovar versão ${number}`} variant="success"
+        confirm={`Aprovar a versão ${number}? A aprovação vale só para esta versão e fica registrada com seu nome.`}>
+        <input type="hidden" name="decision" value="approve" />
+        <TextField name="note" label="Comentário da aprovação (opcional)" />
+      </ServerForm>
+      <details>
+        <summary className="cursor-pointer text-sm font-semibold text-link">Pedir ajustes na versão {number}</summary>
+        <div className="mt-3">
+          <ServerForm action={reviewWorkVersionAction.bind(null, workId, versionId)} submitLabel="Enviar ajustes" variant="secondary">
+            <input type="hidden" name="decision" value="changes" />
+            <input type="hidden" name="feedback" value={JSON.stringify(rows)} />
+            {rows.map((r, i) => (
+              <div key={i} className="grid gap-2 sm:grid-cols-[1fr_3fr]">
+                <Field id={`fb-loc-${i}`} label="Onde"><Input value={r.location} onChange={(e) => update(i, { location: e.target.value })} placeholder={locationHint} maxLength={80} /></Field>
+                <Field id={`fb-body-${i}`} label={`Ajuste ${i + 1}`}><Input value={r.body} onChange={(e) => update(i, { body: e.target.value })} placeholder="O que mudar" maxLength={1000} /></Field>
+              </div>
+            ))}
+            <div><Button type="button" variant="ghost" size="sm" onClick={() => setRows((r) => [...r, { location: "", body: "" }])} disabled={rows.length >= 30}>
+              <Plus aria-hidden className="size-4" />Outro ajuste</Button></div>
+            <TextAreaField name="note" label="Observação geral (opcional)" rows={2} />
+          </ServerForm>
+        </div>
+      </details>
+    </div>
+  );
+}
+
+export function CompleteButton({ workId }: { workId: string }) {
+  return <ActionButton action={completeWorkAction.bind(null, workId)} label="Concluir trabalho" variant="success" confirm="Concluir? A versão aprovada e a entrega final ficam registradas." />;
+}
+
+export function ResolveFeedbackButton({ workId, feedbackId }: { workId: string; feedbackId: string }) {
+  return <ActionButton action={resolveWorkFeedbackAction.bind(null, workId, feedbackId)} label="Resolvido" />;
 }

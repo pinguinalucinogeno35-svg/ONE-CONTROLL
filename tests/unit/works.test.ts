@@ -1,7 +1,8 @@
 import { describe, expect, it } from "vitest";
 import { CONTENT_SECTION, isOverdue, nextAction, templateFor, type WorkState } from "@/lib/works";
 
-const base: WorkState = { status: "draft", blocked: false, missingRequired: 0, hasAssignees: true, hasPreview: false, hasFinal: false, isAssignee: false, role: "manager" };
+const base: WorkState = { status: "draft", blocked: false, missingRequired: 0, hasAssignees: true, hasFinal: false, isAssignee: false, role: "manager", latestVersion: null, openFeedback: 0 };
+const exec = { ...base, role: "assignee" as const, isAssignee: true };
 
 describe("próxima ação", () => {
   it("preparação: responsável, material e pronto", () => {
@@ -9,16 +10,23 @@ describe("próxima ação", () => {
     expect(nextAction({ ...base, missingRequired: 2 })).toMatchObject({ label: "Aguardando material", mine: true });
     expect(nextAction(base)).toMatchObject({ label: "Marcar como pronto", mine: true });
   });
-  it("execução: iniciar, prévia e revisão são de quem executa", () => {
-    const exec = { ...base, role: "assignee" as const, isAssignee: true };
+  it("execução: iniciar e enviar a próxima versão (com ajustes pendentes)", () => {
     expect(nextAction({ ...exec, status: "ready" })).toMatchObject({ label: "Iniciar produção", mine: true });
-    expect(nextAction({ ...exec, status: "in_production" }).label).toBe("Enviar prévia");
-    expect(nextAction({ ...exec, status: "in_production", hasPreview: true }).label).toBe("Enviar para revisão");
-    expect(nextAction({ ...exec, status: "in_review" })).toMatchObject({ label: "Aguardando revisão", mine: false });
+    expect(nextAction({ ...exec, status: "in_production" }).label).toBe("Enviar versão 1 para revisão");
+    expect(nextAction({ ...exec, status: "in_production", latestVersion: { number: 2, status: "changes_requested" }, openFeedback: 3 }))
+      .toMatchObject({ label: "Enviar versão 3 para revisão", detail: "3 ajuste(s) pedido(s) na versão anterior." });
+    expect(nextAction({ ...exec, status: "in_review", latestVersion: { number: 1, status: "submitted" } })).toMatchObject({ label: "Aguardando revisão", mine: false });
   });
-  it("revisão: quem executou nunca aprova", () => {
-    expect(nextAction({ ...base, status: "in_review", hasFinal: true })).toMatchObject({ label: "Revisar e aprovar", mine: true });
-    expect(nextAction({ ...base, status: "in_review", hasFinal: true, isAssignee: true }).mine).toBe(false);
+  it("revisão: decide a versão exata; quem executou nunca aprova", () => {
+    expect(nextAction({ ...base, status: "in_review", latestVersion: { number: 2, status: "submitted" } })).toMatchObject({ label: "Revisar versão 2", mine: true });
+    expect(nextAction({ ...base, status: "in_review", isAssignee: true, latestVersion: { number: 2, status: "submitted" } }).mine).toBe(false);
+  });
+  it("versão aprovada: entrega final e conclusão", () => {
+    const approved = { status: "in_review" as const, latestVersion: { number: 2, status: "approved" as const } };
+    expect(nextAction({ ...exec, ...approved })).toMatchObject({ label: "Enviar entrega final", mine: true });
+    expect(nextAction({ ...exec, ...approved, hasFinal: true })).toMatchObject({ label: "Aguardando conclusão", mine: false });
+    expect(nextAction({ ...base, ...approved })).toMatchObject({ label: "Aguardando entrega final", mine: false });
+    expect(nextAction({ ...base, ...approved, hasFinal: true })).toMatchObject({ label: "Concluir trabalho", mine: true });
   });
   it("bloqueio tem prioridade e é honesto", () => {
     expect(nextAction({ ...base, status: "in_production", blocked: true }).label).toBe("Resolver bloqueio");
