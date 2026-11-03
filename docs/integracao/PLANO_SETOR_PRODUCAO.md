@@ -15,8 +15,8 @@ Decisões confirmadas:
 | 1 | Papel Produção + bloqueio comercial no banco e no app (migration 0017) | IMPLEMENTADO e aplicado no banco definitivo (03/11, conferido) |
 | 2 | Perfil de trabalho e primeiro acesso curto: função como **preferência visual**, disponibilidade (presencial/remoto/externo), ausências (migration 0018; telas Meu perfil, Primeiro acesso, Equipe) | IMPLEMENTADO e aplicado no banco definitivo (03/11, conferido) |
 | 3 | **Trabalhos**: ficha única por categoria (carrossel, foto, filmagem, edição, web, administrativo), responsáveis, prazo original × vigente, materiais/links, estados simples, bloqueio com motivo, revisão sem autocertificação (migration 0019; telas Trabalhos, Novo trabalho, Ficha; "Meus trabalhos" no início) | IMPLEMENTADO e aplicado no banco definitivo (03/11, conferido) |
-| 4 | **Versões, revisão e aprovação**: prévia por versão, ajustes localizados (slide, foto, minutagem) que viram itens a resolver, aprovação da versão exata (nova versão não herda aprovação), conclusão com entrega final (migration 0020) | IMPLEMENTADO (LOCAL/CI); aplicar no banco definitivo |
-| 5 | **Kit do cliente**: marca, cores, fontes, materiais e restrições; visível para quem tem trabalho atribuído no cliente | A FAZER |
+| 4 | **Versões, revisão e aprovação**: prévia por versão, ajustes localizados (slide, foto, minutagem) que viram itens a resolver, aprovação da versão exata (nova versão não herda aprovação), conclusão com entrega final (migration 0020) | IMPLEMENTADO e aplicado no banco definitivo (03/11, conferido) |
+| 5 | **Kit do cliente**: marca, cores, fontes, materiais (links) e restrições; leitura para quem tem trabalho no cliente, edição pela administração e pelo vendedor do cliente; resumo na ficha do trabalho (migration 0021; tela /kits/[cliente]) | IMPLEMENTADO (LOCAL/CI); aplicar no banco definitivo |
 | 6 | **Calendário e sessões**: captação/foto/entrega/ausências; sessão compartilhada por várias pessoas | A FAZER |
 | 7 | **Gestão**: aprovações pendentes, atrasos, bloqueios e capacidade (sem métricas decorativas) | A FAZER |
 | 8 | Piloto com 2 a 4 colaboradores e ajustes | A FAZER |

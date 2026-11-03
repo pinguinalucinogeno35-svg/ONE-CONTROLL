@@ -39,3 +39,13 @@ test("revisão: aprovar a versão exata ou pedir ajustes apontando o local", asy
   await card.getByRole("button", { name: "Outro ajuste" }).click();
   await expect(card.getByLabel("Ajuste 2")).toBeVisible();
 });
+
+test("kit do cliente: cores, restrições em destaque e materiais por link", async ({ page }) => {
+  await page.goto("/design-system?tema=light");
+  const card = page.locator("div").filter({ has: page.getByRole("heading", { name: "Kit do cliente (ilustrativo)" }) }).last();
+  await expect(card.getByRole("list", { name: "Cores da marca" }).getByText("#0066FF")).toBeVisible();
+  await expect(card.getByText("Não usar a palavra ilustrativa X.")).toBeVisible();
+  const logo = card.getByRole("link", { name: "Logo oficial (PNG)" });
+  await expect(logo).toHaveAttribute("rel", "noopener noreferrer");
+  await expect(logo).toHaveAttribute("target", "_blank");
+});

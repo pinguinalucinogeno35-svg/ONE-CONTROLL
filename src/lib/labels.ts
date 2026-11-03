@@ -79,3 +79,6 @@ export const WORK_STATUS: Record<string, [string, Tone]> = {
 export const WORK_LINK_KIND: Record<string, string> = {
   reference: "Referência", material: "Material", raw: "Arquivos brutos", preview: "Prévia", editable: "Editável", final: "Entrega final", other: "Outro",
 };
+export const KIT_ASSET_KIND: Record<string, string> = {
+  logo: "Logos", font: "Fontes", photo: "Fotos", video: "Vídeos", music: "Músicas licenciadas", document: "Documentos", template: "Modelos aprovados", reference: "Referências",
+};

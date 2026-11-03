@@ -8,6 +8,7 @@ import { PushToggle } from "@/features/notifications/push-toggle";
 import { TeamProfileForm } from "@/features/team/forms";
 import { WorkCard } from "@/features/works/work-card";
 import { ReviewForm } from "@/features/works/forms";
+import { KitView } from "@/features/kits/kit-view";
 
 export const metadata = { title: "Design system" };
 export const dynamic = "force-dynamic";
@@ -88,6 +89,12 @@ export default async function DesignSystemPage({ searchParams }: { searchParams:
             work_versions: [{ number: 1, status: "changes_requested" }], work_feedback: [{ resolved_at: null }, { resolved_at: null }] }} />
         <Card className="mt-3"><CardTitle className="mb-4">Revisar versão (ilustrativo)</CardTitle>
           <ReviewForm workId="00000000-0000-4000-8000-000000000010" versionId="00000000-0000-4000-8000-000000000011" number={2} locationHint="Página 3" /></Card>
+        <Card className="mt-3"><CardTitle className="mb-4">Kit do cliente (ilustrativo)</CardTitle>
+          <KitView clientId="c" kit={{ client_id: "c", activity: "Atividade ilustrativa", positioning: null, audience: null, fonts: "Space Grotesk, Inter",
+            colors: [{ name: "Azul elétrico", hex: "#0066FF" }, { name: "Carvão", hex: "#0B0B0F" }], restrictions: "Não usar a palavra ilustrativa X.",
+            image_rules: null, approval_notes: null, operational_contact: null, updated_at: "2026-11-03T12:00:00Z" }}
+            assets={[{ id: "a1", kind: "logo", label: "Logo oficial (PNG)", url: "https://example.test/logo", note: "fundo claro", created_at: "2026-11-03" }]} />
+        </Card>
       </section>
       <Card className="mt-6"><CardTitle className="mb-4">Primeiro acesso (ilustrativo)</CardTitle><TeamProfileForm onboarding /></Card>
       <div className="mt-6"><PushToggle vapidPublicKey={process.env.NEXT_PUBLIC_VAPID_PUBLIC_KEY ?? null} /></div>

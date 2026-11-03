@@ -47,3 +47,14 @@ describe("ficha por categoria", () => {
     expect(isOverdue(null, "draft", "2026-11-03")).toBe(false);
   });
 });
+
+import { clientKitSchema, kitAssetSchema } from "@/lib/validation/schemas";
+
+describe("kit do cliente (formulário)", () => {
+  it("cores só no formato #RRGGBB e materiais só com https", () => {
+    expect(clientKitSchema.safeParse({ colors: JSON.stringify([{ name: "Azul", hex: "#0066FF" }]) }).success).toBe(true);
+    expect(clientKitSchema.safeParse({ colors: JSON.stringify([{ name: "Azul", hex: "azul" }]) }).success).toBe(false);
+    expect(kitAssetSchema.safeParse({ kind: "logo", label: "Logo", url: "http://x.test" }).success).toBe(false);
+    expect(kitAssetSchema.safeParse({ kind: "logo", label: "Logo", url: "https://x.test/l" }).success).toBe(true);
+  });
+});

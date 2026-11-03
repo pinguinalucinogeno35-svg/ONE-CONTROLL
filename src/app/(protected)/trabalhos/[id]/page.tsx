@@ -5,6 +5,9 @@ import { ActionButton } from "@/components/ui/server-form";
 import { BlockForm, CommentForm, CompleteButton, ItemForm, LinkForm, ResolveFeedbackButton, ReviewForm, StatusButton, StatusNoteForm, VersionForm, WorkForm } from "@/features/works/forms";
 import { confirmWorkBackupAction, removeWorkItemAction, removeWorkLinkAction, setWorkItemDoneAction } from "@/features/works/actions";
 import { getWork, getWorkContext, workState } from "@/server/services/works";
+import { getKit } from "@/server/services/kits";
+import { KitView } from "@/features/kits/kit-view";
+import Link from "next/link";
 import { CONTENT_SECTION, isOverdue, nextAction } from "@/lib/works";
 import { WORK_CATEGORY, WORK_LINK_KIND, WORK_STATUS, label } from "@/lib/labels";
 import { formatDate, formatDateTime, todayISO } from "@/lib/dates";
@@ -33,6 +36,7 @@ export default async function WorkPage({ params }: { params: Promise<{ id: strin
   const ctx = await requireActiveUser();
   const [work, { people, peopleById, clients }] = await Promise.all([getWork(ctx, id), getWorkContext(ctx)]);
   if (!work) notFound();
+  const kitData = work.client_id ? await getKit(ctx, work.client_id) : null;
   const state = workState(work, ctx);
   const action = nextAction(state);
   const today = todayISO();
@@ -224,6 +228,13 @@ export default async function WorkPage({ params }: { params: Promise<{ id: strin
         </div>
 
         <div className="flex flex-col gap-4">
+          {work.client_id && kitData && (
+            <Card>
+              <div className="mb-3 flex items-center justify-between gap-2"><CardTitle>Kit do cliente</CardTitle>
+                <Link href={`/kits/${work.client_id}`} className="text-sm font-semibold text-link hover:underline">Ver completo</Link></div>
+              <KitView clientId={work.client_id} kit={kitData.kit} assets={kitData.assets} compact />
+            </Card>
+          )}
           <Card>
             <CardTitle className="mb-1">Preparação</CardTitle>
             <p className="mb-3 text-sm text-muted">Itens obrigatórios precisam estar feitos para o trabalho ficar “Pronto”.</p>

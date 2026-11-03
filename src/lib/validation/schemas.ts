@@ -287,3 +287,25 @@ export const workReviewSchema = z.object({
   note: optionalText(1000),
   feedback: feedbackRows,
 });
+
+// Kit do cliente (somente marca e orientações; sem dados comerciais).
+const kitColors = z.string().default("[]").transform((s, ctx) => {
+  try { return JSON.parse(s) as unknown; } catch { ctx.addIssue({ code: "custom", message: "Cores inválidas" }); return z.NEVER; }
+}).pipe(z.array(z.object({ name: z.string().trim().max(40), hex: z.string().regex(/^#[0-9A-Fa-f]{6}$/, "Use o formato #RRGGBB") })).max(12, "Máximo de 12 cores"));
+export const clientKitSchema = z.object({
+  activity: optionalText(300),
+  positioning: optionalText(1500),
+  audience: optionalText(1000),
+  colors: kitColors,
+  fonts: optionalText(500),
+  restrictions: optionalText(2000),
+  image_rules: optionalText(1000),
+  approval_notes: optionalText(1000),
+  operational_contact: optionalText(300),
+});
+export const kitAssetSchema = z.object({
+  kind: z.enum(["logo", "font", "photo", "video", "music", "document", "template", "reference"]),
+  label: z.string().trim().min(1, "Dê um nome ao material").max(160),
+  url: httpsUrl,
+  note: optionalText(500),
+});
