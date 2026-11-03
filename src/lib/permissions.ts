@@ -9,6 +9,8 @@ export const isCommercialRole = (role: Role | null | undefined) => !!role && COM
 export const CAPABILITIES = {
   "app.home": ["admin", "seller", "production"],
   "notifications.read": ["admin", "seller", "production"],
+  "team.profile": ["admin", "seller", "production"],
+  "team.manage": ["admin"],
   "clients.read_all": ["admin"],
   "clients.read_own": ["admin", "seller"],
   "clients.create": ["admin", "seller"],
@@ -69,9 +71,11 @@ export const NAVIGATION: NavItem[] = [
   },
   { href: "/despesas", label: "Minhas Despesas", icon: "wallet", capability: "expenses.request" },
   { href: "/comissoes", label: "Comissões", icon: "percent", capability: "commissions.read_own" },
-  { href: "/vendedores", label: "Vendedores", icon: "user-cog", capability: "users.manage" },
+  { href: "/equipe", label: "Equipe", icon: "users-round", capability: "team.manage" },
+  { href: "/vendedores", label: "Usuários e acessos", icon: "user-cog", capability: "users.manage" },
   { href: "/relatorios", label: "Relatórios", icon: "bar-chart-3", capability: "reports.own" },
   { href: "/notificacoes", label: "Notificações", icon: "bell", capability: "notifications.read" },
+  { href: "/perfil", label: "Meu perfil", icon: "user-round", capability: "team.profile" },
   { href: "/configuracoes", label: "Configurações", icon: "settings", capability: "settings.manage" },
   { href: "/auditoria", label: "Auditoria", icon: "shield-check", capability: "audit.read" },
 ];

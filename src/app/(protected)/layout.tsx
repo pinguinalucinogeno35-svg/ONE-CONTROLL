@@ -1,4 +1,5 @@
-import { cookies } from "next/headers";
+import { cookies, headers } from "next/headers";
+import { redirect } from "next/navigation";
 import { requireActiveUser } from "@/server/auth/session";
 import { navigationFor } from "@/lib/permissions";
 import { ROLE_LABEL } from "@/lib/labels";
@@ -11,6 +12,14 @@ export const dynamic = "force-dynamic";
 
 export default async function ProtectedLayout({ children }: { children: React.ReactNode }) {
   const ctx = await requireActiveUser();
+  // Produção: primeiro acesso curto obrigatório (função como preferência + disponibilidade).
+  if (ctx.profile.role === "production") {
+    const path = (await headers()).get("x-pathname") ?? "";
+    if (path !== "/primeiro-acesso") {
+      const { data: tp } = await ctx.supabase.from("team_profiles").select("onboarding_completed_at").eq("user_id", ctx.userId).maybeSingle();
+      if (!tp?.onboarding_completed_at) redirect("/primeiro-acesso");
+    }
+  }
   const [{ count }, , jar] = await Promise.all([
     ctx.supabase.from("notifications").select("id", { count: "exact", head: true }).is("read_at", null),
     ctx.supabase.rpc("touch_last_active"),

@@ -12,8 +12,8 @@ Decisões confirmadas:
 ## Fases (cada uma com migration aditiva, testes SQL + unitários + E2E e documentação)
 | Fase | Entrega | Situação |
 |---|---|---|
-| 1 | Papel Produção + bloqueio comercial no banco e no app (migration 0017) | IMPLEMENTADO (LOCAL/CI); aplicar no banco definitivo |
-| 2 | Perfil de trabalho e primeiro acesso curto: função como **preferência visual**, disponibilidade (presencial/remoto/externo), ausências | A FAZER |
+| 1 | Papel Produção + bloqueio comercial no banco e no app (migration 0017) | IMPLEMENTADO e aplicado no banco definitivo (03/11, conferido) |
+| 2 | Perfil de trabalho e primeiro acesso curto: função como **preferência visual**, disponibilidade (presencial/remoto/externo), ausências (migration 0018; telas Meu perfil, Primeiro acesso, Equipe) | IMPLEMENTADO (LOCAL/CI); aplicar no banco definitivo |
 | 3 | **Trabalhos**: ficha única por categoria (carrossel, foto, filmagem, edição, web, administrativo), responsáveis, prazo original × vigente, materiais/links, estados simples, bloqueio com motivo | A FAZER |
 | 4 | **Versões, revisão e aprovação**: prévia por versão, ajustes localizados (slide, foto, minutagem), aprovação da versão exata, entrega final ≠ publicação | A FAZER |
 | 5 | **Kit do cliente**: marca, cores, fontes, materiais e restrições; visível para quem tem trabalho atribuído no cliente | A FAZER |

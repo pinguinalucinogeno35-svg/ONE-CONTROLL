@@ -58,3 +58,11 @@ export const ROLE_LABEL: Record<string, string> = { admin: "Administrador", sell
 export function label(map: LabelMap, key: string | null | undefined): [string, Tone] {
   return (key && map[key]) || [key ?? "—", "neutral"];
 }
+
+// Setor de produção — função é preferência de interface, nunca permissão.
+export const WORK_FUNCTION: Record<string, string> = {
+  design: "Design", filmmaking: "Filmagem", photography: "Fotografia", editing: "Edição", development: "Desenvolvimento",
+  management: "Gestão", commercial: "Comercial", administrative: "Administrativo", other: "Outra",
+};
+export const WORK_MODE: Record<string, string> = { onsite: "Presencial", remote: "Remoto", external: "Externo" };
+export const WEEKDAYS: Record<number, string> = { 1: "Segunda", 2: "Terça", 3: "Quarta", 4: "Quinta", 5: "Sexta", 6: "Sábado", 7: "Domingo" };

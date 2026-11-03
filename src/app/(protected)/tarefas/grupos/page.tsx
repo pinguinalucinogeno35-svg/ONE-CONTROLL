@@ -16,7 +16,7 @@ export default async function TaskGroupsPage() {
   return (
     <>
       <PageHeader eyebrow="Operação / Grupos" title="Grupos de tarefas"
-        description="Organize o trabalho por área. Defina em quais grupos os vendedores podem criar e designar tarefas." />
+        description="Organize o trabalho por área. Defina em quais grupos os colaboradores podem criar e designar tarefas." />
       <Card className="mb-6"><CardTitle className="mb-4">Novo grupo</CardTitle><TaskGroupForm /></Card>
       <ul className="flex flex-col gap-3">
         {groups.map((g) => (
@@ -28,7 +28,7 @@ export default async function TaskGroupsPage() {
               </div>
               <div className="flex flex-wrap items-center gap-2">
                 <Badge tone="info">{open.get(g.id) ?? 0} aberta(s)</Badge>
-                <Badge tone={g.sellers_can_assign ? "success" : "neutral"}>{g.sellers_can_assign ? "Vendedores podem designar" : "Somente administração"}</Badge>
+                <Badge tone={g.sellers_can_assign ? "success" : "neutral"}>{g.sellers_can_assign ? "Colaboradores podem designar" : "Somente administração"}</Badge>
                 {!g.active && <Badge tone="warning">Inativo</Badge>}
               </div>
             </div>

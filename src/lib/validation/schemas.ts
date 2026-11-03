@@ -204,3 +204,37 @@ export const pushSubscriptionSchema = z.object({
   keys: z.object({ p256dh: base64url(40, 200), auth: base64url(10, 60) }),
   userAgent: z.string().max(300).optional(),
 });
+
+// Perfil de trabalho (setor de produção). Regras finais validadas também no banco.
+const checkbox = z.literal("on").optional().transform((v) => v === "on");
+const timeHHMM = z.string().regex(/^([01]\d|2[0-3]):[0-5]\d$/, "Horário inválido");
+export const workFunctionSchema = z.enum(["design", "filmmaking", "photography", "editing", "development", "management", "commercial", "administrative", "other"], { message: "Informe sua função principal" });
+export const availabilityBlockSchema = z
+  .object({ day: z.number().int().min(1).max(7), start: timeHHMM, end: timeHHMM, mode: z.enum(["onsite", "remote", "external"]) })
+  .refine((b) => b.end > b.start, { message: "O horário final deve ser depois do inicial", path: ["end"] });
+const jsonArray = z.string().default("[]").transform((s, ctx) => {
+  try { return JSON.parse(s) as unknown; } catch { ctx.addIssue({ code: "custom", message: "Horários inválidos" }); return z.NEVER; }
+});
+export const teamProfileSchema = z.object({
+  primary_function: workFunctionSchema,
+  secondary_function: z.string().optional().transform((v) => (v ? v : undefined)).pipe(workFunctionSchema.optional()),
+  works_onsite: checkbox,
+  works_remote: checkbox,
+  works_external: checkbox,
+  availability: jsonArray.pipe(z.array(availabilityBlockSchema).max(28, "Máximo de 28 blocos de horário")),
+  weekly_hours_declared: z.string().optional().transform((v) => (v ? Number(v.replace(",", ".")) : undefined))
+    .pipe(z.number({ message: "Informe um número de horas" }).min(0).max(80, "Máximo de 80 horas").optional()),
+  phone: optionalText(30),
+  tools: optionalText(500),
+  equipment: optionalText(500),
+  travel_notes: optionalText(500),
+  notes: optionalText(1000),
+  accept_rules: checkbox,
+  complete: z.literal("1").optional().transform((v) => v === "1"),
+});
+export const absenceSchema = z.object({
+  starts_on: isoDate,
+  ends_on: isoDate,
+  reason: optionalText(200),
+  user_id: z.string().optional().transform((v) => (v ? v : undefined)).pipe(uuid.optional()),
+}).refine((a) => a.ends_on >= a.starts_on, { message: "A data final deve ser igual ou posterior à inicial", path: ["ends_on"] });

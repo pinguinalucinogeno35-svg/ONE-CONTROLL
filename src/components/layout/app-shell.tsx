@@ -84,8 +84,10 @@ export function AppShell({ nav, user, unread, theme, themeSwitcher, children }: 
       .finally(() => form.requestSubmit());
   }
 
-  const bottom = ["/dashboard", "/tarefas", "/clientes", "/contratos", "/comissoes"]
-    .map((href) => nav.find((n) => n.href === href)).filter((n): n is NavItem => !!n);
+  // Até 5 atalhos permitidos ao papel (perfis com menu curto completam com Notificações e Meu perfil).
+  const bottom = ["/dashboard", "/tarefas", "/clientes", "/contratos", "/comissoes", "/notificacoes", "/perfil"]
+    .map((href) => nav.find((n) => n.href === href)).filter((n): n is NavItem => !!n).slice(0, 5);
+  const bottomCols = ["", "grid-cols-1", "grid-cols-2", "grid-cols-3", "grid-cols-4", "grid-cols-5"][bottom.length];
 
   const sidebar = (
     <div className="flex h-full flex-col bg-sidebar">
@@ -135,7 +137,7 @@ export function AppShell({ nav, user, unread, theme, themeSwitcher, children }: 
         <PushSync />
       </div>
 
-      <nav aria-label="Atalhos" className="fixed inset-x-0 bottom-0 z-[var(--one-z-fixed)] grid grid-cols-5 border-t border-border bg-surface pb-[env(safe-area-inset-bottom)] md:hidden">
+      <nav aria-label="Atalhos" className={cn("fixed inset-x-0 bottom-0 z-[var(--one-z-fixed)] grid border-t border-border bg-surface pb-[env(safe-area-inset-bottom)] md:hidden", bottomCols)}>
         {bottom.map((item) => {
           const Icon = NAV_ICONS[item.icon];
           const isActive = pathname === item.href || pathname.startsWith(`${item.href}/`);

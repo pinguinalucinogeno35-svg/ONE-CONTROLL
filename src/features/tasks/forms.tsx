@@ -89,7 +89,7 @@ export function TaskGroupForm({ group }: { group?: Group }) {
       </div>
       <label className="flex min-h-11 items-center gap-3 text-[15px]">
         <input type="checkbox" name="sellers_can_assign" defaultChecked={group?.sellers_can_assign ?? true} className="size-5 accent-[var(--one-action)]" />
-        Vendedores podem criar e designar tarefas neste grupo
+        Colaboradores (vendedores e produção) podem criar e designar tarefas neste grupo
       </label>
       {group && (
         <label className="flex min-h-11 items-center gap-3 text-[15px]">

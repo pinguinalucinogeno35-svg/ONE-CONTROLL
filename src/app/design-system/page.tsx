@@ -5,6 +5,7 @@ import { InOutChart, ProjectionChart } from "@/components/charts";
 import { navigationFor } from "@/lib/permissions";
 import { TaskCard } from "@/features/tasks/task-card";
 import { PushToggle } from "@/features/notifications/push-toggle";
+import { TeamProfileForm } from "@/features/team/forms";
 
 export const metadata = { title: "Design system" };
 export const dynamic = "force-dynamic";
@@ -74,6 +75,7 @@ export default async function DesignSystemPage({ searchParams }: { searchParams:
           ))}
         </div>
       </section>
+      <Card className="mt-6"><CardTitle className="mb-4">Primeiro acesso (ilustrativo)</CardTitle><TeamProfileForm onboarding /></Card>
       <div className="mt-6"><PushToggle vapidPublicKey={process.env.NEXT_PUBLIC_VAPID_PUBLIC_KEY ?? null} /></div>
       <div><EmptyState title="Nenhum projeto por aqui." description="Crie o primeiro projeto para organizar o trabalho." action={<Button>Criar projeto</Button>} /></div>
     </AppShell>
