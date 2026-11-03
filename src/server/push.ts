@@ -61,7 +61,7 @@ export async function dispatchPendingPush(limit = 100): Promise<{ sent: number; 
           const res = await webpush.sendNotification(
             { endpoint: row.endpoint, keys: { p256dh: row.p256dh, auth: row.auth } },
             buildPushPayload(row),
-            { vapidDetails, TTL: 60 * 60 * 24, urgency: row.type.startsWith("task_") ? "high" : "normal", timeout: 10_000 },
+            { vapidDetails, TTL: 60 * 60 * 24, urgency: row.type.startsWith("task_") || row.type.startsWith("work_") ? "high" : "normal", timeout: 10_000 },
           );
           status = res.statusCode;
         } catch (e) {

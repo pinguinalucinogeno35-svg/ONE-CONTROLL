@@ -66,3 +66,16 @@ export const WORK_FUNCTION: Record<string, string> = {
 };
 export const WORK_MODE: Record<string, string> = { onsite: "Presencial", remote: "Remoto", external: "Externo" };
 export const WEEKDAYS: Record<number, string> = { 1: "Segunda", 2: "Terça", 3: "Quarta", 4: "Quinta", 5: "Sexta", 6: "Sábado", 7: "Domingo" };
+
+// Trabalhos (setor de produção).
+export const WORK_CATEGORY: Record<string, string> = {
+  post: "Post", carousel: "Carrossel", design: "Design", photo: "Fotografia", video_shoot: "Filmagem",
+  video_edit: "Edição de vídeo", web: "Web", admin: "Administrativo", other: "Outro",
+};
+export const WORK_STATUS: Record<string, [string, Tone]> = {
+  draft: ["A preparar", "neutral"], ready: ["Pronto", "info"], in_production: ["Em produção", "info"],
+  in_review: ["Em revisão", "warning"], done: ["Concluído", "success"], cancelled: ["Cancelado", "neutral"],
+};
+export const WORK_LINK_KIND: Record<string, string> = {
+  reference: "Referência", material: "Material", raw: "Arquivos brutos", preview: "Prévia", editable: "Editável", final: "Entrega final", other: "Outro",
+};

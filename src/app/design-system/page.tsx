@@ -6,6 +6,7 @@ import { navigationFor } from "@/lib/permissions";
 import { TaskCard } from "@/features/tasks/task-card";
 import { PushToggle } from "@/features/notifications/push-toggle";
 import { TeamProfileForm } from "@/features/team/forms";
+import { WorkCard } from "@/features/works/work-card";
 
 export const metadata = { title: "Design system" };
 export const dynamic = "force-dynamic";
@@ -74,6 +75,15 @@ export default async function DesignSystemPage({ searchParams }: { searchParams:
               task={{ description: null, group_id: "g", blocked_reason: null, created_at: "2026-10-27", completed_at: null, ...t }} />
           ))}
         </div>
+      </section>
+      <section className="mt-6" aria-labelledby="ds-works">
+        <h2 id="ds-works" className="eyebrow mb-3 text-muted">Trabalhos (ilustrativo)</h2>
+        <WorkCard today="2026-11-03" clientName="Cliente ilustrativo" people={new Map([["me", { id: "me", full_name: "Pessoa ilustrativa", role: "production" as const, active: true }]])}
+          state={{ status: "in_production", blocked: false, missingRequired: 0, hasAssignees: true, hasPreview: true, hasFinal: false, isAssignee: true, role: "assignee" }}
+          work={{ id: "00000000-0000-4000-8000-000000000010", title: "Carrossel de lançamento", category: "carousel", status: "in_production", client_id: "c",
+            objective: null, instructions: null, deliverable_format: null, due_original: "2026-11-01", due_current: "2026-11-01", estimated_hours: null,
+            blocked_reason: null, reviewer_id: null, created_by: "x", completed_at: null, created_at: "2026-10-30",
+            work_assignees: [{ user_id: "me" }], work_items: [], work_links: [{ kind: "preview", removed_at: null }] }} />
       </section>
       <Card className="mt-6"><CardTitle className="mb-4">Primeiro acesso (ilustrativo)</CardTitle><TeamProfileForm onboarding /></Card>
       <div className="mt-6"><PushToggle vapidPublicKey={process.env.NEXT_PUBLIC_VAPID_PUBLIC_KEY ?? null} /></div>

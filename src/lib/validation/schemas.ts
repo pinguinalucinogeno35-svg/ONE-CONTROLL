@@ -238,3 +238,39 @@ export const absenceSchema = z.object({
   reason: optionalText(200),
   user_id: z.string().optional().transform((v) => (v ? v : undefined)).pipe(uuid.optional()),
 }).refine((a) => a.ends_on >= a.starts_on, { message: "A data final deve ser igual ou posterior à inicial", path: ["ends_on"] });
+
+// Trabalhos (setor de produção). Regras de acesso e de estado ficam no banco.
+export const workCategorySchema = z.enum(["post", "carousel", "design", "photo", "video_shoot", "video_edit", "web", "admin", "other"], { message: "Escolha o tipo de trabalho" });
+const optionalUuid = z.string().optional().transform((v) => (v ? v : undefined)).pipe(uuid.optional());
+const httpsUrl = z.string().trim().max(2000).regex(/^https:\/\/\S+$/, "Informe um link https:// válido");
+export const workSchema = z.object({
+  title: z.string().trim().min(3, "Informe o título").max(160),
+  category: workCategorySchema,
+  client_id: optionalUuid,
+  objective: optionalText(1000),
+  instructions: optionalText(8000),
+  deliverable_format: optionalText(500),
+  due_date: optionalDate,
+  due_change_reason: optionalText(300),
+  estimated_hours: z.string().optional().transform((v) => (v ? Number(v.replace(",", ".")) : undefined))
+    .pipe(z.number({ message: "Informe um número de horas" }).min(0).max(999).optional()),
+  reviewer_id: optionalUuid,
+  assignees: z.array(uuid).max(10, "Máximo de 10 responsáveis").optional().default([]),
+  use_template: checkbox,
+});
+export const workItemSchema = z.object({
+  kind: z.enum(["slide", "scene", "shot", "requirement", "checklist"]).optional(),
+  title: z.string().trim().min(1, "Informe o título").max(200),
+  body: optionalText(4000),
+  required: checkbox,
+});
+export const workLinkSchema = z.object({
+  kind: z.enum(["reference", "material", "raw", "preview", "editable", "final", "other"]),
+  label: z.string().trim().min(1, "Dê um nome ao link").max(160),
+  url: httpsUrl,
+  note: optionalText(500),
+});
+export const workStatusSchema = z.object({
+  status: z.enum(["draft", "ready", "in_production", "in_review", "done", "cancelled"]),
+  note: optionalText(500),
+});

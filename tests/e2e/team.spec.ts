@@ -18,3 +18,13 @@ test("horas sobrepostas contam uma vez e o total aparece em tempo real", async (
   await expect(form.getByText("Total semanal:")).toContainText("5 h");
   await expect(form.getByText(/Você pode receber qualquer tipo de trabalho/)).toBeVisible();
 });
+
+test("cartão de trabalho mostra só próxima ação, prazo, responsável e alertas", async ({ page }) => {
+  await page.goto("/design-system?tema=light");
+  const card = page.locator("section").filter({ has: page.getByRole("heading", { name: "Trabalhos (ilustrativo)" }) });
+  await expect(card.getByRole("link", { name: "Carrossel de lançamento" })).toBeVisible();
+  await expect(card.getByText("Enviar para revisão (você)")).toBeVisible();
+  await expect(card.getByText("Atrasado")).toBeVisible();
+  await expect(card.getByText("Em produção")).toBeVisible();
+  await expect(card.getByText("Cliente ilustrativo · Carrossel")).toBeVisible();
+});
