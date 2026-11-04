@@ -19,7 +19,7 @@ Decisões confirmadas:
 | 5 | **Kit do cliente**: marca, cores, fontes, materiais (links) e restrições; leitura para quem tem trabalho no cliente, edição pela administração e pelo vendedor do cliente; resumo na ficha do trabalho (migration 0021; tela /kits/[cliente]) | IMPLEMENTADO e aplicado no banco definitivo (04/11, conferido) |
 | 6 | **Calendário e sessões**: sessão única com vários participantes e trabalhos ligados (T12), conflitos de agenda como aviso, calendário semanal com sessões, prazos e ausências, tela da sessão para o celular (T13) (migration 0022; telas /calendario) | IMPLEMENTADO e aplicado no banco definitivo (04/11, conferido) |
 | 7 | **Gestão**: painel no Início da administração com aprovações pendentes (versão, quem revisa, desde quando), entregas em risco (atrasadas, bloqueadas, aguardando material — com o motivo), próximas sessões (com conflitos) e carga de cada pessoa × disponibilidade informada nos próximos 7 dias; sem métricas decorativas (migration 0023, `management_panel`) | IMPLEMENTADO e aplicado no banco definitivo (04/11, conferido) |
-| 8 | Piloto com 2 a 4 colaboradores e ajustes | A FAZER |
+| 8 | Piloto com 2 a 4 colaboradores e ajustes (guia do colaborador: `Guia_piloto_Producao_ONE_CONTROL.pdf`) | A FAZER |
 
 Regras permanentes: profissão não limita o tipo de trabalho nem concede acesso; nenhum recurso de IA na
 interface; aprovação humana; migrations sempre aditivas; nada é marcado como concluído sem teste real.
