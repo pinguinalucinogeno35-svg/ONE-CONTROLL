@@ -13,6 +13,9 @@ carteira só muda para Produção depois de transferi-la.
 banco trata o administrador como sem acesso: nenhuma leitura por RLS (exceto o próprio perfil) e nenhuma
 rotina (`require_active_user` recusa). Vendedores não são afetados.
 
+**Painel da gestão (`management_panel`):** somente administração com MFA (`require_admin`); vendedor e Produção
+recebem "Acesso negado". Somente leitura.
+
 | Operação | Admin | Vendedor | Garantia no banco |
 |---|---|---|---|
 | Ver clientes | Todos | Só `seller_id = auth.uid()` | `clients_select` |

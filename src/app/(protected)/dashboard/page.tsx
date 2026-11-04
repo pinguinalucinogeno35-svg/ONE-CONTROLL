@@ -9,6 +9,7 @@ import { CategoryBarChart, InOutChart, ProjectionChart } from "@/components/char
 import { PAYABLE_STATUS, label } from "@/lib/labels";
 import { MyTasks } from "@/features/tasks/my-tasks";
 import { MyWorks } from "@/features/works/my-works";
+import { ProductionPanel } from "@/features/management/production-panel";
 
 export const metadata = { title: "Dashboard" };
 
@@ -54,9 +55,10 @@ async function AdminDashboard({ ctx, period }: { ctx: ActiveContext; period: Per
   return (
     <>
       <PageHeader eyebrow="Visão geral / Administração" title="Dashboard administrativo" description={`Período: ${formatDate(period.from)} a ${formatDate(period.to)}`} />
-      <PeriodFilter basePath="/dashboard" current={period.key} from={period.from} to={period.to} />
+      <ProductionPanel ctx={ctx} />
       <MyWorks ctx={ctx} />
       <MyTasks ctx={ctx} />
+      <PeriodFilter basePath="/dashboard" current={period.key} from={period.from} to={period.to} />
 
       <section aria-labelledby="caixa" className="mb-6">
         <h2 id="caixa" className="mb-3 text-sm font-semibold text-muted">Caixa e recebíveis</h2>
