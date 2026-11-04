@@ -309,3 +309,22 @@ export const kitAssetSchema = z.object({
   url: httpsUrl,
   note: optionalText(500),
 });
+
+// Sessões de produção (calendário).
+const hhmm = z.string().regex(/^([01]\d|2[0-3]):[0-5]\d$/, "Horário inválido");
+export const sessionSchema = z.object({
+  kind: z.enum(["shoot", "photo", "meeting", "delivery", "other"], { message: "Escolha o tipo" }),
+  title: z.string().trim().min(3, "Informe o título").max(160),
+  client_id: z.string().optional().transform((v) => (v ? v : undefined)).pipe(uuid.optional()),
+  date: isoDate,
+  start_time: hhmm,
+  end_time: hhmm,
+  location: optionalText(160),
+  address: optionalText(300),
+  meeting_point: optionalText(300),
+  contacts: optionalText(500),
+  checklist: optionalText(2000),
+  notes: optionalText(2000),
+  participants: z.array(uuid).min(1, "Inclua pelo menos um participante").max(20),
+  works: z.array(uuid).max(20).optional().default([]),
+}).refine((s) => s.end_time > s.start_time, { message: "O fim deve ser depois do início", path: ["end_time"] });

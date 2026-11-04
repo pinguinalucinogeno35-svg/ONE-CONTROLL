@@ -85,7 +85,7 @@ export function AppShell({ nav, user, unread, theme, themeSwitcher, children }: 
   }
 
   // Até 5 atalhos permitidos ao papel (perfis com menu curto completam com Notificações e Meu perfil).
-  const bottom = ["/dashboard", "/trabalhos", "/tarefas", "/clientes", "/contratos", "/comissoes", "/notificacoes", "/perfil"]
+  const bottom = ["/dashboard", "/trabalhos", "/calendario", "/tarefas", "/clientes", "/contratos", "/comissoes", "/notificacoes", "/perfil"]
     .map((href) => nav.find((n) => n.href === href)).filter((n): n is NavItem => !!n).slice(0, 5);
   const bottomCols = ["", "grid-cols-1", "grid-cols-2", "grid-cols-3", "grid-cols-4", "grid-cols-5"][bottom.length];
 

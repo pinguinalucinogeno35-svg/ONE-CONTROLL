@@ -57,6 +57,7 @@ export type NavItem = { href: string; label: string; icon: string; capability: C
 export const NAVIGATION: NavItem[] = [
   { href: "/dashboard", label: "Dashboard", icon: "layout-dashboard", capability: "app.home" },
   { href: "/trabalhos", label: "Trabalhos", icon: "clapperboard", capability: "works.use" },
+  { href: "/calendario", label: "Calendário", icon: "calendar-days", capability: "works.use" },
   { href: "/clientes", label: "Clientes", icon: "users", capability: "clients.read_own" },
   { href: "/contratos", label: "Contratos", icon: "file-text", capability: "contracts.create" },
   { href: "/tarefas", label: "Tarefas", icon: "list-checks", capability: "tasks.use" },

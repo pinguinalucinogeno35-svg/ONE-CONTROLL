@@ -82,3 +82,6 @@ export const WORK_LINK_KIND: Record<string, string> = {
 export const KIT_ASSET_KIND: Record<string, string> = {
   logo: "Logos", font: "Fontes", photo: "Fotos", video: "Vídeos", music: "Músicas licenciadas", document: "Documentos", template: "Modelos aprovados", reference: "Referências",
 };
+export const SESSION_KIND: Record<string, string> = {
+  shoot: "Captação de vídeo", photo: "Sessão de fotos", meeting: "Reunião de produção", delivery: "Entrega/visita", other: "Compromisso",
+};

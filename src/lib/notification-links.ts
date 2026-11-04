@@ -5,6 +5,7 @@
 const LINKS: Record<string, string> = {
   tasks: "/tarefas/",
   works: "/trabalhos/",
+  production_sessions: "/calendario/",
   clients: "/clientes/",
   contracts: "/contratos/",
   projects: "/projetos/",
@@ -30,7 +31,7 @@ export function notificationHref(entityType: string | null, entityId: string | n
  */
 export function pushContent(type: string, title: string, message: string): { title: string; body: string } {
   // Tarefas e trabalhos: texto personalizado (sem nome de cliente nem valores).
-  if (type.startsWith("task_") || type.startsWith("work_")) return { title: title.slice(0, 120), body: message.slice(0, 240) };
+  if (type.startsWith("task_") || type.startsWith("work_") || type.startsWith("session_")) return { title: title.slice(0, 120), body: message.slice(0, 240) };
   const generic: Record<string, string> = {
     invoice: "Há um aviso de cobrança para você.",
     expense: "Há uma despesa aguardando sua atenção.",

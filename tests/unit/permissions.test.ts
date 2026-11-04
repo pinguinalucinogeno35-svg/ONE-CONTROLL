@@ -10,7 +10,7 @@ describe("papel de produção", () => {
   });
 
   it("menu enxuto: início, trabalhos, tarefas, notificações e perfil", () => {
-    expect(navigationFor("production").map((i) => i.href)).toEqual(["/dashboard", "/trabalhos", "/tarefas", "/notificacoes", "/perfil"]);
+    expect(navigationFor("production").map((i) => i.href)).toEqual(["/dashboard", "/trabalhos", "/calendario", "/tarefas", "/notificacoes", "/perfil"]);
   });
 
   it("vendedor e administrador mantêm os menus anteriores", () => {

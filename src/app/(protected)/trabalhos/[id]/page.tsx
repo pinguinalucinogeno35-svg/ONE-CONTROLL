@@ -7,6 +7,7 @@ import { confirmWorkBackupAction, removeWorkItemAction, removeWorkLinkAction, se
 import { getWork, getWorkContext, workState } from "@/server/services/works";
 import { getKit } from "@/server/services/kits";
 import { KitView } from "@/features/kits/kit-view";
+import { formatTime, localDate } from "@/lib/calendar";
 import Link from "next/link";
 import { CONTENT_SECTION, isOverdue, nextAction } from "@/lib/works";
 import { WORK_CATEGORY, WORK_LINK_KIND, WORK_STATUS, label } from "@/lib/labels";
@@ -36,7 +37,12 @@ export default async function WorkPage({ params }: { params: Promise<{ id: strin
   const ctx = await requireActiveUser();
   const [work, { people, peopleById, clients }] = await Promise.all([getWork(ctx, id), getWorkContext(ctx)]);
   if (!work) notFound();
-  const kitData = work.client_id ? await getKit(ctx, work.client_id) : null;
+  const [kitData, sessionsRes] = await Promise.all([
+    work.client_id ? getKit(ctx, work.client_id) : Promise.resolve(null),
+    ctx.supabase.from("session_works").select("production_sessions(id, title, kind, starts_at, ends_at, cancelled_at)").eq("work_id", work.id),
+  ]);
+  const sessions = ((sessionsRes.data ?? []) as unknown as { production_sessions: { id: string; title: string; kind: string; starts_at: string; ends_at: string; cancelled_at: string | null } | null }[])
+    .map((r) => r.production_sessions).filter((x): x is NonNullable<typeof x> => !!x && !x.cancelled_at).sort((a, b) => a.starts_at.localeCompare(b.starts_at));
   const state = workState(work, ctx);
   const action = nextAction(state);
   const today = todayISO();
@@ -228,6 +234,17 @@ export default async function WorkPage({ params }: { params: Promise<{ id: strin
         </div>
 
         <div className="flex flex-col gap-4">
+          {(sessions.length > 0 || (isManager && open)) && (
+            <Card>
+              <div className="mb-3 flex items-center justify-between gap-2"><CardTitle>Sessões</CardTitle>
+                {isManager && open && <Link href={`/calendario/nova?trabalho=${work.id}`} className="text-sm font-semibold text-link hover:underline">Agendar</Link>}</div>
+              {sessions.length === 0 ? <p className="text-sm text-muted">Nenhuma sessão agendada.</p> : (
+                <ul className="flex flex-col gap-1 text-sm">
+                  {sessions.map((s) => <li key={s.id}><Link href={`/calendario/${s.id}`} className="text-link underline">{formatDate(localDate(s.starts_at))} {formatTime(s.starts_at)}–{formatTime(s.ends_at)}</Link> · {s.title}</li>)}
+                </ul>
+              )}
+            </Card>
+          )}
           {work.client_id && kitData && (
             <Card>
               <div className="mb-3 flex items-center justify-between gap-2"><CardTitle>Kit do cliente</CardTitle>
